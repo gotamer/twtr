@@ -7,6 +7,8 @@ import (
 	"fmt"
 	"os"
 	"path"
+	"sort"
+	"strings"
 )
 
 var (
@@ -24,39 +26,18 @@ var (
 // and usage.
 type command struct {
 	main func(...[]string) error
-	help func()
 	desc string
 }
 
 // commands that can be executed via "twtxt <cmd> <params...>", these are
 // essentially named main functions.
 var commands map[string]command = map[string]command{
-	"follow":     {nil, nil, "Add a new source to your followings."},
-	"following":  {nil, nil, "Return the list of sources you're following."},
-	"quickstart": {nil, nil, "Quickstart wizard for setting up twtxt."},
-	"timeline":   {nil, nil, "Retrieve your personal timeline."},
-	"tweet":      {nil, nil, "Append a new tweet to your files."},
-	"unfollow":   {nil, nil, "Remove an existing source from your list."},
-}
-
-func usage() {
-	if _, err := fmt.Fprintf(os.Stderr,
-		`Usage: %s [OPTIONS] COMMAND [ARGS...]
-
-	Decentralized, minimalist microblogging service for hackers.
-
-Options:
-	%s
-
-Commands:
-	%s
-`,
-		self,
-		"TODO: List options",
-		"TODO: List commands",
-	); err != nil {
-		panic(err)
-	}
+	"follow":     {nil, "Add a new source to your followings."},
+	"following":  {nil, "Return the list of sources you're following."},
+	"quickstart": {nil, "Quickstart wizard for setting up twtxt."},
+	"timeline":   {nil, "Retrieve your personal timeline."},
+	"tweet":      {nil, "Append a new tweet to your files."},
+	"unfollow":   {nil, "Remove an existing source from your list."},
 }
 
 // fatal writes the given error message to the standard error stream and bails
@@ -85,6 +66,42 @@ func fatal(args ...interface{}) {
 // help is the main help and usage message, it exists the program with status
 // code 0.
 func help() {
+	cmds := make([]string, len(commands), len(commands))
+
+	i := 0
+	for cmd := range commands {
+		cmds[i] = cmd
+		i++
+	}
+
+	sort.Strings(cmds)
+
+	for i, cmd := range cmds {
+		cmds[i] = fmt.Sprintf("%-16s%s", cmd, commands[cmd].desc)
+	}
+
+	if _, err := fmt.Fprintf(os.Stderr,
+		`Usage: %s [OPTIONS] COMMAND [ARGS...]
+
+	Decentralized, minimalist microblogging service for hackers.
+
+Options:
+	%s
+
+Commands:
+	%s
+
+version %s - all rights reversed
+
+`,
+		self,
+		"TODO: List options",
+		strings.Join(cmds, "\n\t"),
+		version,
+	); err != nil {
+		panic(err)
+	}
+
 	os.Exit(0)
 }
 
