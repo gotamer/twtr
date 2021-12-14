@@ -20,6 +20,9 @@ var (
 
 	// self is the name of the executable, defaults to twtxt.
 	self string = "twtxt"
+
+	// conf is the location of the config, defaults to ~/.config/twtxt/config
+	conf string
 )
 
 // command contains the main function of a subcommand as well as it's metadata
@@ -40,32 +43,35 @@ var commands map[string]command = map[string]command{
 	"unfollow":   {nil, "Remove an existing source from your list."},
 }
 
-// fatal writes the given error message to the standard error stream and bails
-// out with exit code 1.
-func fatal(args ...interface{}) {
-	msg := "fatal error"
-
-	switch len(args) {
-	case 1:
-		msg = fmt.Sprint(args[0])
-	default:
-		if format, ok := args[0].(string); ok {
-			msg = fmt.Sprintf(format, args[1:]...)
-		} else {
-			msg = fmt.Sprint(args...)
-		}
+func printErr(a ...interface{}) {
+	if _, err := fmt.Fprint(os.Stderr, a...); err != nil {
+		panic(err)
 	}
+}
 
-	if _, err := fmt.Fprintf(os.Stderr, "%s: %s\n", self, msg); err != nil {
-		panic(fmt.Sprintf("fatal:\n%q\n\nwhile printing:\n%q", err, msg))
+func printErrf(format string, a ...interface{}) {
+	if _, err := fmt.Fprintf(os.Stderr, format, a...); err != nil {
+		panic(err)
 	}
+}
 
-	os.Exit(1)
+func printErrln(a ...interface{}) {
+	if _, err := fmt.Fprintln(os.Stderr, a...); err != nil {
+		panic(err)
+	}
 }
 
 // help is the main help and usage message, it exists the program with status
 // code 0.
-func help() {
+func help(msg string) {
+	if msg == "" {
+		defer os.Exit(0)
+	} else {
+		defer os.Exit(1)
+
+		printErrln(msg)
+	}
+
 	cmds := make([]string, len(commands), len(commands))
 
 	i := 0
@@ -80,8 +86,7 @@ func help() {
 		cmds[i] = fmt.Sprintf("%-16s%s", cmd, commands[cmd].desc)
 	}
 
-	if _, err := fmt.Fprintf(os.Stderr,
-		`Usage: %s [OPTIONS] COMMAND [ARGS...]
+	printErrf(`Usage: %s [OPTIONS] COMMAND [ARGS...]
 
 	Decentralized, minimalist microblogging service for hackers.
 
@@ -98,28 +103,31 @@ version %s - all rights reversed
 		"TODO: List options",
 		strings.Join(cmds, "\n\t"),
 		version,
-	); err != nil {
-		panic(err)
-	}
-
-	os.Exit(0)
+	)
 }
 
 // main is the entry point for the twtxt subcommands, it selects the given
 // subcommand to run and executes it, or calls help() if the input was invalid.
 func main() {
+	var skip int
+
 	// set the executable name (in case it was installed as something else)
 	self = path.Base(os.Args[0])
 
 	// select the subcommand (and or options)
 	for i, arg := range os.Args[1:] {
+		if skip > 0 {
+			skip--
+			continue
+		}
+
 		if cmd, ok := commands[arg]; ok {
 			if cmd.main == nil {
-				fatal("%s is not implemented yet", arg)
+				printErrln(arg + " is not implemented yet")
 			}
 
 			if err := cmd.main(os.Args[i:]); err != nil {
-				fatal("%s: %s", arg, err)
+				printErrln(arg + ": " + err.Error())
 			}
 
 			os.Exit(0)
@@ -127,19 +135,24 @@ func main() {
 
 		switch arg {
 		case "-c", "--config":
-			fatal("config parsing is not implemented yet")
+			if len(os.Args[i:]) > 0 {
+				conf = os.Args[i+1]
+				skip++
+			} else {
+				help(fmt.Sprintf("option '%s' requires PATH", arg))
+			}
 		case "-v", "--verbose":
 			verbose = true
 		case "-V", "--version":
 			fmt.Println(version)
 			os.Exit(0)
 		case "-h", "--help":
-			help()
+			help("")
 		default:
-			fatal("unknown option: %s", arg)
+			help(fmt.Sprintf("unknown option: %s", arg))
 		}
 	}
 
 	// show help message if no valid subcommand was given
-	help()
+	help("no subcommand given")
 }
