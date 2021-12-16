@@ -1,18 +1,16 @@
-# twtxt
+# twtr
 
-A twtxt client in Go, hopefully the Go compatibility promise will prevent the
-issues that original https://github.com/buckket/twtxt is experiencing due to the
-Python team making breaking changes.
+`twtr` (pronounced "tweeter") is a drop-in replacement of the original
+[`twtxt`](https://github.com/buckket/twtxt) client, with some extensions and
+bonus features, so you can make the switch without any compatibility issues.
 
-## `twtr`
-
-The `twtr` client (pronounced tweeter) is a drop-in replacement for the original
-`twtxt` command line tool, with some extensions and bonus features, so you can
-switch without any compatibility issues.
+The client is written in Go, hopefully the compatibility promise will prevent
+the types of issues that the original is experiencing due to the Python team
+making breaking changes.
 
 To install `twtr`, run:
 
 ```shell
-go install duriny.envs.sh/go/twtxt/twtr@latest
+go install duriny.envs.sh/twtr@latest
 ```
 

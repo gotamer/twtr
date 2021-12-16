@@ -1,3 +1,3 @@
-module duriny.envs.sh/go/twtxt
+module duriny.envs.sh/twtr
 
 go 1.17
