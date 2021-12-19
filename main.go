@@ -2,6 +2,15 @@
 //
 // twtxt is a decentralized, minimalist microblogging service for hackers.
 //
+// You want to get some thoughts out on the internet in a convenient and slick
+// way, while also following the gibberish of others? Instead of signing up to a
+// closed source and regulated platform, getting your status updates out is as
+// easy as adding a line to a publicly accessible text file. The URL pointing to
+// this file is your identity, your account. twtr then tracks these text files,
+// like a feedreader, and builds your unique timeline from the text files you
+// follow. The format is simple, human readable, and integrates well with UNIX
+// command line tools.
+//
 // The original client was written is Python around 2016, and a small user base
 // has been built around the twtxt format. Since the format is human readable
 // and can be easily used with just shell commands, in addition to the original
