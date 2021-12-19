@@ -23,13 +23,23 @@
 //
 // OPTIONS
 //
+// TBD, I'll write this section later.
+//
 // SUBCOMMANDS
+//
+// TBD, I'll write this section later.
 //
 // EXIT STATUS
 //
+// TBD, I'll write this section later.
+//
 // FILES
 //
+// TBD, I'll write this section later.
+//
 // ENVIRONMENT
+//
+// TBD, I'll write this section later.
 //
 // CONFORMING TO
 //
