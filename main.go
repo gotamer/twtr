@@ -31,16 +31,29 @@
 //
 // EXIT STATUS
 //
-// TBD, I'll write this section later.
+// The twtr command exits 0 on success, and >0 if an error occurs.
 //
 // FILES
 //
-// TBD, I'll write this section later.
+// The twtxt configuration file is located in the user's configuration
+// directory. On most UNIX systems this defaults to:
+//
+//     ~/.config/twtxt/config
+//
+// Except on macOS, where the default is:
+//
+//     ~/Library/Application Support/twtxt/config
+//
+// More generally this the default is defined by the XDG standard, see also the
+// ENVIRONMENT section.
+//
+//     $XDG_CONFIG_HOME/twtxt/config
 //
 // ENVIRONMENT
 //
-// The twtxt configuration file is located in the user's configuration
-// directory, this is defined by the XDG standard.
+// This is the user configuration directory used for the twtxt config file, it
+// varies from system to system, to see where this defaults to on your local
+// operating system, see the os.UserConfigDir() notes in the "os" package.
 //
 //     XDG_CONFIG_HOME
 //
