@@ -4,7 +4,21 @@
 //
 // SYNOPSIS
 //
-// twtr [OPTIONS] [COMMAND] [ARGS ...]
+//     twtr [OPTIONS] [COMMAND] [ARGS ...]
+//
+//     twtr follow [[<nickname>] <feed>]
+//
+//     twtr following
+//
+//     twtr unfollow [[<nickname>] <feed>]
+//
+//     twtr tweet [<message>]
+//
+//     twtr timeline
+//
+//     twtr view [<nickname>|<feed>]
+//
+//     twtr config [OPTIONS] [<key> [<value>]]
 //
 // DESCRIPTION
 //
