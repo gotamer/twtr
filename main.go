@@ -6,17 +6,31 @@
 //
 //     twtr [OPTIONS] [COMMAND] [ARGS ...]
 //
+// Follow someone:
+//
 //     twtr follow [[<nickname>] <feed>]
+//
+// See who you are following:
 //
 //     twtr following
 //
+// Stop following someone:
+//
 //     twtr unfollow [[<nickname>] <feed>]
+//
+// Post a new status:
 //
 //     twtr tweet [<message>]
 //
+// View your own feed:
+//
 //     twtr timeline
 //
+// View someone's feed:
+//
 //     twtr view [<nickname>|<feed>]
+//
+// Edit or view your config file:
 //
 //     twtr config [OPTIONS] [<key> [<value>]]
 //
