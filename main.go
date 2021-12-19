@@ -10,8 +10,6 @@
 //
 //     twtr is a drop in replacement for the original twtxt client.
 //
-//     twtxt is a decentralized, minimalist microblogging service for hackers.
-//
 //     You want to get some thoughts out on the internet in a convenient and
 //     slick way, while also following the gibberish of others? Instead of
 //     signing up to a closed source and regulated platform, getting your status
@@ -20,20 +18,6 @@
 //     then tracks these text files, like a feedreader, and builds your unique
 //     timeline from the text files you follow. The format is simple, human
 //     readable, and integrates well with UNIX command line tools.
-//
-//     The original client was written is Python around 2016, and a small user
-//     base has been built around the twtxt format. Since the format is human
-//     readable and can be easily used with just shell commands, in addition to
-//     the original client, many users have written their own or just use the
-//     echo command.
-//
-//     This client aims to be a complete drop-in replacement for the original
-//     client, not only to replicate the original feature set, but also to
-//     support many additions that the community of users have requested. There
-//     have also been a number of issues with the original client breaking
-//     because of backwards compatibility issues with the Python language. twtr
-//     aims to be a permanently supported tool, the Go language protects its
-//     backwards compatibility, so twtr will work forever!
 //
 //     tldr: twtr is a CLI tool for the twtxt self-hosted microblogging format.
 //
@@ -59,11 +43,36 @@
 //
 // NOTES
 //
-// BUGS
+//     The original client was written is Python around 2016, and a small user
+//     base has been built around the twtxt format. Since the format is human
+//     readable and can be easily used with just shell commands, in addition to
+//     the original client, many users have written their own or just use the
+//     echo command.
+//
+//     This client aims to be a complete drop-in replacement for the original
+//     client, not only to replicate the original feature set, but also to
+//     support many additions that the community of users have requested. There
+//     have also been a number of issues with the original client breaking
+//     because of backwards compatibility issues with the Python language. twtr
+//     aims to be a permanently supported tool, the Go language protects its
+//     backwards compatibility, so twtr will work forever!
+//
+// COPYRIGHT
+//
+//     All rites reversed, use, distribute, and modify freely.
 //
 // AUTHOR
 //
+//     ~duriny <duriny@envs.net>
+//
+// BUGS
+//
+//     Probably. Let me know if you find any.
+//
 // SEE ALSO
+//
+//     twtxt(1) - https://github.com/buckket/twtxt
+//
 package main
 
 import (
