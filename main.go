@@ -88,11 +88,10 @@ func printErrln(a ...interface{}) {
 // help is the main help and usage message, it exists the program with status
 // code 0.
 func help(msg string) {
-	if msg == "" {
-		defer os.Exit(0)
-	} else {
-		defer os.Exit(1)
+	var status int
 
+	if msg != "" {
+		status = 1
 		printErrln(msg)
 	}
 
@@ -128,6 +127,8 @@ version %s - all rights reversed
 		strings.Join(cmds, "\n\t"),
 		version,
 	)
+
+	os.Exit(status)
 }
 
 // main is the entry point for the twtxt subcommands, it selects the given
