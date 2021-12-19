@@ -39,7 +39,10 @@
 //
 // ENVIRONMENT
 //
-// TBD, I'll write this section later.
+// The twtxt configuration file is located in the user's configuration
+// directory, this is defined by the XDG standard.
+//
+//     XDG_CONFIG_HOME
 //
 // CONFORMING TO
 //
