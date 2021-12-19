@@ -49,6 +49,14 @@
 //
 // CONFORMING TO
 //
+//     twtr conforms to the twtxt file specification, traditionally the file is
+//     located at https://example.com/path/to/twtxt.txt, however, as not
+//     everyone has access to a personal website to host their feeds, twtr also
+//     supports specialised hosting options, such as a GitHub gist.
+//
+//     See https://twtxt.readthedocs.io/en/latest/user/twtxtfile.html for more
+//     information on the file structure.
+//
 // NOTES
 //
 // BUGS
