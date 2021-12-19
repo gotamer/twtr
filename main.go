@@ -10,14 +10,14 @@
 //
 // twtr is a drop in replacement for the original twtxt client.
 //
-// You want to get some thoughts out on the internet in a convenient and
-// slick way, while also following the gibberish of others? Instead of
-// signing up to a closed source and regulated platform, getting your status
-// updates out is as easy as adding a line to a publicly accessible text
-// file. The URL pointing to this file is your identity, your account. twtr
-// then tracks these text files, like a feedreader, and builds your unique
-// timeline from the text files you follow. The format is simple, human
-// readable, and integrates well with UNIX command line tools.
+// You want to get some thoughts out on the internet in a convenient and slick
+// way, while also following the gibberish of others? Instead of signing up to a
+// closed source and regulated platform, getting your status updates out is as
+// easy as adding a line to a publicly accessible text file. The URL pointing to
+// this file is your identity, your account. twtr then tracks these text files,
+// like a feedreader, and builds your unique timeline from the text files you
+// follow. The format is simple, human readable, and integrates well with UNIX
+// command line tools.
 //
 // tldr: twtr is a CLI tool for the twtxt self-hosted microblogging format.
 //
@@ -34,9 +34,9 @@
 // CONFORMING TO
 //
 // twtr conforms to the twtxt file specification, traditionally the file is
-// located at https://example.com/path/to/twtxt.txt, however, as not
-// everyone has access to a personal website to host their feeds, twtr also
-// supports specialised hosting options, such as a GitHub gist.
+// located at https://example.com/path/to/twtxt.txt, however, as not everyone
+// has access to a personal website to host their feeds, twtr also supports
+// specialised hosting options, such as a GitHub gist.
 //
 // See https://twtxt.readthedocs.io/en/latest/user/twtxtfile.html for more
 // information on the file structure.
@@ -50,12 +50,12 @@
 // echo command.
 //
 // This client aims to be a complete drop-in replacement for the original
-// client, not only to replicate the original feature set, but also to
-// support many additions that the community of users have requested. There
-// have also been a number of issues with the original client breaking
-// because of backwards compatibility issues with the Python language. twtr
-// aims to be a permanently supported tool, the Go language protects its
-// backwards compatibility, so twtr will work forever!
+// client, not only to replicate the original feature set, but also to support
+// many additions that the community of users have requested. There have also
+// been a number of issues with the original client breaking because of
+// backwards compatibility issues with the Python language. twtr aims to be a
+// permanently supported tool, the Go language protects its backwards
+// compatibility, so twtr will work forever!
 //
 // COPYRIGHT
 //
