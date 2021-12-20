@@ -1,4 +1,4 @@
-// TWTR(1)                 THE TWTR MICROBLOGGING CLIENT                 TWTR(1)
+// twtr is a twtxt client.
 //
 // NAME
 //
