@@ -14,13 +14,13 @@
 // flags. Each command is different, see the SUBCOMMANDS section for a more
 // detailed breakdown of each command.
 //
-//     twtr follow [[<nickname>] <feed>]
-//     twtr following
-//     twtr unfollow [[<nickname>] <feed>]
-//     twtr tweet [<message>]
 //     twtr timeline
-//     twtr view [<nickname>|<feed>]
-//     twtr config [<key> [<value>]]
+//     twtr following
+//     twtr follow     [[<nickname>] <feed>]
+//     twtr unfollow   [[<nickname>] <feed>]
+//     twtr tweet      [<message>]
+//     twtr view       [<nickname>|<feed>]
+//     twtr config     [<key> [<value>]]
 //
 // DESCRIPTION
 //
