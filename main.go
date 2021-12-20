@@ -155,13 +155,13 @@ Options:
     -h, --help         Show this message and exit.
 
 Command:
-    timeline   . Retrieve your personal timeline.
-    following  . View the sources that you are following.
-    follow     . Add a new source to your followings.
-    unfollow   . Remove an existing source from your list.
-    tweet      . Send out a message into the void.
-    view       . View a source that you follow.
-    config     . Update your configuration.
+    timeline   Retrieve your personal timeline.
+    following  View the sources that you are following.
+    follow     Add a new source to your followings.
+    unfollow   Remove an existing source from your list.
+    tweet      Send out a message into the void.
+    view       View a source that you follow.
+    config     Update your configuration.
 `
 )
 
