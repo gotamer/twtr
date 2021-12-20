@@ -1,6 +1,6 @@
 // NAME
 //
-// twtr - decentralized microblogging client
+// twtr - a decentralized microblogging client.
 //
 // SYNOPSIS
 //
@@ -26,7 +26,8 @@
 // follow. The format is simple, human readable, and integrates well with UNIX
 // command line tools.
 //
-// tldr: twtr is a CLI tool for the twtxt self-hosted microblogging format.
+// tldr: twtr is a command line tool for the twtxt self-hosted microblogging
+// format.
 //
 // OPTIONS
 //
