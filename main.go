@@ -59,7 +59,33 @@
 //
 // SUBCOMMANDS
 //
-// TBD, I'll write this section later.
+// Retrieve your personal timeline.
+//
+//     twtr timeline
+//
+// Return the list of sources you're following.
+//
+//     twtr following
+//
+// Add a new source to your followings.
+//
+//     twtr follow [[<nickname>] <feed>]
+//
+// Remove an existing source from your following list.
+//
+//     twtr unfollow [[<nickname>] <feed>]
+//
+// Appends a new tweet to you twtxt file.
+//
+//     twtr tweet [<message>]
+//
+// View a specific feed.
+//
+//     twtr view [<nickname>|<feed>]
+//
+// Edit your twtxt configuration.
+//
+//     twtr config [<key> [<value>]]
 //
 // EXIT STATUS
 //
