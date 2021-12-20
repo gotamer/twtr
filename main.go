@@ -30,21 +30,10 @@
 //
 // OPTIONS
 //
-// Specify a custom configuration file location:
-//
-//     -c, --config PATH
-//
-// Enable verbose output for debugging purposes:
-//
-//     -v, --verbose
-//
-// Show the version and exit:
-//
-//     --version
-//
-// Show a help message and exit:
-//
-//     -h, --help
+//     -c, --config PATH    Specify a custom configuration file location.
+//     -v, --verbose        Enable verbose output for debugging purposes.
+//     --version            Show the version and exit.
+//     -h, --help           Show a help message and exit.
 //
 // Each subcommand also has its own options, see the SUBCOMMAND section for more
 // fine grained control, for example, the help flag will show a general usage
