@@ -26,9 +26,6 @@
 // follow. The format is simple, human readable, and integrates well with UNIX
 // command line tools.
 //
-// tldr: twtr is a command line tool for the twtxt self-hosted microblogging
-// format.
-//
 // OPTIONS
 //
 //     -c, --config PATH    Specify a custom configuration file location.
