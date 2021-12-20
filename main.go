@@ -1,10 +1,19 @@
+// twtr is a twtxt client.
+//
 // NAME
 //
 // twtr - a decentralized microblogging client.
 //
 // SYNOPSIS
 //
+// The general syntax for twtr is:
+//
 //     twtr COMMAND [OPTIONS] [ARGS ...]
+//
+// Where the command specified the action to preform, modified by optional
+// flags. Each command is different, see the SUBCOMMANDS section for a more
+// detailed breakdown of each command.
+//
 //     twtr follow [[<nickname>] <feed>]
 //     twtr following
 //     twtr unfollow [[<nickname>] <feed>]
@@ -27,6 +36,10 @@
 // command line tools.
 //
 // OPTIONS
+//
+// twtr is configured with a config file, to manage multiple twtxt feeds, it is
+// possible to specify a different config file than the default. These options
+// are special because they can be given before a command.
 //
 //     -c, --config PATH    Specify a custom configuration file location.
 //     -v, --verbose        Enable verbose output for debugging purposes.
