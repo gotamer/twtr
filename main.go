@@ -4,14 +4,14 @@
 //
 // SYNOPSIS
 //
-//     twtr [OPTIONS] COMMAND [ARGS ...]
+//     twtr COMMAND [OPTIONS] [ARGS ...]
 //     twtr follow [[<nickname>] <feed>]
 //     twtr following
 //     twtr unfollow [[<nickname>] <feed>]
 //     twtr tweet [<message>]
 //     twtr timeline
 //     twtr view [<nickname>|<feed>]
-//     twtr config [OPTIONS] [<key> [<value>]]
+//     twtr config [<key> [<value>]]
 //
 // DESCRIPTION
 //
@@ -30,7 +30,32 @@
 //
 // OPTIONS
 //
-// TBD, I'll write this section later.
+// Specify a custom configuration file location:
+//
+//     -c, --config PATH
+//
+// Enable verbose output for debugging purposes:
+//
+//     -v, --verbose
+//
+// Show the version and exit:
+//
+//     --version
+//
+// Show a help message and exit:
+//
+//     -h, --help
+//
+// Each subcommand also has its own options, see the SUBCOMMAND section for more
+// fine grained control, for example, the help flag will show a general usage
+// message for the whole of twtr if called as:
+//
+//     twtr --help
+//
+// But to see more details surrounding a specific subcommand, the help flag can
+// be passed to that subcommand, for example, calling config as:
+//
+//     twtr config --help
 //
 // SUBCOMMANDS
 //
