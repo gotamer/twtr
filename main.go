@@ -52,8 +52,8 @@
 //
 //     twtr --help
 //
-// But to see more details surrounding a specific subcommand, the help flag can
-// be passed to that subcommand, for example, calling config as:
+// To see more details surrounding a specific subcommand, the help flag can be
+// passed to that subcommand, for example, calling config as:
 //
 //     twtr config --help
 //
