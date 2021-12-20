@@ -14,6 +14,7 @@
 // flags. Each command is different, see the SUBCOMMANDS section for a more
 // detailed breakdown of each command.
 //
+//     twtr quickstart
 //     twtr timeline
 //     twtr following
 //     twtr follow     [[<nickname>] <feed>]
@@ -59,6 +60,10 @@
 //
 // SUBCOMMANDS
 //
+// Quickstart wizard for setting up your twtxt config.
+//
+//     twtr quickstart
+//
 // Retrieve your personal timeline.
 //
 //     twtr timeline
@@ -87,6 +92,8 @@
 //
 //     twtr config [<key> [<value>]]
 //
+// See the CONFIGURATION section for a list of available options.
+//
 // EXIT STATUS
 //
 // The twtr command exits 0 on success, and >0 if an error occurs.
@@ -106,6 +113,114 @@
 // ENVIRONMENT section.
 //
 //     $XDG_CONFIG_HOME/twtxt/config
+//
+// See the CONFIGURATION section for more details on the config file.
+//
+// CONFIGURATION
+//
+// The configuration file is a simply INI file with two main sections, [twtxt]
+// and [following]. You can set up a basic config file using the quickstart
+// wizard. See the config subcommand for more information on how to modify the
+// configuration via the twtr tool, or you can edit the file with your
+// preferred text editor.
+//
+// The [twtxt] section contains the settings for your "account", what your
+// nickname is, where your twtxt file located, etc...
+//
+//     nick:
+//         type:
+//         default:
+//         description:
+//
+//     twtxtfile:
+//         type:
+//         default:
+//         description:
+//
+//     twtxturl:
+//         type:
+//         default:
+//         description:
+//
+//     check_following:
+//         type:
+//         default:
+//         description:
+//
+//     use_pager:
+//         type:
+//         default:
+//         description:
+//
+//     user_cache:
+//         type:
+//         default:
+//         description:
+//
+//     porcelain:
+//         type:
+//         default:
+//         description:
+//
+//     disclose_identity:
+//         type:
+//         default:
+//         description:
+//
+//     character_limit:
+//         type:
+//         default:
+//         description:
+//
+//     character_warning:
+//         type:
+//         default:
+//         description:
+//
+//     limit_timeline:
+//         type:
+//         default:
+//         description:
+//
+//     timeline_update_interval:
+//         type:
+//         default:
+//         description:
+//
+//     timeout:
+//         type:
+//         default:
+//         description:
+//
+//     sorting:
+//         type:
+//         default:
+//         description:
+//
+//     use_abs_time:
+//         type:
+//         default:
+//         description:
+//
+//     pre_tweet_hook:
+//         type:
+//         default:
+//         description:
+//
+//     post_tweet_hook:
+//         type:
+//         default:
+//         description:
+//
+//
+// The [following] section contains all the sources you follow, the keys in
+// this section are the nicknames, and the values of those keys are the urls of
+// the twtxt files. For example, if you are following alice and bob, your
+// [following] section might look something like:
+//
+//     [following]
+//     alice = https://example.com/user/alice/path/to/twtxt.txt
+//     bob   = https://example.com/user/bob/path/to/twtxt.txt
 //
 // ENVIRONMENT
 //
