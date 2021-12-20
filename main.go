@@ -124,103 +124,34 @@
 // configuration via the twtr tool, or you can edit the file with your
 // preferred text editor.
 //
-// The [twtxt] section contains the settings for your "account", what your
-// nickname is, where your twtxt file located, etc...
-//
-//     nick:
-//         type:
-//         default:
-//         description:
-//
-//     twtxtfile:
-//         type:
-//         default:
-//         description:
-//
-//     twtxturl:
-//         type:
-//         default:
-//         description:
-//
-//     check_following:
-//         type:
-//         default:
-//         description:
-//
-//     use_pager:
-//         type:
-//         default:
-//         description:
-//
-//     user_cache:
-//         type:
-//         default:
-//         description:
-//
-//     porcelain:
-//         type:
-//         default:
-//         description:
-//
-//     disclose_identity:
-//         type:
-//         default:
-//         description:
-//
-//     character_limit:
-//         type:
-//         default:
-//         description:
-//
-//     character_warning:
-//         type:
-//         default:
-//         description:
-//
-//     limit_timeline:
-//         type:
-//         default:
-//         description:
-//
-//     timeline_update_interval:
-//         type:
-//         default:
-//         description:
-//
-//     timeout:
-//         type:
-//         default:
-//         description:
-//
-//     sorting:
-//         type:
-//         default:
-//         description:
-//
-//     use_abs_time:
-//         type:
-//         default:
-//         description:
-//
-//     pre_tweet_hook:
-//         type:
-//         default:
-//         description:
-//
-//     post_tweet_hook:
-//         type:
-//         default:
-//         description:
-//
-//
-// The [following] section contains all the sources you follow, the keys in
-// this section are the nicknames, and the values of those keys are the urls of
-// the twtxt files. For example, if you are following alice and bob, your
-// [following] section might look something like:
+//     [twtxt]
+//     nick              = nickname
+//     twtfile           = path/to/twtxt.txt
+//     twtfile           = https://example.com/twtxt.txt
+//     check_following   = true
+//     use_pager         = false
+//     use_cache         = true
+//     porcelain         = false
+//     disclose_identity = false
+//     character_limit   = 140
+//     character_warning = 140
+//     limit_timeline    = 20
+//     timeline_update   = 10
+//     timeout           = 5.0
+//     sorting           = descending
+//     pre_tweet_hook    = "spc nickname@example.com/twtxt.txt {twtxt}"
+//     post_tweet_hook   = "spc {twtxt} nickname@example.com/twtxt.txt"
 //
 //     [following]
 //     alice = https://example.com/user/alice/path/to/twtxt.txt
 //     bob   = https://example.com/user/bob/path/to/twtxt.txt
+//
+// The [twtxt] section contains the settings for your "account", what your
+// nickname is, where your twtxt file located, etc...
+//
+// The [following] section contains all the sources you follow, the keys in
+// this section are the nicknames, and the values of those keys are the urls of
+// the twtxt files. You can update this section using the (un)follow commands.
 //
 // ENVIRONMENT
 //
