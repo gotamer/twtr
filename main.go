@@ -39,6 +39,14 @@ func main() {
 	args := os.Args[1:]
 
 	for i := 0; i < len(args); i++ {
+		if cmd, ok := commands[arg]; ok {
+			if err := cmd(args[i:]...); err != nil {
+				panic(err)
+			}
+
+			os.Exit(0)
+		}
+
 		switch arg := args[i]; arg {
 		case "-c", "--config":
 			if i++; i >= len(args) {
@@ -55,14 +63,6 @@ func main() {
 			fmt.Fprintf(os.Stderr, usage, self)
 			os.Exit(0)
 		default:
-			if cmd, ok := commands[arg]; ok {
-				if err := cmd(args[i:]...); err != nil {
-					panic(err)
-				}
-
-				os.Exit(0)
-			}
-
 			panic("unknown command or flag: '" + arg + "'")
 		}
 	}
