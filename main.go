@@ -32,13 +32,17 @@ Command:
 `
 )
 
-var commands map[string]func(...string) error = map[string]func(...string) error{}
+var commands map[string]func(...string) error = map[string]func(...string) error{
+	"config": main_config,
+}
 
 func main() {
 	self = path.Base(os.Args[0])
 	args := os.Args[1:]
 
 	for i := 0; i < len(args); i++ {
+		arg := args[i]
+
 		if cmd, ok := commands[arg]; ok {
 			if err := cmd(args[i:]...); err != nil {
 				panic(err)
@@ -47,7 +51,7 @@ func main() {
 			os.Exit(0)
 		}
 
-		switch arg := args[i]; arg {
+		switch arg {
 		case "-c", "--config":
 			if i++; i >= len(args) {
 				panic("config path not given")
