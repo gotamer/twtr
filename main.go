@@ -125,22 +125,23 @@
 // preferred text editor.
 //
 //     [twtxt]
-//     nick              = nickname
-//     twtfile           = path/to/twtxt.txt
-//     twtfile           = https://example.com/twtxt.txt
-//     check_following   = true
-//     use_pager         = false
-//     use_cache         = true
-//     porcelain         = false
-//     disclose_identity = false
-//     character_limit   = 140
-//     character_warning = 140
-//     limit_timeline    = 20
-//     timeline_update   = 10
-//     timeout           = 5.0
-//     sorting           = descending
-//     pre_tweet_hook    = "spc nickname@example.com/twtxt.txt {twtxt}"
-//     post_tweet_hook   = "spc {twtxt} nickname@example.com/twtxt.txt"
+//     nick                     = nickname
+//     twtfile                  = path/to/twtxt.txt
+//     twturl                   = https://example.com/twtxt.txt
+//     check_following          = true
+//     use_pager                = false
+//     use_cache                = true
+//     porcelain                = false
+//     disclose_identity        = false
+//     character_limit          = 140
+//     character_warning        = 140
+//     limit_timeline           = 20
+//     timeline_update_interval = 10
+//     timeout                  = 5.0
+//     sorting                  = descending
+//     use_abs_time             = false
+//     pre_tweet_hook           = "spc nickname@example.com/twtxt.txt {twtxt}"
+//     post_tweet_hook          = "spc {twtxt} nickname@example.com/twtxt.txt"
 //
 //     [following]
 //     alice = https://example.com/user/alice/path/to/twtxt.txt
@@ -148,6 +149,80 @@
 //
 // The [twtxt] section contains the settings for your "account", what your
 // nickname is, where your twtxt file located, etc...
+//
+//     Option:                   Type:  Default:    Description:
+//     nick                      TEXT               Your nickname, will be
+//                                                  displayed in your timeline.
+//
+//     twtfile                   TEXT               Path to your local twtxt
+//                                                  files, it should be user
+//                                                  writeable and preferably
+//                                                  in your user directory.
+//
+//     twturl                    TEXT               URL to your public twtxt
+//                                                  file, this is the same URL
+//                                                  that people will follow you
+//                                                  by.
+//
+//     check_following           BOOL   true        Should twtr try to resolve
+//                                                  URLs when listing your
+//                                                  followings?
+//
+//     use_pager                 BOOL   false       Should twtr use a pager
+//                                                  (i.e. less) to display your
+//                                                  timeline?
+//
+//     use_cache                 BOOL   true        Should twtr cache remote
+//                                                  twtxt files locally?
+//
+//     porcelain                 BOOL   false       Should twtr format output in
+//                                                  an easy to parse format?
+//
+//     disclose_identity         BOOL   false       Should twtr include your
+//                                                  nickname and twturl in the
+//                                                  user-agent.
+//
+//     character_limit           INT                Shorten incoming tweets with
+//                                                  more characters than this
+//                                                  limit. If set to 0 (zero) or
+//                                                  left unset, this will
+//                                                  default to not shortening
+//                                                  tweets at all.
+//
+//     character_warning         INT                Warn when you outgoing
+//                                                  tweets exceed this length.
+//                                                  Set to 0 (zero) or leave
+//                                                  unset to disable the
+//                                                  warning completely.
+//
+//     limit_timeline            INT    20          Limit the timeline history,
+//                                                  set to 0 (zero) to always
+//                                                  show the full history.
+//
+//     timeline_update_interval  INT    10          Time in seconds until a
+//                                                  cache is considered out of
+//                                                  date.
+//
+//     timeout                   FLOAT  5.0         Maximum time a http request
+//                                                  is allows to take.
+//
+//     sorting                   TEXT   descending  How to sort the timeline,
+//                                                  descending or ascending.
+//
+//     use_abs_time              BOOL   false       Use absolute date times in
+//                                                  your timeline, defaults to
+//                                                  relative, i.e. X minutes ago
+//                                                  or Y hours ago.
+//
+//     pre_tweet_hook            TEXT               Command to be executed
+//                                                  before tweeting.
+//
+//     post_tweet_hook           TEXT               Command to be executed after
+//                                                  tweeting.
+//
+// The pre/post tweet hooks are executed as system commands, any occurrences of
+// "{foo}" will be replaced with the value of that configuration. For example,
+// "{twtfile}" will be replaced with the path to your local file.
 //
 // The [following] section contains all the sources you follow, the keys in
 // this section are the nicknames, and the values of those keys are the urls of
