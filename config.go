@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"os"
+	"strings"
 
 	"gopkg.in/ini.v1"
 )
@@ -28,6 +29,52 @@ type config struct {
 	following              map[string]string
 }
 
+func setConfigString(section *ini.Section, key string, value *string) {
+	if section.HasKey(key) {
+		val := section.Key(key).String()
+		value = &val
+	}
+}
+
+func setConfigBool(section *ini.Section, key string, value *bool) (err error) {
+	if section.HasKey(key) {
+		val, e := section.Key(key).Bool()
+		if e != nil {
+			return e
+		}
+
+		value = &val
+	}
+
+	return
+}
+
+func setConfigInt(section *ini.Section, key string, value *int) (err error) {
+	if section.HasKey(key) {
+		val, e := section.Key(key).Int()
+		if e != nil {
+			return e
+		}
+
+		value = &val
+	}
+
+	return
+}
+
+func setConfigFloat64(section *ini.Section, key string, value *float64) (err error) {
+	if section.HasKey(key) {
+		val, e := section.Key(key).Float64()
+		if e != nil {
+			return e
+		}
+
+		value = &val
+	}
+
+	return
+}
+
 func getConfig() (config, error) {
 	// setup default values
 	cfg := config{
@@ -36,6 +83,7 @@ func getConfig() (config, error) {
 		limitTimeline:          20,
 		timelineUpdateInterval: 10,
 		timeout:                5.0,
+		following:              make(map[string]string),
 	}
 
 	// use default path if non set
@@ -56,133 +104,69 @@ func getConfig() (config, error) {
 
 	// get twtxt config section, use defaults if not found
 	if twtxt := file.Section("twtxt"); twtxt != nil {
-		if nick := twtxt.Key("nick"); nick != nil {
-			cfg.nick = nick.String()
+		setConfigString(twtxt, "nick", &cfg.nick)
+		setConfigString(twtxt, "twtfile", &cfg.twtfile)
+		setConfigString(twtxt, "twturl", &cfg.twturl)
+
+		if err := setConfigBool(twtxt, "check_following", &cfg.checkFollowing); err != nil {
+			return config{}, err
 		}
 
-		if twtfile := twtxt.Key("twtfile"); twtfile != nil {
-			cfg.twtfile = twtfile.String()
+		if err := setConfigBool(twtxt, "use_pager", &cfg.usePager); err != nil {
+			return config{}, err
 		}
 
-		if twturl := twtxt.Key("twturl"); twturl != nil {
-			cfg.twturl = twturl.String()
+		if err := setConfigBool(twtxt, "use_cache", &cfg.useCache); err != nil {
+			return config{}, err
 		}
 
-		if checkFollowing := twtxt.Key("checkFollowing"); checkFollowing != nil {
-			b, err := checkFollowing.Bool()
-			if err != nil {
-				return config{}, err
-			}
-
-			cfg.checkFollowing = b
+		if err := setConfigBool(twtxt, "porcelain", &cfg.porcelain); err != nil {
+			return config{}, err
 		}
 
-		if usePager := twtxt.Key("usePager"); usePager != nil {
-			b, err := usePager.Bool()
-			if err != nil {
-				return config{}, err
-			}
-
-			cfg.usePager = b
+		if err := setConfigBool(twtxt, "disclose_identity", &cfg.discloseIdentity); err != nil {
+			return config{}, err
 		}
 
-		if useCache := twtxt.Key("useCache"); useCache != nil {
-			b, err := useCache.Bool()
-			if err != nil {
-				return config{}, err
-			}
-
-			cfg.useCache = b
+		if err := setConfigInt(twtxt, "character_limit", &cfg.characterLimit); err != nil {
+			return config{}, err
 		}
 
-		if porcelain := twtxt.Key("porcelain"); porcelain != nil {
-			b, err := porcelain.Bool()
-			if err != nil {
-				return config{}, err
-			}
-
-			cfg.porcelain = b
+		if err := setConfigInt(twtxt, "character_warning", &cfg.characterWarning); err != nil {
+			return config{}, err
 		}
 
-		if discloseIdentity := twtxt.Key("discloseIdentity"); discloseIdentity != nil {
-			b, err := discloseIdentity.Bool()
-			if err != nil {
-				return config{}, err
-			}
-
-			cfg.discloseIdentity = b
+		if err := setConfigInt(twtxt, "limit_timeline", &cfg.limitTimeline); err != nil {
+			return config{}, err
 		}
 
-		if characterLimit := twtxt.Key("characterLimit"); characterLimit != nil {
-			num, err := characterLimit.Int()
-			if err != nil {
-				return config{}, err
-			}
-
-			cfg.characterLimit = num
+		if err := setConfigInt(twtxt, "timeline_update_interval", &cfg.timelineUpdateInterval); err != nil {
+			return config{}, err
 		}
 
-		if characterWarning := twtxt.Key("characterWarning"); characterWarning != nil {
-			num, err := characterWarning.Int()
-			if err != nil {
-				return config{}, err
-			}
-
-			cfg.characterLimit = num
+		if err := setConfigFloat64(twtxt, "timeout", &cfg.timeout); err != nil {
+			return config{}, err
 		}
 
-		if limitTimeline := twtxt.Key("limitTimeline"); limitTimeline != nil {
-			num, err := limitTimeline.Int()
-			if err != nil {
-				return config{}, err
-			}
-
-			cfg.limitTimeline = num
+		var sorting string
+		setConfigString(twtxt, "sorting", &sorting)
+		switch strings.ToLower(sorting) {
+		case "":
+			// skip zero value
+		case "descending":
+			cfg.sortAscending = false
+		case "ascending":
+			cfg.sortAscending = true
+		default:
+			return config{}, fmt.Errorf("Invalid value for 'sorting': %q", sorting)
 		}
 
-		if timelineUpdateInterval := twtxt.Key("timelineUpdateInterval"); timelineUpdateInterval != nil {
-			num, err := timelineUpdateInterval.Int()
-			if err != nil {
-				return config{}, err
-			}
-
-			cfg.timelineUpdateInterval = num
+		if err := setConfigBool(twtxt, "use_abs_time", &cfg.useAbsoluteTime); err != nil {
+			return config{}, err
 		}
 
-		if timeout := twtxt.Key("timeout"); timeout != nil {
-			num, err := timeout.Float64()
-			if err != nil {
-				return config{}, err
-			}
-
-			cfg.timeout = num
-		}
-
-		if sortAscending := twtxt.Key("sortAscending"); sortAscending != nil {
-			b, err := sortAscending.Bool()
-			if err != nil {
-				return config{}, err
-			}
-
-			cfg.sortAscending = b
-		}
-
-		if useAbsoluteTime := twtxt.Key("useAbsoluteTime"); useAbsoluteTime != nil {
-			b, err := useAbsoluteTime.Bool()
-			if err != nil {
-				return config{}, err
-			}
-
-			cfg.useAbsoluteTime = b
-		}
-
-		if preTweetHook := twtxt.Key("preTweetHook"); preTweetHook != nil {
-			cfg.preTweetHook = preTweetHook.String()
-		}
-
-		if postTweetHook := twtxt.Key("postTweetHook"); postTweetHook != nil {
-			cfg.postTweetHook = postTweetHook.String()
-		}
+		setConfigString(twtxt, "pre_tweet_hook", &cfg.preTweetHook)
+		setConfigString(twtxt, "post_tweet_hook", &cfg.postTweetHook)
 	}
 
 	// get following config section, skip if not found
