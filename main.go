@@ -150,75 +150,78 @@
 // The [twtxt] section contains the settings for your "account", what your
 // nickname is, where your twtxt file located, etc...
 //
-//     Option:                   Type:  Default:    Description:
-//     nick                      TEXT               Your nickname, will be
-//                                                  displayed in your timeline.
+// Your nickname, will be displayed in your timeline.
 //
-//     twtfile                   TEXT               Path to your local twtxt
-//                                                  files, it should be user
-//                                                  writeable and preferably
-//                                                  in your user directory.
+//     nick
 //
-//     twturl                    TEXT               URL to your public twtxt
-//                                                  file, this is the same URL
-//                                                  that people will follow you
-//                                                  by.
+// Path to your local twtxt files, it should be writeable and preferably in your
+// user directory.
 //
-//     check_following           BOOL   true        Should twtr try to resolve
-//                                                  URLs when listing your
-//                                                  followings?
+//     twtfile
 //
-//     use_pager                 BOOL   false       Should twtr use a pager
-//                                                  (i.e. less) to display your
-//                                                  timeline?
+// Url to your public twtxt files, this is the same URL that people will follow
+// you by.
 //
-//     use_cache                 BOOL   true        Should twtr cache remote
-//                                                  twtxt files locally?
+//     twturl
 //
-//     porcelain                 BOOL   false       Should twtr format output in
-//                                                  an easy to parse format?
+// Should twtr try to resolve URLs when listing your followings?
 //
-//     disclose_identity         BOOL   false       Should twtr include your
-//                                                  nickname and twturl in the
-//                                                  user-agent.
+//     check_following
 //
-//     character_limit           INT                Shorten incoming tweets with
-//                                                  more characters than this
-//                                                  limit. If set to 0 (zero) or
-//                                                  left unset, this will
-//                                                  default to not shortening
-//                                                  tweets at all.
+// Should twtr use a pages (i.e. less) to display your timeline.
 //
-//     character_warning         INT                Warn when you outgoing
-//                                                  tweets exceed this length.
-//                                                  Set to 0 (zero) or leave
-//                                                  unset to disable the
-//                                                  warning completely.
+//     use_pager
 //
-//     limit_timeline            INT    20          Limit the timeline history,
-//                                                  set to 0 (zero) to always
-//                                                  show the full history.
+// Should twtr cache remote twtxt files locally?
 //
-//     timeline_update_interval  INT    10          Time in seconds until a
-//                                                  cache is considered out of
-//                                                  date.
+//     use_cache
 //
-//     timeout                   FLOAT  5.0         Maximum time a http request
-//                                                  is allows to take.
+// Should twtr format output in an easy to parse format?
 //
-//     sorting                   TEXT   descending  How to sort the timeline,
-//                                                  descending or ascending.
+//     porcelain
 //
-//     use_abs_time              BOOL   false       Use absolute date times in
-//                                                  your timeline, defaults to
-//                                                  relative, i.e. X minutes ago
-//                                                  or Y hours ago.
+// Should twtr include include your nickname and twturl in the user-agent.
 //
-//     pre_tweet_hook            TEXT               Command to be executed
-//                                                  before tweeting.
+//     disclose_identity
 //
-//     post_tweet_hook           TEXT               Command to be executed after
-//                                                  tweeting.
+// Shorten incoming tweets with more characters that this limit. If set to 0
+// (zero), or left unset, this will default to not shortening tweets at all.
+//
+//     character_limit
+//
+// Warn when your outgoing tweets exceed this length. Set to 0 (zero) or leave
+// unset to disable the warning complete.
+//
+//     character_warning
+//
+// Limit the timeline history, set to 0 (zero) to always show the full history.
+//
+//     limit_timeline
+//
+// Time in seconds until a cached file is considered out of date.
+//
+//     timeline_update_interval
+//
+// Maximum time a http request is allowed to take.
+//
+//     timeout
+//
+// How to sort the timeline, descending or ascending.
+//
+//     sorting
+//
+// Use absolute date times in your timeline, defaults to relative, i.e. X
+// minutes ago or Y hours ago.
+//
+//     use_abs_time
+//
+// Command to be executed before tweeting.
+//
+//     pre_tweet_hook
+//
+// Command to be executed after tweeting.
+//
+//     post_tweet_hook
 //
 // The pre/post tweet hooks are executed as system commands, any occurrences of
 // "{foo}" will be replaced with the value of that configuration. For example,
