@@ -32,7 +32,7 @@ type config struct {
 func setConfigString(section *ini.Section, key string, value *string) {
 	if section.HasKey(key) {
 		val := section.Key(key).String()
-		value = &val
+		*value = val
 	}
 }
 
@@ -43,7 +43,7 @@ func setConfigBool(section *ini.Section, key string, value *bool) (err error) {
 			return e
 		}
 
-		value = &val
+		*value = val
 	}
 
 	return
@@ -56,7 +56,7 @@ func setConfigInt(section *ini.Section, key string, value *int) (err error) {
 			return e
 		}
 
-		value = &val
+		*value = val
 	}
 
 	return
@@ -69,7 +69,7 @@ func setConfigFloat64(section *ini.Section, key string, value *float64) (err err
 			return e
 		}
 
-		value = &val
+		*value = val
 	}
 
 	return
