@@ -11,7 +11,14 @@ var (
 	conf    string
 	verbose bool
 	version string = "v0.0.0"
-	usage   string = `Usage: %s COMMAND [OPTIONS] [ARGS...]
+)
+
+var commands map[string]func(...string) error = map[string]func(...string) error{
+	"config": main_config,
+}
+
+func help() {
+	usage := `Usage: %s COMMAND [OPTIONS] [ARGS...]
 
 Decentralized, minimalist microblogging for hackers.
 
@@ -30,10 +37,8 @@ Command:
     view       View a source that you follow.
     config     Update your configuration.
 `
-)
 
-var commands map[string]func(...string) error = map[string]func(...string) error{
-	"config": main_config,
+	fmt.Fprintf(os.Stderr, usage, self)
 }
 
 func main() {
@@ -64,7 +69,7 @@ func main() {
 			fmt.Println(version)
 			os.Exit(0)
 		case "-h", "--help":
-			fmt.Fprintf(os.Stderr, usage, self)
+			help()
 			os.Exit(0)
 		default:
 			panic("unknown command or flag: '" + arg + "'")
