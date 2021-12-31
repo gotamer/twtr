@@ -8,39 +8,15 @@ import (
 	"internal/cmd"
 )
 
+const version = "v0.0.0"
+
 var (
-	self    string = "twtr"
 	conf    string
 	verbose bool
-	version string = "v0.0.0"
 )
 
-func help() {
-	usage := `Usage: %s COMMAND [OPTIONS] [ARGS...]
-
-Decentralized, minimalist microblogging for hackers.
-
-Options:
-    -c, --config PATH  Specify a custom config file location.
-    -v, --version      Enable verbose output for debugging.
-    --version          Show the version and exit.
-    -h, --help         Show this message and exit.
-
-Command:
-    timeline   Retrieve your personal timeline.
-    following  View the sources that you are following.
-    follow     Add a new source to your followings.
-    unfollow   Remove an existing source from your list.
-    tweet      Send out a message into the void.
-    view       View a source that you follow.
-    config     Update your configuration.
-`
-
-	fmt.Fprintf(os.Stderr, usage, self)
-}
-
 func main() {
-	self = path.Base(os.Args[0])
+	self := path.Base(os.Args[0])
 	args := os.Args[1:]
 
 	for i := 0; i < len(args); i++ {
@@ -68,7 +44,7 @@ func main() {
 			fmt.Println(version)
 			os.Exit(0)
 		case "-h", "--help":
-			help()
+			cmd.Help(self)
 			os.Exit(0)
 		default:
 			panic("unknown command or flag: '" + arg + "'")
