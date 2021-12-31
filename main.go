@@ -5,7 +5,7 @@ import (
 	"os"
 	"path"
 
-	"duriny.envs.sh/twtr/internal/cmd"
+	"internal/cmd"
 )
 
 var (
