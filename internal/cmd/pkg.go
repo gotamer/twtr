@@ -38,7 +38,7 @@ func Register(name string, main command) error {
 // command is found with that name, ErrUnknownCommand is returned.
 func Run(name string, args ...string) error {
 	if main, ok := commands[name]; ok && main != nil {
-		return main(args)
+		return main(args...)
 	}
 
 	return ErrUnknownCommand

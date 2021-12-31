@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"os"
 	"path"
+
+	"duriny.envs.sh/twtr/internal/cmd"
 )
 
 var (
@@ -12,10 +14,6 @@ var (
 	verbose bool
 	version string = "v0.0.0"
 )
-
-var commands map[string]func(...string) error = map[string]func(...string) error{
-	"config": main_config,
-}
 
 func help() {
 	usage := `Usage: %s COMMAND [OPTIONS] [ARGS...]
@@ -48,12 +46,13 @@ func main() {
 	for i := 0; i < len(args); i++ {
 		arg := args[i]
 
-		if cmd, ok := commands[arg]; ok {
-			if err := cmd(args[i:]...); err != nil {
-				panic(err)
-			}
-
+		switch err := cmd.Run(arg, args[i:]...); err {
+		case nil:
 			os.Exit(0)
+		case cmd.ErrUnknownCommand:
+			break
+		default:
+			panic(err)
 		}
 
 		switch arg {
