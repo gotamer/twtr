@@ -2,7 +2,18 @@
 // the twtr tool.
 package cmd
 
-import "errors"
+import (
+	"errors"
+
+	"internal/cmd/config"
+	"internal/cmd/follow"
+	"internal/cmd/following"
+	"internal/cmd/quickstart"
+	"internal/cmd/timeline"
+	"internal/cmd/tweet"
+	"internal/cmd/unfollow"
+	"internal/cmd/view"
+)
 
 // command represents a main function, i.e. a command, that can be called via
 // the twtr tool.
@@ -10,29 +21,20 @@ type command func(...string) error
 
 // commands are the collection of registered commands, these are modified by the
 // Register function.
-var commands map[string]command = make(map[string]command)
-
-var (
-	// ErrDuplicateCommand is returned when a command cannot be registered
-	// because a command with that name has already been registered.
-	ErrDuplicateCommand = errors.New("command already registered")
-
-	// ErrUnknownCommand is returned when no command has been registered under
-	// the requested name.
-	ErrUnknownCommand = errors.New("command not found")
-)
-
-// Register registers a named command to the commands list, returns
-// ErrDuplicateCommand if the given name already exists.
-func Register(name string, main command) error {
-	if _, ok := commands[name]; !ok {
-		commands[name] = main
-
-		return nil
-	}
-
-	return ErrDuplicateCommand
+var commands map[string]command = map[string]command{
+	"config":     config.Main,
+	"follow":     follow.Main,
+	"following":  following.Main,
+	"quickstart": quickstart.Main,
+	"timeline":   timeline.Main,
+	"tweet":      tweet.Main,
+	"unfollow":   unfollow.Main,
+	"view":       view.Main,
 }
+
+// ErrUnknownCommand is returned when no command has been registered under
+// the requested name.
+var ErrUnknownCommand = errors.New("command not found")
 
 // Run looks for a registered command with the given name and runs it, if no
 // command is found with that name, ErrUnknownCommand is returned.
