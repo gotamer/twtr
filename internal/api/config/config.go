@@ -75,9 +75,9 @@ func setConfigFloat64(section *ini.Section, key string, value *float64) (err err
 	return
 }
 
-func NewConfig(path string) (config, error) {
+func NewConfig(path string) (Config, error) {
 	// setup default values
-	cfg := config{
+	cfg := Config{
 		CheckFollowing:         true,
 		UseCache:               true,
 		LimitTimeline:          20,
@@ -90,16 +90,16 @@ func NewConfig(path string) (config, error) {
 	if path == "" {
 		dir, err := os.UserConfigDir()
 		if err != nil {
-			return config{}, err
+			return Config{}, err
 		}
 
-		conf = dir + "/twtxt/config"
+		path = dir + "/twtxt/config"
 	}
 
 	// load configuration file
 	file, err := ini.Load(path)
 	if err != nil {
-		return config{}, err
+		return Config{}, err
 	}
 
 	// get twtxt config section, use defaults if not found
@@ -109,43 +109,43 @@ func NewConfig(path string) (config, error) {
 		setConfigString(twtxt, "twturl", &cfg.Twturl)
 
 		if err := setConfigBool(twtxt, "check_following", &cfg.CheckFollowing); err != nil {
-			return config{}, err
+			return Config{}, err
 		}
 
 		if err := setConfigBool(twtxt, "use_pager", &cfg.UsePager); err != nil {
-			return config{}, err
+			return Config{}, err
 		}
 
 		if err := setConfigBool(twtxt, "use_cache", &cfg.UseCache); err != nil {
-			return config{}, err
+			return Config{}, err
 		}
 
 		if err := setConfigBool(twtxt, "porcelain", &cfg.Porcelain); err != nil {
-			return config{}, err
+			return Config{}, err
 		}
 
 		if err := setConfigBool(twtxt, "disclose_identity", &cfg.DiscloseIdentity); err != nil {
-			return config{}, err
+			return Config{}, err
 		}
 
 		if err := setConfigInt(twtxt, "character_limit", &cfg.CharacterLimit); err != nil {
-			return config{}, err
+			return Config{}, err
 		}
 
 		if err := setConfigInt(twtxt, "character_warning", &cfg.CharacterWarning); err != nil {
-			return config{}, err
+			return Config{}, err
 		}
 
 		if err := setConfigInt(twtxt, "limit_timeline", &cfg.LimitTimeline); err != nil {
-			return config{}, err
+			return Config{}, err
 		}
 
 		if err := setConfigInt(twtxt, "timeline_update_interval", &cfg.TimelineUpdateInterval); err != nil {
-			return config{}, err
+			return Config{}, err
 		}
 
 		if err := setConfigFloat64(twtxt, "timeout", &cfg.Timeout); err != nil {
-			return config{}, err
+			return Config{}, err
 		}
 
 		var sorting string
@@ -158,11 +158,11 @@ func NewConfig(path string) (config, error) {
 		case "ascending":
 			cfg.SortAscending = true
 		default:
-			return config{}, fmt.Errorf("Invalid value for 'sorting': %q", sorting)
+			return Config{}, fmt.Errorf("Invalid value for 'sorting': %q", sorting)
 		}
 
 		if err := setConfigBool(twtxt, "use_abs_time", &cfg.UseAbsoluteTime); err != nil {
-			return config{}, err
+			return Config{}, err
 		}
 
 		setConfigString(twtxt, "pre_tweet_hook", &cfg.PreTweetHook)
