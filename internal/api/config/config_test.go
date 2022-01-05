@@ -2,6 +2,7 @@ package config_test
 
 import (
 	"fmt"
+	"strings"
 	"testing"
 
 	"internal/api/config"
@@ -121,7 +122,7 @@ func TestNewConfig(t *testing.T) {
 		{ // valid INI file but wrong types for values (parse error)
 			file: "_test/example8.ini",
 			expectedError: func(err error) bool {
-				return false
+				return strings.Contains(err.Error(), "invalid syntax")
 			},
 		},
 		{ // valid INI syntax but duplicate keys (parse error)
