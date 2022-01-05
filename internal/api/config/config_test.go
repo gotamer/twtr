@@ -125,12 +125,6 @@ func TestNewConfig(t *testing.T) {
 				return strings.Contains(err.Error(), "invalid syntax")
 			},
 		},
-		{ // valid INI syntax but duplicate keys (parse error)
-			file: "_test/example9.ini",
-			expectedError: func(err error) bool {
-				return false
-			},
-		},
 	}
 
 	for _, test := range tests {
