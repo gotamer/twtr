@@ -19,3 +19,7 @@ func (c command) Desc() string {
 }
 
 var Command command = command{}
+
+func follow(nick, url string) error {
+	return errors.New("unimplemented")
+}

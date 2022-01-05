@@ -19,3 +19,19 @@ func (c command) Desc() string {
 }
 
 var Command command = command{}
+
+func get(key string) error {
+	return errors.New("unimplemented")
+}
+
+func set(key, value string) error {
+	return errors.New("unimplemented")
+}
+
+func remove(key string) error {
+	return errors.New("unimplemented")
+}
+
+func edit() error {
+	return errors.New("unimplemented")
+}

@@ -19,3 +19,7 @@ func (c command) Desc() string {
 }
 
 var Command command = command{}
+
+func following() error {
+	return errors.New("unimplemented")
+}
