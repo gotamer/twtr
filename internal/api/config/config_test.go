@@ -5,16 +5,19 @@ import (
 	"testing"
 
 	"internal/api/config"
+
+	"gopkg.in/ini.v1"
 )
 
 func TestNewConfig(t *testing.T) {
 	tests := []struct {
-		file string
-		want config.Config
+		file          string
+		want          config.Config
+		expectedError func(error) bool
 	}{
 		{ // All fields with example value
-			"_test/example1.ini",
-			config.Config{
+			file: "_test/example1.ini",
+			want: config.Config{
 				Nick:                   "buckket",
 				Twtfile:                "~/twtxt.txt",
 				Twturl:                 "http://example.org/twtxt.txt",
@@ -38,8 +41,8 @@ func TestNewConfig(t *testing.T) {
 			},
 		},
 		{ // No following section
-			"_test/example2.ini",
-			config.Config{
+			file: "_test/example2.ini",
+			want: config.Config{
 				Nick:                   "buckket",
 				Twtfile:                "~/twtxt.txt",
 				Twturl:                 "http://example.org/twtxt.txt",
@@ -60,8 +63,8 @@ func TestNewConfig(t *testing.T) {
 			},
 		},
 		{ // No twtxt section (default values) + following section
-			"_test/example3.ini",
-			config.Config{
+			file: "_test/example3.ini",
+			want: config.Config{
 				CheckFollowing:         true,
 				UseCache:               true,
 				LimitTimeline:          20,
@@ -74,8 +77,8 @@ func TestNewConfig(t *testing.T) {
 			},
 		},
 		{ // empty file (default values)
-			"_test/example4.ini",
-			config.Config{
+			file: "_test/example4.ini",
+			want: config.Config{
 				CheckFollowing:         true,
 				UseCache:               true,
 				LimitTimeline:          20,
@@ -85,8 +88,8 @@ func TestNewConfig(t *testing.T) {
 			},
 		},
 		{ // valid INI file but with no relevant sections (default values)
-			"_test/example5.ini",
-			config.Config{
+			file: "_test/example5.ini",
+			want: config.Config{
 				CheckFollowing:         true,
 				UseCache:               true,
 				LimitTimeline:          20,
@@ -96,8 +99,8 @@ func TestNewConfig(t *testing.T) {
 			},
 		},
 		{ // valid INI file with relevant sections, but no real values (default values)
-			"_test/example6.ini",
-			config.Config{
+			file: "_test/example6.ini",
+			want: config.Config{
 				CheckFollowing:         true,
 				UseCache:               true,
 				LimitTimeline:          20,
@@ -109,79 +112,22 @@ func TestNewConfig(t *testing.T) {
 				},
 			},
 		},
-		{
-			"_test/example7.ini",
-			config.Config{
-				Nick:                   "buckket",
-				Twtfile:                "~/twtxt.txt",
-				Twturl:                 "http://example.org/twtxt.txt",
-				CheckFollowing:         true,
-				UsePager:               false,
-				UseCache:               true,
-				Porcelain:              false,
-				DiscloseIdentity:       false,
-				CharacterLimit:         140,
-				CharacterWarning:       140,
-				LimitTimeline:          20,
-				TimelineUpdateInterval: 10,
-				Timeout:                5.0,
-				SortAscending:          false,
-				PreTweetHook:           "scp buckket@example.org:~/public_html/twtxt.txt {twtfile}",
-				PostTweetHook:          "scp {twtfile} buckket@example.org:~/public_html/twtxt.txt",
-				Following: map[string]string{
-					"alice": "https://example.org/alice.txt",
-					"bob":   "https://example.org/bob.txt",
-				},
+		{ // invalid INI file (parse error)
+			file: "_test/example7.ini",
+			expectedError: func(err error) bool {
+				return ini.IsErrDelimiterNotFound(err)
 			},
 		},
-		{
-			"_test/example8.ini",
-			config.Config{
-				Nick:                   "buckket",
-				Twtfile:                "~/twtxt.txt",
-				Twturl:                 "http://example.org/twtxt.txt",
-				CheckFollowing:         true,
-				UsePager:               false,
-				UseCache:               true,
-				Porcelain:              false,
-				DiscloseIdentity:       false,
-				CharacterLimit:         140,
-				CharacterWarning:       140,
-				LimitTimeline:          20,
-				TimelineUpdateInterval: 10,
-				Timeout:                5.0,
-				SortAscending:          false,
-				PreTweetHook:           "scp buckket@example.org:~/public_html/twtxt.txt {twtfile}",
-				PostTweetHook:          "scp {twtfile} buckket@example.org:~/public_html/twtxt.txt",
-				Following: map[string]string{
-					"alice": "https://example.org/alice.txt",
-					"bob":   "https://example.org/bob.txt",
-				},
+		{ // valid INI file but wrong types for values (parse error)
+			file: "_test/example8.ini",
+			expectedError: func(err error) bool {
+				return false
 			},
 		},
-		{
-			"_test/example9.ini",
-			config.Config{
-				Nick:                   "buckket",
-				Twtfile:                "~/twtxt.txt",
-				Twturl:                 "http://example.org/twtxt.txt",
-				CheckFollowing:         true,
-				UsePager:               false,
-				UseCache:               true,
-				Porcelain:              false,
-				DiscloseIdentity:       false,
-				CharacterLimit:         140,
-				CharacterWarning:       140,
-				LimitTimeline:          20,
-				TimelineUpdateInterval: 10,
-				Timeout:                5.0,
-				SortAscending:          false,
-				PreTweetHook:           "scp buckket@example.org:~/public_html/twtxt.txt {twtfile}",
-				PostTweetHook:          "scp {twtfile} buckket@example.org:~/public_html/twtxt.txt",
-				Following: map[string]string{
-					"alice": "https://example.org/alice.txt",
-					"bob":   "https://example.org/bob.txt",
-				},
+		{ // valid INI syntax but duplicate keys (parse error)
+			file: "_test/example9.ini",
+			expectedError: func(err error) bool {
+				return false
 			},
 		},
 	}
@@ -194,7 +140,17 @@ func TestNewConfig(t *testing.T) {
 		t.Run(name, func(t *testing.T) {
 			have, err := config.NewConfig(test.file)
 			if err != nil {
-				t.Fatalf("could not open file '%s': %q", test.file, err)
+				if test.expectedError != nil {
+					if test.expectedError(err) {
+						t.Logf("expected error: %q", err)
+					} else {
+						t.Fatalf("unexpected error: %q", err)
+					}
+				} else {
+					t.Fatalf("could not open file '%s': %q", test.file, err)
+				}
+			} else if test.expectedError != nil {
+				t.Fatal("an error was expected but none was received")
 			}
 
 			if have.Nick != want.Nick {
