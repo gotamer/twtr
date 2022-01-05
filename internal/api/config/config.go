@@ -8,25 +8,25 @@ import (
 	"gopkg.in/ini.v1"
 )
 
-type config struct {
-	nick                   string
-	twtfile                string
-	twturl                 string
-	checkFollowing         bool
-	usePager               bool
-	useCache               bool
-	porcelain              bool
-	discloseIdentity       bool
-	characterLimit         int
-	characterWarning       int
-	limitTimeline          int
-	timelineUpdateInterval int
-	timeout                float64
-	sortAscending          bool
-	useAbsoluteTime        bool
-	preTweetHook           string
-	postTweetHook          string
-	following              map[string]string
+type Config struct {
+	Nick                   string
+	Twtfile                string
+	Twturl                 string
+	CheckFollowing         bool
+	UsePager               bool
+	UseCache               bool
+	Porcelain              bool
+	DiscloseIdentity       bool
+	CharacterLimit         int
+	CharacterWarning       int
+	LimitTimeline          int
+	TimelineUpdateInterval int
+	Timeout                float64
+	SortAscending          bool
+	UseAbsoluteTime        bool
+	PreTweetHook           string
+	PostTweetHook          string
+	Following              map[string]string
 }
 
 func setConfigString(section *ini.Section, key string, value *string) {
@@ -75,19 +75,19 @@ func setConfigFloat64(section *ini.Section, key string, value *float64) (err err
 	return
 }
 
-func getConfig() (config, error) {
+func NewConfig(path string) (config, error) {
 	// setup default values
 	cfg := config{
-		checkFollowing:         true,
-		useCache:               true,
-		limitTimeline:          20,
-		timelineUpdateInterval: 10,
-		timeout:                5.0,
-		following:              make(map[string]string),
+		CheckFollowing:         true,
+		UseCache:               true,
+		LimitTimeline:          20,
+		TimelineUpdateInterval: 10,
+		Timeout:                5.0,
+		Following:              make(map[string]string),
 	}
 
 	// use default path if non set
-	if conf == "" {
+	if path == "" {
 		dir, err := os.UserConfigDir()
 		if err != nil {
 			return config{}, err
@@ -97,54 +97,54 @@ func getConfig() (config, error) {
 	}
 
 	// load configuration file
-	file, err := ini.Load(conf)
+	file, err := ini.Load(path)
 	if err != nil {
 		return config{}, err
 	}
 
 	// get twtxt config section, use defaults if not found
 	if twtxt := file.Section("twtxt"); twtxt != nil {
-		setConfigString(twtxt, "nick", &cfg.nick)
-		setConfigString(twtxt, "twtfile", &cfg.twtfile)
-		setConfigString(twtxt, "twturl", &cfg.twturl)
+		setConfigString(twtxt, "nick", &cfg.Nick)
+		setConfigString(twtxt, "twtfile", &cfg.Twtfile)
+		setConfigString(twtxt, "twturl", &cfg.Twturl)
 
-		if err := setConfigBool(twtxt, "check_following", &cfg.checkFollowing); err != nil {
+		if err := setConfigBool(twtxt, "check_following", &cfg.CheckFollowing); err != nil {
 			return config{}, err
 		}
 
-		if err := setConfigBool(twtxt, "use_pager", &cfg.usePager); err != nil {
+		if err := setConfigBool(twtxt, "use_pager", &cfg.UsePager); err != nil {
 			return config{}, err
 		}
 
-		if err := setConfigBool(twtxt, "use_cache", &cfg.useCache); err != nil {
+		if err := setConfigBool(twtxt, "use_cache", &cfg.UseCache); err != nil {
 			return config{}, err
 		}
 
-		if err := setConfigBool(twtxt, "porcelain", &cfg.porcelain); err != nil {
+		if err := setConfigBool(twtxt, "porcelain", &cfg.Porcelain); err != nil {
 			return config{}, err
 		}
 
-		if err := setConfigBool(twtxt, "disclose_identity", &cfg.discloseIdentity); err != nil {
+		if err := setConfigBool(twtxt, "disclose_identity", &cfg.DiscloseIdentity); err != nil {
 			return config{}, err
 		}
 
-		if err := setConfigInt(twtxt, "character_limit", &cfg.characterLimit); err != nil {
+		if err := setConfigInt(twtxt, "character_limit", &cfg.CharacterLimit); err != nil {
 			return config{}, err
 		}
 
-		if err := setConfigInt(twtxt, "character_warning", &cfg.characterWarning); err != nil {
+		if err := setConfigInt(twtxt, "character_warning", &cfg.CharacterWarning); err != nil {
 			return config{}, err
 		}
 
-		if err := setConfigInt(twtxt, "limit_timeline", &cfg.limitTimeline); err != nil {
+		if err := setConfigInt(twtxt, "limit_timeline", &cfg.LimitTimeline); err != nil {
 			return config{}, err
 		}
 
-		if err := setConfigInt(twtxt, "timeline_update_interval", &cfg.timelineUpdateInterval); err != nil {
+		if err := setConfigInt(twtxt, "timeline_update_interval", &cfg.TimelineUpdateInterval); err != nil {
 			return config{}, err
 		}
 
-		if err := setConfigFloat64(twtxt, "timeout", &cfg.timeout); err != nil {
+		if err := setConfigFloat64(twtxt, "timeout", &cfg.Timeout); err != nil {
 			return config{}, err
 		}
 
@@ -154,39 +154,28 @@ func getConfig() (config, error) {
 		case "":
 			// skip zero value
 		case "descending":
-			cfg.sortAscending = false
+			cfg.SortAscending = false
 		case "ascending":
-			cfg.sortAscending = true
+			cfg.SortAscending = true
 		default:
 			return config{}, fmt.Errorf("Invalid value for 'sorting': %q", sorting)
 		}
 
-		if err := setConfigBool(twtxt, "use_abs_time", &cfg.useAbsoluteTime); err != nil {
+		if err := setConfigBool(twtxt, "use_abs_time", &cfg.UseAbsoluteTime); err != nil {
 			return config{}, err
 		}
 
-		setConfigString(twtxt, "pre_tweet_hook", &cfg.preTweetHook)
-		setConfigString(twtxt, "post_tweet_hook", &cfg.postTweetHook)
+		setConfigString(twtxt, "pre_tweet_hook", &cfg.PreTweetHook)
+		setConfigString(twtxt, "post_tweet_hook", &cfg.PostTweetHook)
 	}
 
 	// get following config section, skip if not found
 	if following := file.Section("following"); following != nil {
 		for _, key := range following.Keys() {
-			cfg.following[key.Name()] = key.String()
+			cfg.Following[key.Name()] = key.String()
 		}
 	}
 
 	// return config
 	return cfg, nil
-}
-
-func main_config(args ...string) error {
-	cfg, err := getConfig()
-	if err != nil {
-		return err
-	}
-
-	fmt.Printf("%#v\n", cfg)
-
-	return nil
 }
