@@ -12,7 +12,7 @@ func TestNewConfig(t *testing.T) {
 		file string
 		want config.Config
 	}{
-		{
+		{ // All fields with example value
 			"_test/example1.ini",
 			config.Config{
 				Nick:                   "buckket",
@@ -37,7 +37,7 @@ func TestNewConfig(t *testing.T) {
 				},
 			},
 		},
-		{
+		{ // No following section
 			"_test/example2.ini",
 			config.Config{
 				Nick:                   "buckket",
@@ -59,103 +59,53 @@ func TestNewConfig(t *testing.T) {
 				Following:              make(map[string]string),
 			},
 		},
-		{
+		{ // No twtxt section (default values) + following section
 			"_test/example3.ini",
 			config.Config{
-				Nick:                   "buckket",
-				Twtfile:                "~/twtxt.txt",
-				Twturl:                 "http://example.org/twtxt.txt",
 				CheckFollowing:         true,
-				UsePager:               false,
 				UseCache:               true,
-				Porcelain:              false,
-				DiscloseIdentity:       false,
-				CharacterLimit:         140,
-				CharacterWarning:       140,
 				LimitTimeline:          20,
 				TimelineUpdateInterval: 10,
 				Timeout:                5.0,
-				SortAscending:          false,
-				PreTweetHook:           "scp buckket@example.org:~/public_html/twtxt.txt {twtfile}",
-				PostTweetHook:          "scp {twtfile} buckket@example.org:~/public_html/twtxt.txt",
 				Following: map[string]string{
 					"alice": "https://example.org/alice.txt",
 					"bob":   "https://example.org/bob.txt",
 				},
 			},
 		},
-		{
+		{ // empty file (default values)
 			"_test/example4.ini",
 			config.Config{
-				Nick:                   "buckket",
-				Twtfile:                "~/twtxt.txt",
-				Twturl:                 "http://example.org/twtxt.txt",
 				CheckFollowing:         true,
-				UsePager:               false,
 				UseCache:               true,
-				Porcelain:              false,
-				DiscloseIdentity:       false,
-				CharacterLimit:         140,
-				CharacterWarning:       140,
 				LimitTimeline:          20,
 				TimelineUpdateInterval: 10,
 				Timeout:                5.0,
-				SortAscending:          false,
-				PreTweetHook:           "scp buckket@example.org:~/public_html/twtxt.txt {twtfile}",
-				PostTweetHook:          "scp {twtfile} buckket@example.org:~/public_html/twtxt.txt",
-				Following: map[string]string{
-					"alice": "https://example.org/alice.txt",
-					"bob":   "https://example.org/bob.txt",
-				},
+				Following:              make(map[string]string),
 			},
 		},
-		{
+		{ // valid INI file but with no relevant sections (default values)
 			"_test/example5.ini",
 			config.Config{
-				Nick:                   "buckket",
-				Twtfile:                "~/twtxt.txt",
-				Twturl:                 "http://example.org/twtxt.txt",
 				CheckFollowing:         true,
-				UsePager:               false,
 				UseCache:               true,
-				Porcelain:              false,
-				DiscloseIdentity:       false,
-				CharacterLimit:         140,
-				CharacterWarning:       140,
 				LimitTimeline:          20,
 				TimelineUpdateInterval: 10,
 				Timeout:                5.0,
-				SortAscending:          false,
-				PreTweetHook:           "scp buckket@example.org:~/public_html/twtxt.txt {twtfile}",
-				PostTweetHook:          "scp {twtfile} buckket@example.org:~/public_html/twtxt.txt",
-				Following: map[string]string{
-					"alice": "https://example.org/alice.txt",
-					"bob":   "https://example.org/bob.txt",
-				},
+				Following:              make(map[string]string),
 			},
 		},
-		{
+		{ // valid INI file with relevant sections, but no real values (default values)
 			"_test/example6.ini",
 			config.Config{
-				Nick:                   "buckket",
-				Twtfile:                "~/twtxt.txt",
-				Twturl:                 "http://example.org/twtxt.txt",
 				CheckFollowing:         true,
-				UsePager:               false,
 				UseCache:               true,
-				Porcelain:              false,
-				DiscloseIdentity:       false,
-				CharacterLimit:         140,
-				CharacterWarning:       140,
 				LimitTimeline:          20,
 				TimelineUpdateInterval: 10,
 				Timeout:                5.0,
-				SortAscending:          false,
-				PreTweetHook:           "scp buckket@example.org:~/public_html/twtxt.txt {twtfile}",
-				PostTweetHook:          "scp {twtfile} buckket@example.org:~/public_html/twtxt.txt",
 				Following: map[string]string{
-					"alice": "https://example.org/alice.txt",
-					"bob":   "https://example.org/bob.txt",
+					"meaningOfLife":        "42",
+					"notActuallyANickname": "Not actually a url",
 				},
 			},
 		},
