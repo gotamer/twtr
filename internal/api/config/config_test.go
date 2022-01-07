@@ -2,6 +2,7 @@ package config_test
 
 import (
 	"fmt"
+	"os"
 	"strings"
 	"testing"
 
@@ -133,16 +134,19 @@ func TestNewConfig(t *testing.T) {
 		want := test.want
 
 		t.Run(name, func(t *testing.T) {
-			have, err := config.NewConfig(test.file)
+			file, err := os.Open(test.file)
+			defer file.Close()
 			if err != nil {
-				if test.expectedError != nil {
-					if test.expectedError(err) {
-						t.Logf("expected error: %q", err)
-					} else {
-						t.Fatalf("unexpected error: %q", err)
-					}
+				t.Fatalf("could not open file '%s': %q", test.file, err)
+			}
+
+			have, err := config.New(file)
+			if err != nil {
+				if test.expectedError != nil && test.expectedError(err) {
+					t.Logf("expected error: %q", err)
+					t.Skip()
 				} else {
-					t.Fatalf("could not open file '%s': %q", test.file, err)
+					t.Fatalf("unexpected error: %q", err)
 				}
 			} else if test.expectedError != nil {
 				t.Fatal("an error was expected but none was received")
