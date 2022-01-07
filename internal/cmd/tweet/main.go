@@ -1,25 +1,11 @@
 package tweet
 
-import (
-	"errors"
-)
+import "errors"
 
-type command struct{}
-
-func (c command) Main(args ...string) error {
+func tweet(status string) error {
 	return errors.New("unimplemented")
 }
 
-func (c command) Help() string {
-	return ""
-}
-
-func (c command) Desc() string {
-	return ""
-}
-
-var Command command = command{}
-
-func tweet(status string) error {
+func Main(args ...string) error {
 	return errors.New("unimplemented")
 }
