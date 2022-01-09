@@ -3,6 +3,7 @@ package cmd
 import (
 	"errors"
 	"fmt"
+	"io"
 	"os"
 
 	"internal/cmd/config"
@@ -16,6 +17,15 @@ import (
 )
 
 const version = "v0.0.0"
+
+var (
+	Self    string = "twtxt" // TODO: get from exec path
+	Config  string = "~/.config/twtxt/config"
+	Verbose bool
+	Stdin   io.Reader = os.Stdin
+	Stdout  io.Writer = os.Stdout
+	Stderr  io.Writer = os.Stderr
+)
 
 type command struct {
 	main func(args ...string) error
@@ -58,7 +68,7 @@ var commands map[string]command = map[string]command{
 	},
 }
 
-func help(self string) {
+func help() {
 	usage := `Usage: %s COMMAND [OPTIONS] [ARGS...]
 
 Decentralized, minimalist microblogging for hackers.
@@ -79,14 +89,8 @@ Commands:
     config     Update your configuration.
 `
 
-	fmt.Fprintf(os.Stderr, usage, self)
+	fmt.Fprintf(Stderr, usage, Self)
 }
-
-var (
-	self    string = "twtxt" // TODO: get from exec path
-	conf    string
-	verbose bool
-)
 
 func Main(args ...string) error {
 	for i := 0; i < len(args); i++ {
@@ -104,14 +108,14 @@ func Main(args ...string) error {
 				return errors.New("config path not given")
 			}
 
-			conf = args[i]
+			Config = args[i]
 		case "-v", "--verbose":
-			verbose = true
+			Verbose = true
 		case "--version":
-			fmt.Println(version)
+			fmt.Fprintln(Stdout, version)
 			return nil
 		case "-h", "--help":
-			help(self)
+			help()
 			return nil
 		default:
 			return errors.New("unknown command or flag: '" + arg + "'")
