@@ -18,8 +18,8 @@ func TestNewConfig(t *testing.T) {
 		want          config.Config
 		expectedError func(error) bool
 	}{
-		{ // All fields with example value
-			name: "_test/example1.ini",
+		{
+			name: "AllFieldsSetWithExampleValue",
 			source: strings.NewReader(`
 [twtxt]
 nick = buckket
@@ -66,8 +66,8 @@ alice = https://example.org/alice.txt
 				},
 			},
 		},
-		{ // No following section
-			name: "_test/example2.ini",
+		{
+			name: "NoFollowingSection",
 			source: strings.NewReader(`
 [twtxt]
 nick = buckket
@@ -107,8 +107,8 @@ post_tweet_hook = "scp {twtfile} buckket@example.org:~/public_html/twtxt.txt"
 				Following:              make(map[string]string),
 			},
 		},
-		{ // No twtxt section (default values) + following section
-			name: "_test/example3.ini",
+		{
+			name: "NoTwtxtSection",
 			source: strings.NewReader(`
 [following]
 bob = https://example.org/bob.txt
@@ -126,8 +126,8 @@ alice = https://example.org/alice.txt
 				},
 			},
 		},
-		{ // empty file (default values)
-			name:   "_test/example4.ini",
+		{
+			name:   "EmptyFile",
 			source: strings.NewReader(""),
 			want: config.Config{
 				CheckFollowing:         true,
@@ -138,8 +138,8 @@ alice = https://example.org/alice.txt
 				Following:              make(map[string]string),
 			},
 		},
-		{ // valid INI file but with no relevant sections (default values)
-			name: "_test/example5.ini",
+		{
+			name: "ValidIniFileWithUnrelatedSections",
 			source: strings.NewReader(`
 [Section A]
 magic = on
@@ -157,8 +157,8 @@ samuraiWarrior = "foolish"
 				Following:              make(map[string]string),
 			},
 		},
-		{ // valid INI file with relevant sections, but no real values (default values)
-			name: "_test/example6.ini",
+		{
+			name: "ValidFileWithCorrectSectionsButUnrelatedSections",
 			source: strings.NewReader(`
 [twtxt]
 magic = enable
@@ -180,8 +180,8 @@ meaningOfLife = 42
 				},
 			},
 		},
-		{ // invalid INI file (parse error)
-			name: "_test/example7.ini",
+		{
+			name: "InvalidIniFile",
 			source: strings.NewReader(`
 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean elementum nisi
 ac nisi vulputate, efficitur varius risus ultricies. Sed fringilla hendrerit
@@ -229,8 +229,8 @@ dolor neque, commodo sed luctus ac, lacinia non mi.
 				return ini.IsErrDelimiterNotFound(err)
 			},
 		},
-		{ // valid INI file but wrong types for values (parse error)
-			name: "_test/example8.ini",
+		{
+			name: "ValidIniFileWithWrongTypes",
 			source: strings.NewReader(`
 [twtxt]
 nick = buckket
@@ -269,7 +269,8 @@ alice = https://example.org/alice.txt
 			have, err := config.New(test.source)
 			if err != nil {
 				if test.expectedError != nil && test.expectedError(err) {
-					t.Skipf("expected error: %q", err)
+					// t.Logf("expected error: %q", err)
+					return
 				} else {
 					t.Fatalf("unexpected error: %q", err)
 				}
