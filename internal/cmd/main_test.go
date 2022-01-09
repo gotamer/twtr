@@ -249,11 +249,7 @@ func TestMain(t *testing.T) {
 			var stdout bytes.Buffer
 			var stderr bytes.Buffer
 
-			cmd.Stdin = strings.NewReader(test.stdin)
-			cmd.Stdout = &stdout
-			cmd.Stderr = &stderr
-
-			if have, want := cmd.Main(test.args...), test.err; have != want {
+			if have, want := cmd.Main(strings.NewReader(test.stdin), &stdout, &stderr, "twtr", test.args...), test.err; have != want {
 				t.Errorf("err = %q, want %q", have, want)
 			}
 

@@ -4,7 +4,6 @@ import (
 	"errors"
 	"fmt"
 	"io"
-	"os"
 
 	"internal/cmd/config"
 	"internal/cmd/follow"
@@ -19,12 +18,8 @@ import (
 const version = "v0.0.0"
 
 var (
-	Self    string = "twtxt" // TODO: get from exec path
-	Config  string = "~/.config/twtxt/config"
-	Verbose bool
-	Stdin   io.Reader = os.Stdin
-	Stdout  io.Writer = os.Stdout
-	Stderr  io.Writer = os.Stderr
+	conf    string = "~/.config/twtxt/config"
+	verbose bool
 )
 
 type command struct {
@@ -68,7 +63,7 @@ var commands map[string]command = map[string]command{
 	},
 }
 
-func help() {
+func help(self string) string {
 	usage := `Usage: %s COMMAND [OPTIONS] [ARGS...]
 
 Decentralized, minimalist microblogging for hackers.
@@ -89,12 +84,24 @@ Commands:
     config     Update your configuration.
 `
 
-	fmt.Fprintf(Stderr, usage, Self)
+	return fmt.Sprintf(usage, self)
 }
 
-func Main(args ...string) error {
+func Main(stdin io.Reader, stdout io.Writer, stderr io.Writer, self string, args ...string) error {
+	if stdin == nil {
+		return errors.New("no standard input")
+	}
+
+	if stdout == nil {
+		return errors.New("no standard output")
+	}
+
+	if stderr == nil {
+		return errors.New("no standard error")
+	}
+
 	if len(args) < 1 {
-		help()
+		help(self)
 	}
 
 	for i := 0; i < len(args); i++ {
@@ -112,14 +119,14 @@ func Main(args ...string) error {
 				return errors.New("config path not given")
 			}
 
-			Config = args[i]
+			conf = args[i]
 		case "-v", "--verbose":
-			Verbose = true
+			verbose = true
 		case "--version":
-			fmt.Fprintln(Stdout, version)
+			fmt.Fprintln(stdout, version)
 			return nil
 		case "-h", "--help":
-			help()
+			fmt.Fprintln(stderr, help(self))
 			return nil
 		default:
 			return errors.New("unknown command or flag: '" + arg + "'")
