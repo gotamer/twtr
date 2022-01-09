@@ -4,16 +4,24 @@ import (
 	"errors"
 	"fmt"
 	"io"
+	"os"
 )
 
 const version = "v0.0.0"
+
+type Context struct {
+	Self   string
+	Stdin  io.Reader
+	Stdout io.Writer
+	Stderr io.Writer
+}
 
 var (
 	conf    string = "~/.config/twtxt/config"
 	verbose bool
 )
 
-func help(self string) string {
+func help(ctx *Context) string {
 	usage := `Usage: %s COMMAND [OPTIONS] [ARGS...]
 
 Decentralized, minimalist microblogging for hackers.
@@ -35,24 +43,28 @@ Commands:
 	config      Update your configuration.
 `
 
-	return fmt.Sprintf(usage, self)
+	return fmt.Sprintf(usage, ctx.Self)
 }
 
-func Main(stdin io.Reader, stdout io.Writer, stderr io.Writer, self string, args ...string) error {
-	if stdin == nil {
-		return errors.New("no standard input")
+func Main(ctx *Context, args ...string) error {
+	if ctx.Self == "" {
+		ctx.Self = "twtr"
 	}
 
-	if stdout == nil {
-		return errors.New("no standard output")
+	if ctx.Stdin == nil {
+		ctx.Stdin = os.Stdin
 	}
 
-	if stderr == nil {
-		return errors.New("no standard error")
+	if ctx.Stdout == nil {
+		ctx.Stdout = os.Stdout
+	}
+
+	if ctx.Stderr == nil {
+		ctx.Stderr = os.Stderr
 	}
 
 	if len(args) < 1 {
-		help(self)
+		help(ctx)
 	}
 
 	for i := 0; i < len(args); i++ {
@@ -68,10 +80,10 @@ func Main(stdin io.Reader, stdout io.Writer, stderr io.Writer, self string, args
 		case "-v", "--verbose":
 			verbose = true
 		case "--version":
-			fmt.Fprintln(stdout, version)
+			fmt.Fprintln(ctx.Stdout, version)
 			return nil
 		case "-h", "--help":
-			fmt.Fprint(stderr, help(self))
+			fmt.Fprint(ctx.Stderr, help(ctx))
 			return nil
 		default:
 			return errors.New("unknown command or flag: '" + arg + "'")

@@ -9,10 +9,14 @@ import (
 )
 
 func main() {
-	stdin, stdout, stderr := os.Stdin, os.Stdout, os.Stderr
-	self, args := path.Base(os.Args[0]), os.Args[1:]
+	ctx := cmd.Context{
+		Self:   path.Base(os.Args[0]),
+		Stdin:  os.Stdin,
+		Stdout: os.Stdout,
+		Stderr: os.Stderr,
+	}
 
-	if err := cmd.Main(stdin, stdout, stderr, self, args...); err != nil {
+	if err := cmd.Main(&ctx, os.Args[1:]...); err != nil {
 		fmt.Fprintln(os.Stderr, err)
 		os.Exit(1)
 	}
