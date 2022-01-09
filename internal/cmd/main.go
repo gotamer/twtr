@@ -93,6 +93,10 @@ Commands:
 }
 
 func Main(args ...string) error {
+	if len(args) < 1 {
+		help()
+	}
+
 	for i := 0; i < len(args); i++ {
 		arg := args[i]
 
