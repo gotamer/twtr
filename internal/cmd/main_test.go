@@ -50,6 +50,7 @@ Options:
 	-n, --nick NICK          Specify the nickname for your feed.
 	-u, --url URL            Specify the url that your feed will be hosted at.
 	-v, --verbose            Enable verbose output for debugging.
+	    --version            Show the version and exit.
 `
 
 	timelineUsage = `Usage: twtr timeline [-chv] [--limit COUNT] [--sort ascending | descending]
@@ -62,6 +63,7 @@ Options:
 	    --limit COUNT     Limit the amount of tweets shown.
 	    --sort DIRECTION  Sort tweets ascending or descending by timestamp.
 	-v, --verbose         Enable verbose output for debugging.
+	    --version         Show the version and exit.
 `
 
 	followingUsage = `Usage: twtr following [-chv]
@@ -72,6 +74,7 @@ Options:
 	-c, --config PATH  Specify a custom configuration file location.
 	-h, --help         Show this message and exit.
 	-v, --verbose      Enable verbose output for debugging.
+	    --version      Show the version and exit.
 `
 
 	followUsage = `Usage: twtr follow [-chv] [--replace] SOURCE [SOURCES...]
@@ -83,6 +86,7 @@ Options:
 	-h, --help         Show this message and exit.
 	    --replace      Replace duplicates instead of returning error.
 	-v, --verbose      Enable verbose output for debugging.
+	    --version      Show the version and exit.
 
 ` + sourceUsage
 
@@ -94,6 +98,7 @@ Options:
 	-c, --config PATH  Specify a custom configuration file location.
 	-h, --help         Show this message and exit.
 	-v, --verbose      Enable verbose output for debugging.
+	    --version      Show the version and exit.
 `
 
 	tweetUsage = `Usage: twtr tweet [-cfhv] TWEET
@@ -105,6 +110,7 @@ Options:
 	-f, --file PATH    Specify a custom twtxt file location.
 	-h, --help         Show this message and exit.
 	-v, --verbose      Enable verbose output for debugging.
+	    --version      Show the version and exit.
 `
 
 	viewUsage = `Usage: twtr view [-chv] SOURCE [SOURCES]
@@ -115,6 +121,7 @@ Options:
 	-c, --config PATH  Specify a custom configuration file location.
 	-h, --help         Show this message and exit.
 	-v, --verbose      Enable verbose output for debugging.
+	    --version      Show the version and exit.
 
 ` + sourceUsage
 
@@ -126,8 +133,9 @@ Options:
 	-c, --config PATH  Specify a custom configuration file location.
 	    --edit         Edit the configuration file manually.
 	-h, --help         Show this message and exit.
-	   --remove KEY    Remove a configuration by its KEY, e.g. twtxt.nick.
+	    --remove KEY   Remove a configuration by its KEY, e.g. twtxt.nick.
 	-v, --verbose      Enable verbose output for debugging.
+	    --version      Show the version and exit.
 
 Examples:
 	Get config value:
