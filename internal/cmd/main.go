@@ -3,20 +3,10 @@ package cmd
 import (
 	"errors"
 	"fmt"
-	"io"
 	"os"
 )
 
 const version = "v0.0.0"
-
-type Context struct {
-	Self    string
-	Config  string
-	Stdin   io.Reader
-	Stdout  io.Writer
-	Stderr  io.Writer
-	Verbose bool
-}
 
 func help(ctx *Context) string {
 	usage := `Usage: %s COMMAND [OPTIONS] [ARGS...]
