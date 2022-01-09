@@ -30,7 +30,6 @@ Commands:
 
 func TestMain(t *testing.T) {
 	tests := []struct {
-		name   string
 		args   []string
 		stdin  string
 		stdout string
@@ -38,7 +37,18 @@ func TestMain(t *testing.T) {
 		err    error
 	}{
 		{
-			name:   "NoArgumentsGiven",
+			stderr: help,
+		},
+		{
+			args:   []string{},
+			stderr: help,
+		},
+		{
+			args:   []string{"-h"},
+			stderr: help,
+		},
+		{
+			args:   []string{"--help"},
 			stderr: help,
 		},
 	}
@@ -46,7 +56,7 @@ func TestMain(t *testing.T) {
 	for _, test := range tests {
 		test := test
 
-		t.Run(test.name, func(t *testing.T) {
+		t.Run(strings.Join(test.args, " "), func(t *testing.T) {
 			var stdout bytes.Buffer
 			var stderr bytes.Buffer
 
