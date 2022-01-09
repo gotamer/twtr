@@ -8,7 +8,25 @@ import (
 	"internal/cmd"
 )
 
-const help = ""
+const help = `Usage: twtxt COMMAND [OPTIONS] [ARGS...]
+
+Decentralized, minimalist microblogging for hackers.
+
+Options:
+    -c, --config PATH  Specify a custom config file location.
+    -v, --version      Enable verbose output for debugging.
+    --version          Show the version and exit.
+    -h, --help         Show this message and exit.
+
+Commands:
+    timeline   Retrieve your personal timeline.
+    following  View the sources that you are following.
+    follow     Add a new source to your followings.
+    unfollow   Remove an existing source from your list.
+    tweet      Send out a message into the void.
+    view       View a source that you follow.
+    config     Update your configuration.
+`
 
 func TestMain(t *testing.T) {
 	tests := []struct {
@@ -40,11 +58,11 @@ func TestMain(t *testing.T) {
 				t.Errorf("err = %q, want %q", have, want)
 			}
 
-			if have, want := test.stdout, stdout.String(); have != want {
+			if have, want := stdout.String(), test.stdout; have != want {
 				t.Errorf("stdout = %q, want %q", have, want)
 			}
 
-			if have, want := test.stderr, stderr.String(); have != want {
+			if have, want := stderr.String(), test.stderr; have != want {
 				t.Errorf("stderr = %q, want %q", have, want)
 			}
 		})
