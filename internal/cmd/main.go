@@ -69,7 +69,8 @@ func Main(ctx *Context, args ...string) error {
 	}
 
 	if len(args) < 1 {
-		help(ctx)
+		fmt.Fprint(ctx.Stderr, help(ctx))
+		return nil
 	}
 
 	for i := 0; i < len(args); i++ {
