@@ -10,16 +10,13 @@ import (
 const version = "v0.0.0"
 
 type Context struct {
-	Self   string
-	Stdin  io.Reader
-	Stdout io.Writer
-	Stderr io.Writer
+	Self    string
+	Config  string
+	Stdin   io.Reader
+	Stdout  io.Writer
+	Stderr  io.Writer
+	Verbose bool
 }
-
-var (
-	conf    string = "~/.config/twtxt/config"
-	verbose bool
-)
 
 func help(ctx *Context) string {
 	usage := `Usage: %s COMMAND [OPTIONS] [ARGS...]
@@ -47,8 +44,16 @@ Commands:
 }
 
 func Main(ctx *Context, args ...string) error {
+	if ctx == nil {
+		ctx = &Context{}
+	}
+
 	if ctx.Self == "" {
 		ctx.Self = "twtr"
+	}
+
+	if ctx.Config == "" {
+		ctx.Config = "~/.config/twtxt/config"
 	}
 
 	if ctx.Stdin == nil {
@@ -76,9 +81,9 @@ func Main(ctx *Context, args ...string) error {
 				return errors.New("config path not given")
 			}
 
-			conf = args[i]
+			ctx.Config = args[i]
 		case "-v", "--verbose":
-			verbose = true
+			ctx.Verbose = true
 		case "--version":
 			fmt.Fprintln(ctx.Stdout, version)
 			return nil
