@@ -24,7 +24,7 @@ func (c command) help(ctx *Context) string {
 	// create section for flags and options
 	if c.flags != nil {
 		// TODO format options section
-		messages = append(messages, "Options:\n\tTODO: Format options")
+		messages = append(messages, "Options:\n\tTODO: Format options\n")
 	}
 
 	// start list of all help message sections
