@@ -136,20 +136,6 @@ Options:
 	    --remove KEY   Remove a configuration by its KEY, e.g. twtxt.nick.
 	-v, --verbose      Enable verbose output for debugging.
 	    --version      Show the version and exit.
-
-Examples:
-	Get config value:
-		$ twtr config twtxt.nick
-		> YourOldNickName
-
-	Set config value:
-		$ twtr config twtxt.nick YourNewNickName
-
-	Remove config value:
-		$ twtr config --remove twtxt.nick
-
-	Edit config file manually:
-		$ twtr config --edit
 `
 )
 
