@@ -68,9 +68,9 @@ Options:
 
 Sources:
 	At least one SOURCE must be given (unless called with -h), each SOURCE
-	consists of a NICK and a URL. Allowed formats are NICK@URL or NICK URL, if
-	you don't know the nickname of a SOURCE, you can make one up, or use the
-	domain part of the URL (this can be easily changed later).
+	consists of a NICK and a URL. Allowed formats are NICK@URL or NICK URL,
+	if you don't know the nickname of a SOURCE, you can make one up, or use
+	the domain part of the URL (this can be easily changed later).
 `,
 		},
 		{
@@ -114,9 +114,9 @@ Options:
 
 Sources:
 	At least one SOURCE must be given (unless called with -h), each SOURCE
-	consists of a NICK and a URL. Allowed formats are NICK@URL or NICK URL, if
-	you don't know the nickname of a SOURCE, you can make one up, or use the
-	domain part of the URL (this can be easily changed later).
+	consists of a NICK and a URL. Allowed formats are NICK@URL or NICK URL,
+	if you don't know the nickname of a SOURCE, you can make one up, or use
+	the domain part of the URL (this can be easily changed later).
 `,
 		},
 		{

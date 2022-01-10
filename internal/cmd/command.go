@@ -6,6 +6,38 @@ import (
 	"strings"
 )
 
+const (
+	lineLength = 80
+	indentSize = 8
+)
+
+func helpFormat(msg string) string {
+	lines := []string{}
+
+	for _, paragraph := range strings.Split(msg, "\n") {
+		var line string
+
+		words := strings.Fields(paragraph)
+
+		for _, word := range words {
+			if len(line)+len(word)+1 < lineLength-indentSize {
+				if len(line) > 0 {
+					line += " " + word
+				} else {
+					line = word
+				}
+			} else {
+				lines = append(lines, line)
+				line = word
+			}
+		}
+
+		lines = append(lines, line)
+	}
+
+	return "\t" + strings.Join(lines, "\n\t") + "\n"
+}
+
 type command struct {
 	name        string
 	usage       string
@@ -36,7 +68,7 @@ func (c command) help(ctx *Context) string {
 		for k, v := range c.other {
 			// TODO format other sections
 			headings = append(headings, k)
-			sections[k] = v
+			sections[k] = helpFormat(v)
 		}
 	}
 
