@@ -255,11 +255,11 @@ func TestMain(t *testing.T) {
 			}
 
 			if have, want := stdout.String(), test.stdout; have != want {
-				t.Errorf("stdout = %q, want %q", have, want)
+				t.Errorf("\nstdout:\n%s\n\nwant:\n%s\n", have, want)
 			}
 
 			if have, want := stderr.String(), test.stderr; have != want {
-				t.Errorf("stderr = %q, want %q", have, want)
+				t.Errorf("\nstderr:\n%s\n\nwant:\n%s\n", have, want)
 			}
 		})
 	}
