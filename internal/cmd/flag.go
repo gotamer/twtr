@@ -8,7 +8,7 @@ type flag struct {
 }
 
 var (
-	configFlag           flag = flag{"-c", "--config", "PATH", "Specify a custom config file location."}
+	configFlag           flag = flag{"-c", "--config", "PATH", "Specify a custom configuration file location."}
 	helpFlag             flag = flag{"-h", "--help", "", "Show this message and exit."}
 	verboseFlag          flag = flag{"-v", "--verbose", "", "Enable verbose output for debugging."}
 	fileFlag             flag = flag{"-f", "--file", "PATH", "Specify a custom twtxt file location."}

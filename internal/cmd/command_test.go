@@ -27,7 +27,7 @@ Options:
 		},
 		{
 			command: timelineCommand,
-			help: `Usage: twtr timeline [-chv] [--limit COUNT] [--sort ascending | descending]
+			help: `Usage: twtr timeline [-chv] [--limit COUNT] [--sort ascending|descending]
 
 Retrieve your personal timeline.
 
@@ -62,7 +62,7 @@ Add a new source to your following.
 Options:
 	-c, --config PATH  Specify a custom configuration file location.
 	-h, --help         Show this message and exit.
-	    --replace      Replace duplicates instead of returning error.
+	    --replace      Replace duplicates instead of returning an error.
 	-v, --verbose      Enable verbose output for debugging.
 	    --version      Show the version and exit.
 
@@ -102,7 +102,7 @@ Options:
 		},
 		{
 			command: viewCommand,
-			help: `Usage: twtr view [-chv] SOURCE [SOURCES]
+			help: `Usage: twtr view [-chv] SOURCE [SOURCES...]
 
 View a source that you follow.
 
@@ -121,7 +121,7 @@ Sources:
 		},
 		{
 			command: configCommand,
-			help: `Usage: twtr config [-chv] [--edit] [--remove KEY]|[KEY [VALUE]]
+			help: `Usage: twtr config [-chv] [--edit]|[--remove KEY]|[KEY [VALUE]]
 
 Update your configuration.
 
@@ -145,6 +145,7 @@ Options:
 
 				if have, want := test.command.help(&ctx), test.help; have != want {
 					t.Errorf("\nhave:\n%s\n\nwant:\n%s\n", have, want)
+					t.Errorf("\nhave:\n%q\n\nwant:\n%q\n", have, want)
 				}
 			})
 		})

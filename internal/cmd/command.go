@@ -22,6 +22,11 @@ func helpFormatFlags(flags []flag) string {
 	lines := make([]string, len(flags), len(flags))
 	rows := make([][3]string, len(flags), len(flags))
 
+	// sort the flags alphabetically
+	sort.Slice(flags, func(i, j int) bool {
+		return flags[i].long < flags[j].long
+	})
+
 	// get the width maximum of each component
 	for i, flag := range flags {
 		var col1, col2 string
@@ -184,7 +189,7 @@ var (
 	unfollowCommand command = command{
 		name:        "unfollow",
 		usage:       "[-chv] NICK|URL",
-		description: "Remove an existing source form your list",
+		description: "Remove an existing source from your list.",
 		flags: []flag{
 			configFlag,
 			helpFlag,
