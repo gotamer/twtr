@@ -16,7 +16,7 @@ var (
 	urlFlag              flag = flag{"-u", "--url", "URL", "Specify the url that your feed will be hosted at."}
 	versionFlag          flag = flag{"", "--version", "", "Show the version and exit."}
 	discloseIdentityFlag flag = flag{"", "--disclose-identity", "", "Show your nickname and url in the User Agent."}
-	followNewFlag        flag = flag{"", "--follow-news", "", "Follow the official twtxt and twtr news feeds."}
+	followNewsFlag       flag = flag{"", "--follow-news", "", "Follow the official twtxt and twtr news feeds."}
 	limitFlag            flag = flag{"", "--limit", "COUNT", "Limit the amount of tweets shown."}
 	sortFlag             flag = flag{"", "--sort", "DIRECTION", "Sort tweets ascending or descending by timestamp."}
 	replaceFlag          flag = flag{"", "--replace", "", "Replace duplicates instead of returning an error."}
