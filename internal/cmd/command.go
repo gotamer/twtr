@@ -23,8 +23,8 @@ func (c command) help(ctx *Context) string {
 	)
 }
 
-var commands []command = []command{
-	{
+var (
+	quickstartCommand command = command{
 		name:        "quickstart",
 		usage:       "[-cfhnuv] [--disclose-identity] [--follow-news]",
 		description: "Quickstart wizard for setting up twtxt.",
@@ -39,8 +39,8 @@ var commands []command = []command{
 			verboseFlag,
 			versionFlag,
 		},
-	},
-	{
+	}
+	timelineCommand command = command{
 		name:        "timeline",
 		usage:       "[-chv] [--limit COUNT] [--sort ascending|descending]",
 		description: "Retrieve your personal timeline.",
@@ -52,8 +52,8 @@ var commands []command = []command{
 			verboseFlag,
 			versionFlag,
 		},
-	},
-	{
+	}
+	followingCommand command = command{
 		name:        "following",
 		usage:       "[-chv]",
 		description: "View the sources that you are following.",
@@ -63,8 +63,8 @@ var commands []command = []command{
 			versionFlag,
 			verboseFlag,
 		},
-	},
-	{
+	}
+	followCommand command = command{
 		name:        "follow",
 		usage:       "[-chv] [--replace] SOURCE [SOURCES...]",
 		description: "Add a new source to your following.",
@@ -78,8 +78,8 @@ var commands []command = []command{
 		other: map[string]string{
 			"Sources": "At least one SOURCE must be given (unless called with -h), each SOURCE consists of a NICK and a URL. Allowed formats are NICK@URL or NICK URL, if you don't know the nickname of a SOURCE, you can make one up, or use the domain part of the URL (this can be easily changed later).",
 		},
-	},
-	{
+	}
+	unfollowCommand command = command{
 		name:        "unfollow",
 		usage:       "[-chv] NICK|URL",
 		description: "Remove an existing source form your list",
@@ -89,8 +89,8 @@ var commands []command = []command{
 			verboseFlag,
 			versionFlag,
 		},
-	},
-	{
+	}
+	tweetCommand command = command{
 		name:        "tweet",
 		usage:       "[-cfhv] TWEET",
 		description: "Send out a message into the void.",
@@ -101,8 +101,8 @@ var commands []command = []command{
 			verboseFlag,
 			versionFlag,
 		},
-	},
-	{
+	}
+	viewCommand command = command{
 		name:        "view",
 		usage:       "[-chv] SOURCE [SOURCES...]",
 		description: "View a source that you follow.",
@@ -115,8 +115,8 @@ var commands []command = []command{
 		other: map[string]string{
 			"Sources": "At least one SOURCE must be given (unless called with -h), each SOURCE consists of a NICK and a URL. Allowed formats are NICK@URL or NICK URL, if you don't know the nickname of a SOURCE, you can make one up, or use the domain part of the URL (this can be easily changed later).",
 		},
-	},
-	{
+	}
+	configCommand command = command{
 		name:        "config",
 		usage:       "[-chv] [--edit]|[--remove KEY]|[KEY [VALUE]]",
 		description: "Update your configuration.",
@@ -128,5 +128,16 @@ var commands []command = []command{
 			verboseFlag,
 			versionFlag,
 		},
-	},
+	}
+)
+
+var commands []command = []command{
+	quickstartCommand,
+	timelineCommand,
+	followingCommand,
+	followCommand,
+	unfollowCommand,
+	tweetCommand,
+	viewCommand,
+	configCommand,
 }
