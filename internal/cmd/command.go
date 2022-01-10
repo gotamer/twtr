@@ -11,7 +11,51 @@ const (
 	indentSize = 8
 )
 
-func helpFormat(msg string) string {
+func helpFormatFlags(flags []flag) string {
+	// for there no flags then there are no flags
+	if len(flags) < 1 {
+		return "NONE\n"
+	}
+
+	var len1, len2 int
+
+	lines := make([]string, len(flags), len(flags))
+	rows := make([][3]string, len(flags), len(flags))
+
+	// get the width maximum of each component
+	for i, flag := range flags {
+		var col1, col2 string
+
+		if flag.short != "" {
+			col1 = fmt.Sprintf("%s,", flag.short)
+		}
+
+		if flag.option == "" {
+			col2 = fmt.Sprintf("%s", flag.long)
+		} else {
+			col2 = fmt.Sprintf("%s %s", flag.long, flag.option)
+		}
+
+		if l := len(col1); l > len1 {
+			len1 = l
+		}
+
+		if l := len(col2); l > len2 {
+			len2 = l
+		}
+
+		rows[i] = [3]string{col1, col2, flag.description}
+	}
+
+	// format each component no that we know how wide the columns are
+	for i, row := range rows {
+		lines[i] = fmt.Sprintf("%-*s %-*s  %s", len1, row[0], len2, row[1], row[2])
+	}
+
+	return "\t" + strings.Join(lines, "\n\t") + "\n"
+}
+
+func helpFormatText(msg string) string {
 	lines := []string{}
 
 	for _, paragraph := range strings.Split(msg, "\n") {
@@ -55,8 +99,7 @@ func (c command) help(ctx *Context) string {
 
 	// create section for flags and options
 	if c.flags != nil {
-		// TODO format options section
-		messages = append(messages, "Options:\n\tTODO: Format options\n")
+		messages = append(messages, "Options:\n"+helpFormatFlags(c.flags))
 	}
 
 	// start list of all help message sections
@@ -66,9 +109,8 @@ func (c command) help(ctx *Context) string {
 	// include any other sections, e.g. "Examples", "Notes", "Bugs" etc
 	if c.other != nil {
 		for k, v := range c.other {
-			// TODO format other sections
 			headings = append(headings, k)
-			sections[k] = helpFormat(v)
+			sections[k] = helpFormatText(v)
 		}
 	}
 
@@ -77,7 +119,7 @@ func (c command) help(ctx *Context) string {
 
 	// add the headings to the message in order
 	for _, heading := range headings {
-		messages = append(messages, fmt.Sprintf("%s:\n%s\n", heading, sections[heading]))
+		messages = append(messages, heading+":\n"+sections[heading])
 	}
 
 	return strings.Join(messages, "\n")
