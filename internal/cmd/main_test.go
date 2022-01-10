@@ -132,7 +132,6 @@ func TestMain(t *testing.T) {
 			var stderr bytes.Buffer
 
 			ctx := Context{
-				Self:   "twtr",
 				Stdin:  strings.NewReader(test.stdin),
 				Stdout: &stdout,
 				Stderr: &stderr,

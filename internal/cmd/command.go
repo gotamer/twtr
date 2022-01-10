@@ -1,6 +1,10 @@
 package cmd
 
-import "fmt"
+import (
+	"fmt"
+	"sort"
+	"strings"
+)
 
 type command struct {
 	name        string
@@ -11,16 +15,40 @@ type command struct {
 }
 
 func (c command) help(ctx *Context) string {
-	// TODO format options section
-	// TODO format other sections
+	// format the base part of the help message
+	messages := []string{
+		fmt.Sprintf("Usage: %s %s %s\n", ctx.Self, c.name, c.usage),
+		fmt.Sprintf("%s\n", c.description),
+	}
 
-	return fmt.Sprintf(
-		"Usage %s %s %s\n\n%s\n\nOptions:\n\tTODO read c.flags\n",
-		ctx.Self,
-		c.name,
-		c.usage,
-		c.description,
-	)
+	// create section for flags and options
+	if c.flags != nil {
+		// TODO format options section
+		messages = append(messages, "Options:\n\tTODO: Format options")
+	}
+
+	// start list of all help message sections
+	sections := make(map[string]string, len(c.other))
+	headings := make([]string, len(sections), len(sections))
+
+	// include any other sections, e.g. "Examples", "Notes", "Bugs" etc
+	if c.other != nil {
+		for k, v := range c.other {
+			// TODO format other sections
+			headings = append(headings, k)
+			sections[k] = v
+		}
+	}
+
+	// sort these other headings
+	sort.Strings(headings)
+
+	// add the headings to the message in order
+	for _, heading := range headings {
+		messages = append(messages, fmt.Sprintf("%s:\n%s\n", heading, sections[heading]))
+	}
+
+	return strings.Join(messages, "\n")
 }
 
 var (
