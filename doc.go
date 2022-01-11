@@ -14,14 +14,14 @@
 // flags. Each command is different, see the SUBCOMMANDS section for a more
 // detailed breakdown of each command.
 //
-//     twtr quickstart [-cfhnuv] [--disclose-identity] [--follow-news]
-//     twtr timeline   [-chv] [--limit COUNT] [--sort ascending|descending]
-//     twtr following  [-chv]
-//     twtr follow     [-chv] [--replace] SOURCE [SOURCES...]
-//     twtr unfollow   [-chv] SOURCE [SOURCES...]
-//     twtr tweet      [-cfhv] TWEET
-//     twtr view       [-chv] SOURCE [SOURCES...]
-//     twtr config     [-chv] [--edit]|[--remove KEY]|[KEY [VALUE]]
+// If you want to use twtr but don't want to read the entire documentation, try
+// the quickstart subcommand to just start using twtr (and twtxt) as quickly as
+// possible.
+//
+//     twtr quickstart
+//
+// This is ask you some questions and generate a config file for you, so you can
+// start tweeting within three minutes.
 //
 // DESCRIPTION
 //
@@ -60,6 +60,22 @@
 //
 // SUBCOMMANDS
 //
+// The following are the subcommands of twtr, with their command line syntax,
+// see the respective section of each subcommand for further information
+//
+//     twtr quickstart [-cfhnuv] [--disclose-identity] [--follow-news]
+//     twtr timeline   [-chv] [--limit COUNT] [--sort ascending|descending]
+//     twtr following  [-chv]
+//     twtr follow     [-chv] [--replace] SOURCE [SOURCES...]
+//     twtr unfollow   [-chv] SOURCE [SOURCES...]
+//     twtr tweet      [-cfhv] TWEET
+//     twtr view       [-chv] SOURCE [SOURCES...]
+//     twtr config     [-chv] [--edit]|[--remove KEY]|[KEY [VALUE]]
+//
+// Note that the -c, -h, and -v flags are universal.
+//
+// Quickstart Synopsis
+//
 // Quickstart wizard for setting up twtxt.
 //
 // Usage:
@@ -78,6 +94,8 @@
 //     -v, --verbose            Enable verbose output for debugging.
 //         --version            Show the version and exit.
 //
+// Timeline Synopsis
+//
 // Retrieve your personal timeline.
 //
 // Usage:
@@ -93,6 +111,8 @@
 //     -v, --verbose         Enable verbose output for debugging.
 //         --version         Show the version and exit.
 //
+// Following Synopsis
+//
 // View the sources that you are following.
 //
 // Usage:
@@ -105,6 +125,8 @@
 //     -h, --help         Show this message and exit.
 //     -v, --verbose      Enable verbose output for debugging.
 //         --version      Show the version and exit.
+//
+// Follow Synopsis
 //
 // Add a new source to your following.
 //
@@ -126,6 +148,8 @@
 // you don't know the nickname of a SOURCE, you can make one up, or use the
 // domain part of the URL (this can be easily changed later).
 //
+// Unfollow Synopsis
+//
 // Remove an existing source from your list.
 //
 // Usage:
@@ -146,6 +170,8 @@
 // you don't know the nickname of a SOURCE, you can make one up, or use the
 // domain part of the URL (this can be easily changed later).
 //
+// Tweet Synopsis
+//
 // Send out a message into the void.
 //
 // Usage:
@@ -159,6 +185,8 @@
 //     -h, --help         Show this message and exit.
 //     -v, --verbose      Enable verbose output for debugging.
 //         --version      Show the version and exit.
+//
+// View Synopsis
 //
 // View a source that you follow.
 //
@@ -178,6 +206,8 @@
 // consists of a NICK and a URL. Allowed formats are NICK@URL or NICK URL, if
 // you don't know the nickname of a SOURCE, you can make one up, or use the
 // domain part of the URL (this can be easily changed later).
+//
+// Config Synopsis
 //
 // Update your configuration.
 //
