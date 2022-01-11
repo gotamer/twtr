@@ -34,6 +34,8 @@ Commands:
 }
 
 func Main(ctx *Context, args ...string) error {
+	var cmd command
+
 	if ctx == nil {
 		ctx = &Context{}
 	}
@@ -79,10 +81,22 @@ func Main(ctx *Context, args ...string) error {
 			fmt.Fprintln(ctx.Stdout, version)
 			return nil
 		case "-h", "--help":
-			fmt.Fprint(ctx.Stderr, help(ctx))
+			var msg string
+
+			if cmd.name == "" {
+				msg = help(ctx)
+			} else {
+				msg = cmd.help(ctx)
+			}
+
+			fmt.Fprint(ctx.Stderr, msg)
 			return nil
 		default:
-			return errors.New("unknown command or flag: '" + arg + "'")
+			if c, ok := commands[arg]; ok {
+				cmd = c
+			} else {
+				return errors.New("unknown command or flag: '" + arg + "'")
+			}
 		}
 	}
 

@@ -238,13 +238,13 @@ var (
 	}
 )
 
-var commands []command = []command{
-	quickstartCommand,
-	timelineCommand,
-	followingCommand,
-	followCommand,
-	unfollowCommand,
-	tweetCommand,
-	viewCommand,
-	configCommand,
+var commands map[string]command = map[string]command{
+	quickstartCommand.name: quickstartCommand,
+	timelineCommand.name:   timelineCommand,
+	followingCommand.name:  followingCommand,
+	followCommand.name:     followCommand,
+	unfollowCommand.name:   unfollowCommand,
+	tweetCommand.name:      tweetCommand,
+	viewCommand.name:       viewCommand,
+	configCommand.name:     configCommand,
 }
