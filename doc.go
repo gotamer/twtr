@@ -14,14 +14,14 @@
 // flags. Each command is different, see the SUBCOMMANDS section for a more
 // detailed breakdown of each command.
 //
-//     twtr quickstart
-//     twtr timeline
-//     twtr following
-//     twtr follow     [[<nickname>] <feed>]
-//     twtr unfollow   [[<nickname>] <feed>]
-//     twtr tweet      [<message>]
-//     twtr view       [<nickname>|<feed>]
-//     twtr config     [<key> [<value>]]
+//     twtr quickstart [-cfhnuv] [--disclose-identity] [--follow-news]
+//     twtr timeline   [-chv] [--limit COUNT] [--sort ascending|descending]
+//     twtr following  [-chv]
+//     twtr follow     [-chv] [--replace] SOURCE [SOURCES...]
+//     twtr unfollow   [-chv] SOURCE [SOURCES...]
+//     twtr tweet      [-cfhv] TWEET
+//     twtr view       [-chv] SOURCE [SOURCES...]
+//     twtr config     [-chv] [--edit]|[--remove KEY]|[KEY [VALUE]]
 //
 // DESCRIPTION
 //
@@ -60,37 +60,139 @@
 //
 // SUBCOMMANDS
 //
-// Quickstart wizard for setting up your twtxt config.
+// Quickstart wizard for setting up twtxt.
 //
-//     twtr quickstart
+// Usage:
 //
+//     twtr quickstart [-cfhnuv] [--disclose-identity] [--follow-news]
+//
+// Options:
+//
+//     -c, --config PATH        Specify a custom configuration file location.
+//         --disclose-identity  Show your nickname and url in the User Agent.
+//     -f, --file PATH          Specify a custom twtxt file location.
+//         --follow-news        Follow the official twtxt and twtr news feeds.
+//     -h, --help               Show this message and exit.
+//     -n, --nick NICK          Specify the nickname for your feed.
+//     -u, --url URL            Specify the url that your feed will be hosted at.
+//     -v, --verbose            Enable verbose output for debugging.
+//         --version            Show the version and exit.
+// 
 // Retrieve your personal timeline.
 //
-//     twtr timeline
+// Usage:
 //
-// Return the list of sources you're following.
+//     twtr timeline [-chv] [--limit COUNT] [--sort ascending|descending]
 //
-//     twtr following
+// Options:
 //
-// Add a new source to your followings.
+//     -c, --config PATH     Specify a custom configuration file location.
+//     -h, --help            Show this message and exit.
+//         --limit COUNT     Limit the amount of tweets shown.
+//         --sort DIRECTION  Sort tweets ascending or descending by timestamp.
+//     -v, --verbose         Enable verbose output for debugging.
+//         --version         Show the version and exit.
+// 
+// View the sources that you are following.
 //
-//     twtr follow [[<nickname>] <feed>]
+// Usage:
 //
-// Remove an existing source from your following list.
+//     twtr following [-chv]
 //
-//     twtr unfollow [[<nickname>] <feed>]
+// Options:
 //
-// Appends a new tweet to you twtxt file.
+//     -c, --config PATH  Specify a custom configuration file location.
+//     -h, --help         Show this message and exit.
+//     -v, --verbose      Enable verbose output for debugging.
+//         --version      Show the version and exit.
+// 
+// Add a new source to your following.
 //
-//     twtr tweet [<message>]
+// Usage:
 //
-// View a specific feed.
+//     twtr follow [-chv] [--replace] SOURCE [SOURCES...]
 //
-//     twtr view [<nickname>|<feed>]
+// Options:
+//     -c, --config PATH  Specify a custom configuration file location.
+//     -h, --help         Show this message and exit.
+//         --replace      Replace duplicates instead of returning an error.
+//     -v, --verbose      Enable verbose output for debugging.
+//         --version      Show the version and exit.
 //
-// Edit your twtxt configuration.
+// Sources:
 //
-//     twtr config [<key> [<value>]]
+//     At least one SOURCE must be given (unless called with -h), each SOURCE
+//     consists of a NICK and a URL. Allowed formats are NICK@URL or NICK URL,
+//     if you don't know the nickname of a SOURCE, you can make one up, or use
+//     the domain part of the URL (this can be easily changed later).
+// 
+// Remove an existing source from your list.
+//
+// Usage:
+//
+//     twtr unfollow [-chv] SOURCE [SOURCES...]
+//
+// Options:
+//
+//     -c, --config PATH  Specify a custom configuration file location.
+//     -h, --help         Show this message and exit.
+//     -v, --verbose      Enable verbose output for debugging.
+//         --version      Show the version and exit.
+//
+// Sources:
+//
+//     At least one SOURCE must be given (unless called with -h), each SOURCE
+//     consists of a NICK and a URL. Allowed formats are NICK@URL or NICK URL,
+//     if you don't know the nickname of a SOURCE, you can make one up, or use
+//     the domain part of the URL (this can be easily changed later).
+// 
+// Send out a message into the void.
+//
+// Usage:
+//
+//     twtr tweet [-cfhv] TWEET
+//
+// Options:
+//
+//     -c, --config PATH  Specify a custom configuration file location.
+//     -f, --file PATH    Specify a custom twtxt file location.
+//     -h, --help         Show this message and exit.
+//     -v, --verbose      Enable verbose output for debugging.
+//         --version      Show the version and exit.
+// 
+// View a source that you follow.
+//
+// Usage:
+//
+//     twtr view [-chv] SOURCE [SOURCES...]
+//
+// Options:
+//     -c, --config PATH  Specify a custom configuration file location.
+//     -h, --help         Show this message and exit.
+//     -v, --verbose      Enable verbose output for debugging.
+//         --version      Show the version and exit.
+//
+// Sources:
+//
+//     At least one SOURCE must be given (unless called with -h), each SOURCE
+//     consists of a NICK and a URL. Allowed formats are NICK@URL or NICK URL,
+//     if you don't know the nickname of a SOURCE, you can make one up, or use
+//     the domain part of the URL (this can be easily changed later).
+// 
+// Update your configuration.
+//
+// Usage:
+//
+//  twtr config [-chv] [--edit]|[--remove KEY]|[KEY [VALUE]]
+//
+// Options:
+//
+//     -c, --config PATH  Specify a custom configuration file location.
+//         --edit         Edit the configuration file manually.
+//     -h, --help         Show this message and exit.
+//         --remove KEY   Remove a configuration by its KEY, e.g. twtxt.nick.
+//     -v, --verbose      Enable verbose output for debugging.
+//         --version      Show the version and exit.
 //
 // See the CONFIGURATION section for a list of available options.
 //
