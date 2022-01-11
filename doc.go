@@ -77,7 +77,7 @@
 //     -u, --url URL            Specify the url that your feed will be hosted at.
 //     -v, --verbose            Enable verbose output for debugging.
 //         --version            Show the version and exit.
-// 
+//
 // Retrieve your personal timeline.
 //
 // Usage:
@@ -92,7 +92,7 @@
 //         --sort DIRECTION  Sort tweets ascending or descending by timestamp.
 //     -v, --verbose         Enable verbose output for debugging.
 //         --version         Show the version and exit.
-// 
+//
 // View the sources that you are following.
 //
 // Usage:
@@ -105,7 +105,7 @@
 //     -h, --help         Show this message and exit.
 //     -v, --verbose      Enable verbose output for debugging.
 //         --version      Show the version and exit.
-// 
+//
 // Add a new source to your following.
 //
 // Usage:
@@ -121,11 +121,11 @@
 //
 // Sources:
 //
-//     At least one SOURCE must be given (unless called with -h), each SOURCE
-//     consists of a NICK and a URL. Allowed formats are NICK@URL or NICK URL,
-//     if you don't know the nickname of a SOURCE, you can make one up, or use
-//     the domain part of the URL (this can be easily changed later).
-// 
+// At least one SOURCE must be given (unless called with -h), each SOURCE
+// consists of a NICK and a URL. Allowed formats are NICK@URL or NICK URL, if
+// you don't know the nickname of a SOURCE, you can make one up, or use the
+// domain part of the URL (this can be easily changed later).
+//
 // Remove an existing source from your list.
 //
 // Usage:
@@ -141,11 +141,11 @@
 //
 // Sources:
 //
-//     At least one SOURCE must be given (unless called with -h), each SOURCE
-//     consists of a NICK and a URL. Allowed formats are NICK@URL or NICK URL,
-//     if you don't know the nickname of a SOURCE, you can make one up, or use
-//     the domain part of the URL (this can be easily changed later).
-// 
+// At least one SOURCE must be given (unless called with -h), each SOURCE
+// consists of a NICK and a URL. Allowed formats are NICK@URL or NICK URL, if
+// you don't know the nickname of a SOURCE, you can make one up, or use the
+// domain part of the URL (this can be easily changed later).
+//
 // Send out a message into the void.
 //
 // Usage:
@@ -159,7 +159,7 @@
 //     -h, --help         Show this message and exit.
 //     -v, --verbose      Enable verbose output for debugging.
 //         --version      Show the version and exit.
-// 
+//
 // View a source that you follow.
 //
 // Usage:
@@ -174,11 +174,11 @@
 //
 // Sources:
 //
-//     At least one SOURCE must be given (unless called with -h), each SOURCE
-//     consists of a NICK and a URL. Allowed formats are NICK@URL or NICK URL,
-//     if you don't know the nickname of a SOURCE, you can make one up, or use
-//     the domain part of the URL (this can be easily changed later).
-// 
+// At least one SOURCE must be given (unless called with -h), each SOURCE
+// consists of a NICK and a URL. Allowed formats are NICK@URL or NICK URL, if
+// you don't know the nickname of a SOURCE, you can make one up, or use the
+// domain part of the URL (this can be easily changed later).
+//
 // Update your configuration.
 //
 // Usage:
