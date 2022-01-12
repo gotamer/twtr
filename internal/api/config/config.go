@@ -3,6 +3,7 @@ package config
 import (
 	"fmt"
 	"io"
+	"sort"
 	"strings"
 
 	"gopkg.in/ini.v1"
@@ -180,7 +181,7 @@ func (c *Config) Save(to io.Writer) (err error) {
 
 	file := ini.Empty()
 	fmti := func(i int) string { return fmt.Sprintf("%d", i) }
-	fmtf := func(f float64) string { return fmt.Sprintf("%f", f) }
+	fmtf := func(f float64) string { return fmt.Sprintf("%.1f", f) }
 	fmtt := func(b bool, t string, f string) string {
 		if b {
 			return t
@@ -198,7 +199,7 @@ func (c *Config) Save(to io.Writer) (err error) {
 		return
 	}
 
-	if _, err = twtxt.NewKey("twtxt", c.Twtfile); err != nil {
+	if _, err = twtxt.NewKey("twtfile", c.Twtfile); err != nil {
 		return
 	}
 
@@ -269,8 +270,16 @@ func (c *Config) Save(to io.Writer) (err error) {
 			return
 		}
 
-		for nick, url := range c.Following {
-			if _, err = following.NewKey(nick, url); err != nil {
+		i, nicks := 0, make([]string, len(c.Following))
+		for nick := range c.Following {
+			nicks[i] = nick
+			i++
+		}
+
+		sort.Strings(nicks)
+
+		for _, nick := range nicks {
+			if _, err = following.NewKey(nick, c.Following[nick]); err != nil {
 				return
 			}
 		}

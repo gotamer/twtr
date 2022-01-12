@@ -37,6 +37,7 @@ limit_timeline = 20
 timeline_update_interval = 10
 timeout = 5.0
 sorting = descending
+use_abs_time = false
 pre_tweet_hook = "scp buckket@example.org:~/public_html/twtxt.txt {twtfile}"
 post_tweet_hook = "scp {twtfile} buckket@example.org:~/public_html/twtxt.txt"
 
@@ -59,6 +60,7 @@ alice = https://example.org/alice.txt
 				TimelineUpdateInterval: 10,
 				Timeout:                5.0,
 				SortAscending:          false,
+				UseAbsoluteTime:        false,
 				PreTweetHook:           "scp buckket@example.org:~/public_html/twtxt.txt {twtfile}",
 				PostTweetHook:          "scp {twtfile} buckket@example.org:~/public_html/twtxt.txt",
 				Following: map[string]string{
@@ -85,6 +87,7 @@ limit_timeline = 20
 timeline_update_interval = 10
 timeout = 5.0
 sorting = descending
+use_abs_time = false
 pre_tweet_hook = "scp buckket@example.org:~/public_html/twtxt.txt {twtfile}"
 post_tweet_hook = "scp {twtfile} buckket@example.org:~/public_html/twtxt.txt"
 `),
@@ -103,6 +106,7 @@ post_tweet_hook = "scp {twtfile} buckket@example.org:~/public_html/twtxt.txt"
 				TimelineUpdateInterval: 10,
 				Timeout:                5.0,
 				SortAscending:          false,
+				UseAbsoluteTime:        false,
 				PreTweetHook:           "scp buckket@example.org:~/public_html/twtxt.txt {twtfile}",
 				PostTweetHook:          "scp {twtfile} buckket@example.org:~/public_html/twtxt.txt",
 				Following:              make(map[string]string),
@@ -248,6 +252,7 @@ limit_timeline = 20
 timeline_update_interval = 10
 timeout = 5.0
 sorting = neither_descending_nor_ascending
+use_abs_time = "This is not a pipe, I mean bool"
 pre_tweet_hook = "scp buckket@example.org:~/public_html/twtxt.txt {twtfile}"
 post_tweet_hook = "scp {twtfile} buckket@example.org:~/public_html/twtxt.txt"
 
@@ -377,31 +382,38 @@ func TestConfigSave(t *testing.T) {
 				TimelineUpdateInterval: 10,
 				Timeout:                5.0,
 				SortAscending:          false,
+				UseAbsoluteTime:        false,
 				PreTweetHook:           "scp buckket@example.org:~/public_html/twtxt.txt {twtfile}",
 				PostTweetHook:          "scp {twtfile} buckket@example.org:~/public_html/twtxt.txt",
-				Following:              make(map[string]string),
+				Following: map[string]string{
+					"alice": "https://example.org/alice.txt",
+					"bob":   "https://example.org/bob.txt",
+				},
 			},
 			want: `[twtxt]
-nick = buckket
-twtfile = ~/twtxt.txt
-twturl = http://example.org/twtxt.txt
-check_following = True
-use_pager = False
-use_cache = True
-porcelain = False
-disclose_identity = False
-character_limit = 140
-character_warning = 140
-limit_timeline = 20
+nick                     = buckket
+twtfile                  = ~/twtxt.txt
+twturl                   = http://example.org/twtxt.txt
+check_following          = True
+use_pager                = False
+use_cache                = True
+porcelain                = False
+disclose_identity        = False
+character_limit          = 140
+character_warning        = 140
+limit_timeline           = 20
 timeline_update_interval = 10
-timeout = 5.0
-sorting = descending
-pre_tweet_hook = "scp buckket@example.org:~/public_html/twtxt.txt {twtfile}"
-post_tweet_hook = "scp {twtfile} buckket@example.org:~/public_html/twtxt.txt"
+timeout                  = 5.0
+sorting                  = descending
+use_abs_time             = False
+pre_tweet_hook           = scp buckket@example.org:~/public_html/twtxt.txt {twtfile}
+post_tweet_hook          = scp {twtfile} buckket@example.org:~/public_html/twtxt.txt
 
 [following]
-bob = https://example.org/bob.txt
-alice = https://example.org/alice.txt`,
+alice = https://example.org/alice.txt
+bob   = https://example.org/bob.txt
+
+`,
 		},
 	}
 
@@ -415,8 +427,13 @@ alice = https://example.org/alice.txt`,
 				t.Fatalf("err = %q, want nil", err)
 			}
 
-			if have, want := have.String(), test.want; have != want {
-				t.Errorf("\nhave:\n\n```\n%s\n```\n\nwant:\n\n```\n%s\n```\n\n", have, want)
+			for i, have := range strings.Split(have.String(), "\n") {
+				have := have
+				want := strings.Split(test.want, "\n")[i]
+
+				if have != want {
+					t.Errorf("line %d:\nhave %q\nwant %q\n", i, have, want)
+				}
 			}
 		})
 	}
