@@ -366,7 +366,7 @@ func TestConfigSave(t *testing.T) {
 		want string
 	}{
 		{
-			name: "StandardConfigExample",
+			name: "AllFieldsSetWithExampleValue",
 			from: config.Config{
 				Nick:                   "buckket",
 				Twtfile:                "~/twtxt.txt",
@@ -427,12 +427,39 @@ bob   = https://example.org/bob.txt
 				t.Fatalf("err = %q, want nil", err)
 			}
 
-			for i, have := range strings.Split(have.String(), "\n") {
-				have := have
-				want := strings.Split(test.want, "\n")[i]
+			haveLines := strings.Split(have.String(), "\n")
+			wantLines := strings.Split(test.want, "\n")
 
-				if have != want {
-					t.Errorf("line %d:\nhave %q\nwant %q\n", i, have, want)
+			if len(haveLines) < len(wantLines) {
+				for i, have := range haveLines {
+					have := have
+					want := wantLines[i]
+
+					if have != want {
+						t.Errorf("line %d:\nhave %q\nwant %q\n", i+1, have, want)
+					}
+				}
+
+				t.Errorf("line %d:\nhave EOF\nwant %q", len(haveLines)+1, wantLines[len(haveLines)])
+			} else if len(haveLines) > len(wantLines) {
+				for i, want := range wantLines {
+					have := haveLines[1]
+					want := want
+
+					if have != want {
+						t.Errorf("line %d:\nhave %q\nwant %q\n", i+1, have, want)
+					}
+				}
+
+				t.Errorf("line %d:\nhave %q\nwant EOF", len(wantLines)+1, haveLines[len(wantLines)])
+			} else {
+				for i, have := range haveLines {
+					have := have
+					want := wantLines[i]
+
+					if have != want {
+						t.Errorf("line %d:\nhave %q\nwant %q\n", i+1, have, want)
+					}
 				}
 			}
 

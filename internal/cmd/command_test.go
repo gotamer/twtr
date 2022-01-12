@@ -156,29 +156,29 @@ Options:
 						want := wantLines[i]
 
 						if have != want {
-							t.Errorf("line %d:\nhave %q\nwant %q\n", i, have, want)
+							t.Errorf("line %d:\nhave %q\nwant %q\n", i+1, have, want)
 						}
 					}
 
-					t.Errorf("line %d:\nhave EOF\nwant %q", len(haveLines), wantLines[len(haveLines)])
+					t.Errorf("line %d:\nhave EOF\nwant %q", len(haveLines)+1, wantLines[len(haveLines)])
 				} else if len(haveLines) > len(wantLines) {
 					for i, want := range wantLines {
 						have := haveLines[1]
 						want := want
 
 						if have != want {
-							t.Errorf("line %d:\nhave %q\nwant %q\n", i, have, want)
+							t.Errorf("line %d:\nhave %q\nwant %q\n", i+1, have, want)
 						}
 					}
 
-					t.Errorf("line %d:\nhave %q\nwant EOF", len(wantLines), haveLines[len(wantLines)])
+					t.Errorf("line %d:\nhave %q\nwant EOF", len(wantLines)+1, haveLines[len(wantLines)])
 				} else {
 					for i, have := range haveLines {
 						have := have
 						want := wantLines[i]
 
 						if have != want {
-							t.Errorf("line %d:\nhave %q\nwant %q\n", i, have, want)
+							t.Errorf("line %d:\nhave %q\nwant %q\n", i+1, have, want)
 						}
 					}
 				}
