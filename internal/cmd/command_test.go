@@ -147,12 +147,39 @@ Options:
 				ctx := Context{Self: "twtr"}
 				have, want := test.command.help(&ctx), test.help
 
-				for i, have := range strings.Split(have, "\n") {
-					have := have
-					want := strings.Split(want, "\n")[i]
+				haveLines := strings.Split(have, "\n")
+				wantLines := strings.Split(want, "\n")
 
-					if have != want {
-						t.Errorf("line %d:\nhave %q\nwant %q\n", i, have, want)
+				if len(haveLines) < len(wantLines) {
+					for i, have := range haveLines {
+						have := have
+						want := wantLines[i]
+
+						if have != want {
+							t.Errorf("line %d:\nhave %q\nwant %q\n", i, have, want)
+						}
+					}
+
+					t.Errorf("line %d:\nhave EOF\nwant %q", len(haveLines), wantLines[len(haveLines)])
+				} else if len(haveLines) > len(wantLines) {
+					for i, want := range wantLines {
+						have := haveLines[1]
+						want := want
+
+						if have != want {
+							t.Errorf("line %d:\nhave %q\nwant %q\n", i, have, want)
+						}
+					}
+
+					t.Errorf("line %d:\nhave %q\nwant EOF", len(wantLines), haveLines[len(wantLines)])
+				} else {
+					for i, have := range haveLines {
+						have := have
+						want := wantLines[i]
+
+						if have != want {
+							t.Errorf("line %d:\nhave %q\nwant %q\n", i, have, want)
+						}
 					}
 				}
 			})
