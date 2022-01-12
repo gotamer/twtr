@@ -4,6 +4,8 @@ import (
 	"bytes"
 	"strings"
 	"testing"
+
+	"github.com/google/go-cmp/cmp"
 )
 
 const helpMessage = `Usage: twtr COMMAND [OPTIONS] [ARGS...]
@@ -157,79 +159,11 @@ func TestMain(t *testing.T) {
 			}
 
 			if have, want := stdout.String(), test.stdout; have != want {
-				haveLines := strings.Split(have, "\n")
-				wantLines := strings.Split(want, "\n")
-
-				if len(haveLines) < len(wantLines) {
-					for i, have := range haveLines {
-						have := have
-						want := wantLines[i]
-
-						if have != want {
-							t.Errorf("line %d:\nhave %q\nwant %q\n", i+1, have, want)
-						}
-					}
-
-					t.Errorf("line %d:\nhave EOF\nwant %q", len(haveLines)+1, wantLines[len(haveLines)])
-				} else if len(haveLines) > len(wantLines) {
-					for i, want := range wantLines {
-						have := haveLines[1]
-						want := want
-
-						if have != want {
-							t.Errorf("line %d:\nhave %q\nwant %q\n", i+1, have, want)
-						}
-					}
-
-					t.Errorf("line %d:\nhave %q\nwant EOF", len(wantLines)+1, haveLines[len(wantLines)])
-				} else {
-					for i, have := range haveLines {
-						have := have
-						want := wantLines[i]
-
-						if have != want {
-							t.Errorf("line %d:\nhave %q\nwant %q\n", i+1, have, want)
-						}
-					}
-				}
+				t.Errorf("stdout diff:\n%s", cmp.Diff(have, want))
 			}
 
 			if have, want := stderr.String(), test.stderr; have != want {
-				haveLines := strings.Split(have, "\n")
-				wantLines := strings.Split(want, "\n")
-
-				if len(haveLines) < len(wantLines) {
-					for i, have := range haveLines {
-						have := have
-						want := wantLines[i]
-
-						if have != want {
-							t.Errorf("line %d:\nhave %q\nwant %q\n", i+1, have, want)
-						}
-					}
-
-					t.Errorf("line %d:\nhave EOF\nwant %q", len(haveLines)+1, wantLines[len(haveLines)])
-				} else if len(haveLines) > len(wantLines) {
-					for i, want := range wantLines {
-						have := haveLines[1]
-						want := want
-
-						if have != want {
-							t.Errorf("line %d:\nhave %q\nwant %q\n", i+1, have, want)
-						}
-					}
-
-					t.Errorf("line %d:\nhave %q\nwant EOF", len(wantLines), haveLines[len(wantLines)])
-				} else {
-					for i, have := range haveLines {
-						have := have
-						want := wantLines[i]
-
-						if have != want {
-							t.Errorf("line %d:\nhave %q\nwant %q\n", i+1, have, want)
-						}
-					}
-				}
+				t.Errorf("stderr diff:\n%s", cmp.Diff(have, want))
 			}
 		})
 	}

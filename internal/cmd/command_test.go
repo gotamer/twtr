@@ -1,8 +1,9 @@
 package cmd
 
 import (
-	"strings"
 	"testing"
+
+	"github.com/google/go-cmp/cmp"
 )
 
 func TestCommand(t *testing.T) {
@@ -145,42 +146,9 @@ Options:
 		t.Run(test.command.name, func(t *testing.T) {
 			t.Run("help", func(t *testing.T) {
 				ctx := Context{Self: "twtr"}
-				have, want := test.command.help(&ctx), test.help
 
-				haveLines := strings.Split(have, "\n")
-				wantLines := strings.Split(want, "\n")
-
-				if len(haveLines) < len(wantLines) {
-					for i, have := range haveLines {
-						have := have
-						want := wantLines[i]
-
-						if have != want {
-							t.Errorf("line %d:\nhave %q\nwant %q\n", i+1, have, want)
-						}
-					}
-
-					t.Errorf("line %d:\nhave EOF\nwant %q", len(haveLines)+1, wantLines[len(haveLines)])
-				} else if len(haveLines) > len(wantLines) {
-					for i, want := range wantLines {
-						have := haveLines[1]
-						want := want
-
-						if have != want {
-							t.Errorf("line %d:\nhave %q\nwant %q\n", i+1, have, want)
-						}
-					}
-
-					t.Errorf("line %d:\nhave %q\nwant EOF", len(wantLines)+1, haveLines[len(wantLines)])
-				} else {
-					for i, have := range haveLines {
-						have := have
-						want := wantLines[i]
-
-						if have != want {
-							t.Errorf("line %d:\nhave %q\nwant %q\n", i+1, have, want)
-						}
-					}
+				if have, want := test.command.help(&ctx), test.help; have != want {
+					t.Errorf("diff:\n%s", cmp.Diff(have, want))
 				}
 			})
 		})
