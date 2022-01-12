@@ -77,6 +77,8 @@ type Config struct {
 	Following              map[string]string
 }
 
+// New parses a Config for the given reader source. Returns any parsing error
+// that occur.
 func New(source io.Reader) (*Config, error) {
 	// setup default values
 	cfg := Config{

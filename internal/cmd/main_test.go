@@ -35,6 +35,7 @@ func TestMain(t *testing.T) {
 		stderr string
 		err    error
 	}{
+		// no subcommand
 		{
 			stderr: helpMessage,
 		},
@@ -50,6 +51,8 @@ func TestMain(t *testing.T) {
 			args:   []string{"--help"},
 			stderr: helpMessage,
 		},
+
+		// quickstart
 		{
 			args:   []string{"quickstart", "-h"},
 			stderr: quickstartCommand.help(&Context{Self: "twtr"}),
@@ -58,6 +61,8 @@ func TestMain(t *testing.T) {
 			args:   []string{"quickstart", "--help"},
 			stderr: quickstartCommand.help(&Context{Self: "twtr"}),
 		},
+
+		// timeline
 		{
 			args:   []string{"timeline", "-h"},
 			stderr: timelineCommand.help(&Context{Self: "twtr"}),
@@ -66,6 +71,8 @@ func TestMain(t *testing.T) {
 			args:   []string{"timeline", "--help"},
 			stderr: timelineCommand.help(&Context{Self: "twtr"}),
 		},
+
+		// following
 		{
 			args:   []string{"following", "-h"},
 			stderr: followingCommand.help(&Context{Self: "twtr"}),
@@ -74,6 +81,8 @@ func TestMain(t *testing.T) {
 			args:   []string{"following", "--help"},
 			stderr: followingCommand.help(&Context{Self: "twtr"}),
 		},
+
+		// follow
 		{
 			args:   []string{"follow"},
 			stderr: followCommand.help(&Context{Self: "twtr"}),
@@ -86,6 +95,8 @@ func TestMain(t *testing.T) {
 			args:   []string{"follow", "--help"},
 			stderr: followCommand.help(&Context{Self: "twtr"}),
 		},
+
+		// unfollow
 		{
 			args:   []string{"unfollow"},
 			stderr: unfollowCommand.help(&Context{Self: "twtr"}),
@@ -98,6 +109,8 @@ func TestMain(t *testing.T) {
 			args:   []string{"unfollow", "--help"},
 			stderr: unfollowCommand.help(&Context{Self: "twtr"}),
 		},
+
+		// tweet
 		{
 			args:   []string{"tweet"},
 			stderr: tweetCommand.help(&Context{Self: "twtr"}),
@@ -110,6 +123,8 @@ func TestMain(t *testing.T) {
 			args:   []string{"tweet", "--help"},
 			stderr: tweetCommand.help(&Context{Self: "twtr"}),
 		},
+
+		// view
 		{
 			args:   []string{"view"},
 			stderr: viewCommand.help(&Context{Self: "twtr"}),
