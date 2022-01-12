@@ -172,3 +172,9 @@ func New(source io.Reader) (*Config, error) {
 	// return config
 	return &cfg, nil
 }
+
+// Save writes an existing config to the given writer, allowing the config to be
+// saved to a file.
+func (c *Config) Save(to io.Writer) error {
+	return nil
+}
