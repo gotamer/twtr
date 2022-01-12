@@ -37,11 +37,11 @@ func TestMain(t *testing.T) {
 	}{
 		// no subcommand
 		{
-			stderr: helpMessage,
+			stderr: "twtr: no COMMAND given\n\n" + helpMessage,
 		},
 		{
 			args:   []string{},
-			stderr: helpMessage,
+			stderr: "twtr: no COMMAND given\n\n" + helpMessage,
 		},
 		{
 			args:   []string{"-h"},
@@ -85,7 +85,7 @@ func TestMain(t *testing.T) {
 		// follow
 		{
 			args:   []string{"follow"},
-			stderr: followCommand.help(&Context{Self: "twtr"}),
+			stderr: "twtr follow: no SOURCE given\n\n" + followCommand.help(&Context{Self: "twtr"}),
 		},
 		{
 			args:   []string{"follow", "-h"},
@@ -99,7 +99,7 @@ func TestMain(t *testing.T) {
 		// unfollow
 		{
 			args:   []string{"unfollow"},
-			stderr: unfollowCommand.help(&Context{Self: "twtr"}),
+			stderr: "twtr unfollow: no SOURCE given\n\n" + unfollowCommand.help(&Context{Self: "twtr"}),
 		},
 		{
 			args:   []string{"unfollow", "-h"},
@@ -113,7 +113,7 @@ func TestMain(t *testing.T) {
 		// tweet
 		{
 			args:   []string{"tweet"},
-			stderr: tweetCommand.help(&Context{Self: "twtr"}),
+			stderr: "twtr tweet: no TWEET given\n\n" + tweetCommand.help(&Context{Self: "twtr"}),
 		},
 		{
 			args:   []string{"tweet", "-h"},
@@ -127,7 +127,7 @@ func TestMain(t *testing.T) {
 		// view
 		{
 			args:   []string{"view"},
-			stderr: viewCommand.help(&Context{Self: "twtr"}),
+			stderr: "twtr view: no SOURCE given\n\n" + viewCommand.help(&Context{Self: "twtr"}),
 		},
 		{
 			args:   []string{"view", "-h"},
