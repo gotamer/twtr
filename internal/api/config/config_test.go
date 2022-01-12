@@ -415,6 +415,48 @@ bob   = https://example.org/bob.txt
 
 `,
 		},
+		{
+			name: "NoFollowingSection",
+			from: config.Config{
+				Nick:                   "buckket",
+				Twtfile:                "~/twtxt.txt",
+				Twturl:                 "http://example.org/twtxt.txt",
+				CheckFollowing:         true,
+				UsePager:               false,
+				UseCache:               true,
+				Porcelain:              false,
+				DiscloseIdentity:       false,
+				CharacterLimit:         140,
+				CharacterWarning:       140,
+				LimitTimeline:          20,
+				TimelineUpdateInterval: 10,
+				Timeout:                5.0,
+				SortAscending:          false,
+				UseAbsoluteTime:        false,
+				PreTweetHook:           "scp buckket@example.org:~/public_html/twtxt.txt {twtfile}",
+				PostTweetHook:          "scp {twtfile} buckket@example.org:~/public_html/twtxt.txt",
+				Following:              make(map[string]string),
+			},
+			want: `[twtxt]
+nick                     = buckket
+twtfile                  = ~/twtxt.txt
+twturl                   = http://example.org/twtxt.txt
+check_following          = True
+use_pager                = False
+use_cache                = True
+porcelain                = False
+disclose_identity        = False
+character_limit          = 140
+character_warning        = 140
+limit_timeline           = 20
+timeline_update_interval = 10
+timeout                  = 5.0
+sorting                  = descending
+use_abs_time             = False
+pre_tweet_hook           = scp buckket@example.org:~/public_html/twtxt.txt {twtfile}
+post_tweet_hook          = scp {twtfile} buckket@example.org:~/public_html/twtxt.txt
+`,
+		},
 	}
 
 	for _, test := range tests {
