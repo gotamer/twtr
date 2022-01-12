@@ -61,6 +61,7 @@ func Main(ctx *Context, args ...string) error {
 	}
 
 	if len(args) < 1 {
+		fmt.Fprint(ctx.Stderr, ctx.Self+": no COMMAND given\n\n")
 		fmt.Fprint(ctx.Stderr, help(ctx))
 		return nil
 	}
