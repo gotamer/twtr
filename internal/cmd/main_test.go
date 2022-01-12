@@ -157,11 +157,25 @@ func TestMain(t *testing.T) {
 			}
 
 			if have, want := stdout.String(), test.stdout; have != want {
-				t.Errorf("\nstdout:\n%s\n\nwant:\n%s\n", have, want)
+				for i, have := range strings.Split(have, "\n") {
+					have := have
+					want := strings.Split(want, "\n")[i]
+
+					if have != want {
+						t.Errorf("stdout line %d:\nhave %q\nwant %q\n", i, have, want)
+					}
+				}
 			}
 
 			if have, want := stderr.String(), test.stderr; have != want {
-				t.Errorf("\nstderr:\n%s\n\nwant:\n%s\n", have, want)
+				for i, have := range strings.Split(have, "\n") {
+					have := have
+					want := strings.Split(want, "\n")[i]
+
+					if have != want {
+						t.Errorf("stderr line %d:\nhave %q\nwant %q\n", i, have, want)
+					}
+				}
 			}
 		})
 	}

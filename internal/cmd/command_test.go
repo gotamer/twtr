@@ -1,6 +1,9 @@
 package cmd
 
-import "testing"
+import (
+	"strings"
+	"testing"
+)
 
 func TestCommand(t *testing.T) {
 	tests := []struct {
@@ -142,10 +145,15 @@ Options:
 		t.Run(test.command.name, func(t *testing.T) {
 			t.Run("help", func(t *testing.T) {
 				ctx := Context{Self: "twtr"}
+				have, want := test.command.help(&ctx), test.help
 
-				if have, want := test.command.help(&ctx), test.help; have != want {
-					t.Errorf("\nhave:\n%s\n\nwant:\n%s\n", have, want)
-					t.Errorf("\nhave:\n%q\n\nwant:\n%q\n", have, want)
+				for i, have := range strings.Split(have, "\n") {
+					have := have
+					want := strings.Split(want, "\n")[i]
+
+					if have != want {
+						t.Errorf("line %d:\nhave %q\nwant %q\n", i, have, want)
+					}
 				}
 			})
 		})
