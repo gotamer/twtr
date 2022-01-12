@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"os"
 
-	"internal/cmd"
+	"duriny.envs.sh/twtr/internal/cmd"
 )
 
 func main() {
