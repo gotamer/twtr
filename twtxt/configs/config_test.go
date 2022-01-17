@@ -1,4 +1,4 @@
-package config_test
+package configs_test
 
 import (
 	"bytes"
@@ -6,7 +6,7 @@ import (
 	"strings"
 	"testing"
 
-	"duriny.envs.sh/twtr/internal/api/config"
+	"duriny.envs.sh/twtr/twtxt/configs"
 	"github.com/google/go-cmp/cmp"
 
 	"gopkg.in/ini.v1"
@@ -16,7 +16,7 @@ func TestNewConfig(t *testing.T) {
 	tests := []struct {
 		name          string
 		source        io.Reader
-		want          config.Config
+		want          configs.Config
 		expectedError func(error) bool
 	}{
 		{
@@ -45,7 +45,7 @@ post_tweet_hook = "scp {twtfile} buckket@example.org:~/public_html/twtxt.txt"
 bob = https://example.org/bob.txt
 alice = https://example.org/alice.txt
 `),
-			want: config.Config{
+			want: configs.Config{
 				Nick:                   "buckket",
 				Twtfile:                "~/twtxt.txt",
 				Twturl:                 "http://example.org/twtxt.txt",
@@ -91,7 +91,7 @@ use_abs_time = false
 pre_tweet_hook = "scp buckket@example.org:~/public_html/twtxt.txt {twtfile}"
 post_tweet_hook = "scp {twtfile} buckket@example.org:~/public_html/twtxt.txt"
 `),
-			want: config.Config{
+			want: configs.Config{
 				Nick:                   "buckket",
 				Twtfile:                "~/twtxt.txt",
 				Twturl:                 "http://example.org/twtxt.txt",
@@ -119,7 +119,7 @@ post_tweet_hook = "scp {twtfile} buckket@example.org:~/public_html/twtxt.txt"
 bob = https://example.org/bob.txt
 alice = https://example.org/alice.txt
 `),
-			want: config.Config{
+			want: configs.Config{
 				CheckFollowing:         true,
 				UseCache:               true,
 				LimitTimeline:          20,
@@ -134,7 +134,7 @@ alice = https://example.org/alice.txt
 		{
 			name:   "EmptyFile",
 			source: strings.NewReader(""),
-			want: config.Config{
+			want: configs.Config{
 				CheckFollowing:         true,
 				UseCache:               true,
 				LimitTimeline:          20,
@@ -153,7 +153,7 @@ deepMagic = off
 [Section B]
 samuraiWarrior = "foolish"
 `),
-			want: config.Config{
+			want: configs.Config{
 				CheckFollowing:         true,
 				UseCache:               true,
 				LimitTimeline:          20,
@@ -173,7 +173,7 @@ deepMagic = DEAR_GOD_TURN_IT_OFF
 notActuallyANickname = "Not actually a url"
 meaningOfLife = 42
 `),
-			want: config.Config{
+			want: configs.Config{
 				CheckFollowing:         true,
 				UseCache:               true,
 				LimitTimeline:          20,
@@ -260,7 +260,7 @@ post_tweet_hook = "scp {twtfile} buckket@example.org:~/public_html/twtxt.txt"
 bob = https://example.org/bob.txt
 alice = https://example.org/alice.txt
 `),
-			want: config.Config{
+			want: configs.Config{
 				CheckFollowing:         true,
 				UseCache:               true,
 				LimitTimeline:          20,
@@ -277,7 +277,7 @@ alice = https://example.org/alice.txt
 		t.Run(test.name, func(t *testing.T) {
 			want := test.want
 
-			have, err := config.New(test.source)
+			have, err := configs.New(test.source)
 			if err != nil {
 				if test.expectedError != nil && test.expectedError(err) {
 					// t.Logf("expected error: %q", err)
@@ -299,12 +299,12 @@ alice = https://example.org/alice.txt
 func TestConfigSave(t *testing.T) {
 	tests := []struct {
 		name string
-		from config.Config
+		from configs.Config
 		want string
 	}{
 		{
 			name: "AllFieldsSetWithExampleValue",
-			from: config.Config{
+			from: configs.Config{
 				Nick:                   "buckket",
 				Twtfile:                "~/twtxt.txt",
 				Twturl:                 "http://example.org/twtxt.txt",
@@ -354,7 +354,7 @@ bob   = https://example.org/bob.txt
 		},
 		{
 			name: "NoFollowingSection",
-			from: config.Config{
+			from: configs.Config{
 				Nick:                   "buckket",
 				Twtfile:                "~/twtxt.txt",
 				Twturl:                 "http://example.org/twtxt.txt",
@@ -413,7 +413,7 @@ sorting                  = descending
 
 			t.Run("Reversibly", func(t *testing.T) {
 				want := test.from
-				have, err := config.New(strings.NewReader(test.want))
+				have, err := configs.New(strings.NewReader(test.want))
 				if err != nil {
 					t.Fatalf("unexpected error: %q", err)
 				}
