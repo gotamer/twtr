@@ -79,112 +79,41 @@ func New(source io.Reader) (*Config, error) {
 // Save writes an existing config to the given writer, allowing the config to be
 // saved to a file.
 func (c *Config) Save(to io.Writer) (err error) {
-	var twtxt *ini.Section
-
 	file := ini.Empty()
-	fmti := func(i int) string { return fmt.Sprintf("%d", i) }
-	fmtf := func(f float64) string { return fmt.Sprintf("%.1f", f) }
-	fmtt := func(b bool, t string, f string) string {
-		if b {
-			return t
-		} else {
-			return f
-		}
-	}
-	fmtb := func(b bool) string { return fmtt(b, "True", "False") }
 
-	if twtxt, err = file.NewSection("twtxt"); err != nil {
-		return
-	}
+	file.Section("twtxt").Key("nick").SetValue(c.Nick)
+	file.Section("twtxt").Key("twtfile").SetValue(c.Twtfile)
+	file.Section("twtxt").Key("twturl").SetValue(c.Twturl)
+	file.Section("twtxt").Key("check_following").SetValue(fmt.Sprintf("%v", c.CheckFollowing))
+	file.Section("twtxt").Key("use_pager").SetValue(fmt.Sprintf("%v", c.UsePager))
+	file.Section("twtxt").Key("use_cache").SetValue(fmt.Sprintf("%v", c.UseCache))
+	file.Section("twtxt").Key("porcelain").SetValue(fmt.Sprintf("%v", c.Porcelain))
+	file.Section("twtxt").Key("disclose_identity").SetValue(fmt.Sprintf("%v", c.DiscloseIdentity))
+	file.Section("twtxt").Key("character_limit").SetValue(fmt.Sprintf("%v", c.CharacterLimit))
+	file.Section("twtxt").Key("character_warning").SetValue(fmt.Sprintf("%v", c.CharacterWarning))
+	file.Section("twtxt").Key("limit_timeline").SetValue(fmt.Sprintf("%v", c.LimitTimeline))
+	file.Section("twtxt").Key("timeline_update_interval").SetValue(fmt.Sprintf("%v", c.TimelineUpdateInterval))
+	file.Section("twtxt").Key("timeout").SetValue(fmt.Sprintf("%.1f", c.Timeout))
+	file.Section("twtxt").Key("use_abs_time").SetValue(fmt.Sprintf("%v", c.UseAbsoluteTime))
+	file.Section("twtxt").Key("pre_tweet_hook").SetValue(c.PreTweetHook)
+	file.Section("twtxt").Key("post_tweet_hook").SetValue(c.PostTweetHook)
 
-	if _, err = twtxt.NewKey("nick", c.Nick); err != nil {
-		return
-	}
-
-	if _, err = twtxt.NewKey("twtfile", c.Twtfile); err != nil {
-		return
-	}
-
-	if _, err = twtxt.NewKey("twturl", c.Twturl); err != nil {
-		return
+	if c.SortAscending {
+		file.Section("twtxt").Key("sorting").SetValue("ascending")
+	} else {
+		file.Section("twtxt").Key("sorting").SetValue("descending")
 	}
 
-	if _, err = twtxt.NewKey("check_following", fmtb(c.CheckFollowing)); err != nil {
-		return
+	i, nicks := 0, make([]string, len(c.Following))
+	for nick := range c.Following {
+		nicks[i] = nick
+		i++
 	}
 
-	if _, err = twtxt.NewKey("use_pager", fmtb(c.UsePager)); err != nil {
-		return
-	}
+	sort.Strings(nicks)
 
-	if _, err = twtxt.NewKey("use_cache", fmtb(c.UseCache)); err != nil {
-		return
-	}
-
-	if _, err = twtxt.NewKey("porcelain", fmtb(c.Porcelain)); err != nil {
-		return
-	}
-
-	if _, err = twtxt.NewKey("disclose_identity", fmtb(c.DiscloseIdentity)); err != nil {
-		return
-	}
-
-	if _, err = twtxt.NewKey("character_limit", fmti(c.CharacterLimit)); err != nil {
-		return
-	}
-
-	if _, err = twtxt.NewKey("character_warning", fmti(c.CharacterWarning)); err != nil {
-		return
-	}
-
-	if _, err = twtxt.NewKey("limit_timeline", fmti(c.LimitTimeline)); err != nil {
-		return
-	}
-
-	if _, err = twtxt.NewKey("timeline_update_interval", fmti(c.TimelineUpdateInterval)); err != nil {
-		return
-	}
-
-	if _, err = twtxt.NewKey("timeout", fmtf(c.Timeout)); err != nil {
-		return
-	}
-
-	if _, err = twtxt.NewKey("sorting", fmtt(c.SortAscending, "ascending", "descending")); err != nil {
-		return
-	}
-
-	if _, err = twtxt.NewKey("use_abs_time", fmtb(c.UseAbsoluteTime)); err != nil {
-		return
-	}
-
-	if _, err = twtxt.NewKey("pre_tweet_hook", c.PreTweetHook); err != nil {
-		return
-	}
-
-	if _, err = twtxt.NewKey("post_tweet_hook", c.PostTweetHook); err != nil {
-		return
-	}
-
-	if len(c.Following) > 0 {
-		var following *ini.Section
-
-		if following, err = file.NewSection("following"); err != nil {
-			return
-		}
-
-		i, nicks := 0, make([]string, len(c.Following))
-		for nick := range c.Following {
-			nicks[i] = nick
-			i++
-		}
-
-		sort.Strings(nicks)
-
-		for _, nick := range nicks {
-			if _, err = following.NewKey(nick, c.Following[nick]); err != nil {
-				return
-			}
-		}
+	for _, nick := range nicks {
+		file.Section("following").Key(nick).SetValue(c.Following[nick])
 	}
 
 	if _, err = file.WriteTo(to); err != nil {

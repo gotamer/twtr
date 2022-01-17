@@ -331,20 +331,20 @@ func TestConfigSave(t *testing.T) {
 nick                     = buckket
 twtfile                  = ~/twtxt.txt
 twturl                   = http://example.org/twtxt.txt
-check_following          = True
-use_pager                = False
-use_cache                = True
-porcelain                = False
-disclose_identity        = False
+check_following          = true
+use_pager                = false
+use_cache                = true
+porcelain                = false
+disclose_identity        = false
 character_limit          = 140
 character_warning        = 140
 limit_timeline           = 20
 timeline_update_interval = 10
 timeout                  = 5.0
-sorting                  = descending
-use_abs_time             = False
+use_abs_time             = false
 pre_tweet_hook           = scp buckket@example.org:~/public_html/twtxt.txt {twtfile}
 post_tweet_hook          = scp {twtfile} buckket@example.org:~/public_html/twtxt.txt
+sorting                  = descending
 
 [following]
 alice = https://example.org/alice.txt
@@ -378,20 +378,20 @@ bob   = https://example.org/bob.txt
 nick                     = buckket
 twtfile                  = ~/twtxt.txt
 twturl                   = http://example.org/twtxt.txt
-check_following          = True
-use_pager                = False
-use_cache                = True
-porcelain                = False
-disclose_identity        = False
+check_following          = true
+use_pager                = false
+use_cache                = true
+porcelain                = false
+disclose_identity        = false
 character_limit          = 140
 character_warning        = 140
 limit_timeline           = 20
 timeline_update_interval = 10
 timeout                  = 5.0
-sorting                  = descending
-use_abs_time             = False
+use_abs_time             = false
 pre_tweet_hook           = scp buckket@example.org:~/public_html/twtxt.txt {twtfile}
 post_tweet_hook          = scp {twtfile} buckket@example.org:~/public_html/twtxt.txt
+sorting                  = descending
 
 `,
 		},
