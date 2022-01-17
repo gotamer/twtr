@@ -260,8 +260,13 @@ post_tweet_hook = "scp {twtfile} buckket@example.org:~/public_html/twtxt.txt"
 bob = https://example.org/bob.txt
 alice = https://example.org/alice.txt
 `),
-			expectedError: func(err error) bool {
-				return strings.Contains(err.Error(), "invalid syntax")
+			want: config.Config{
+				CheckFollowing:         true,
+				UseCache:               true,
+				LimitTimeline:          20,
+				TimelineUpdateInterval: 10,
+				Timeout:                5.0,
+				Following:              make(map[string]string),
 			},
 		},
 	}
