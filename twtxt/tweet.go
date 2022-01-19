@@ -21,7 +21,7 @@ type Tweet struct {
 //
 // See the format specification for more details on the file format:
 // https://twtxt.readthedocs.io/en/latest/user/twtxtfile.html
-func (twt *Tweet) String() string {
+func (twt Tweet) String() string {
 	r := strings.NewReplacer(
 		"\n", "\\n",
 		"\t", "\\t",
