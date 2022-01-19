@@ -76,9 +76,9 @@ func New(source io.Reader) (*Config, error) {
 	return &cfg, nil
 }
 
-// Save writes an existing config to the given writer, allowing the config to be
+// WriteTo writes an existing config to the given writer, allowing the config to be
 // saved to a file.
-func (c *Config) Save(to io.Writer) (err error) {
+func (c *Config) WriteTo(w io.Writer) (n int64, err error) {
 	file := ini.Empty()
 
 	file.Section("twtxt").Key("nick").SetValue(c.Nick)
@@ -116,7 +116,7 @@ func (c *Config) Save(to io.Writer) (err error) {
 		file.Section("following").Key(nick).SetValue(c.Following[nick])
 	}
 
-	if _, err = file.WriteTo(to); err != nil {
+	if n, err = file.WriteTo(w); err != nil {
 		return
 	}
 

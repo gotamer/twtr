@@ -296,7 +296,7 @@ alice = https://example.org/alice.txt
 	}
 }
 
-func TestConfigSave(t *testing.T) {
+func TestConfigWriteTo(t *testing.T) {
 	tests := []struct {
 		name string
 		from config.Config
@@ -403,7 +403,13 @@ sorting                  = descending
 		t.Run(test.name, func(t *testing.T) {
 			var have bytes.Buffer
 
-			if err := test.from.Save(&have); err != nil {
+			n, err := test.from.WriteTo(&have)
+
+			if n != int64(len(test.want)) {
+				t.Fatalf("n = %d, want %d", n, int64(len(test.want)))
+			}
+
+			if err != nil {
 				t.Fatalf("err = %q, want nil", err)
 			}
 
