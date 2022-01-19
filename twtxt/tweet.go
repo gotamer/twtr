@@ -12,12 +12,21 @@ type Tweet struct {
 	Post string
 }
 
+// NewTweet creates a new Tweet instance with the given post message and the
+// current local time.
+func NewTweet(post string) Tweet {
+	return Tweet{
+		Time: time.Now(),
+		Post: post,
+	}
+}
+
 // String formats the Tweet as an entry into a twtxt.txt file, returns the
 // timestamp followed by a tab character and the post message. Any tabs or new
 // line characters are escaped to prevent invalid formating of the twtxt.txt
 // file.
 //
-//     <yyyy>-<mm>-<dd>T<HH>:<MM>:<SS>+<XX>:<ZZ>\t<POST>
+//     <yyyy>-<mm>-<dd>T<HH>:<MM>:<SS><+/-><XX>:<ZZ>\t<POST>
 //
 // See the format specification for more details on the file format:
 // https://twtxt.readthedocs.io/en/latest/user/twtxtfile.html

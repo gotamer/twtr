@@ -13,10 +13,28 @@ func loc(offset int) *time.Location {
 	return time.FixedZone(fmt.Sprintf("UTC%+d", offset), offset*60*60)
 }
 
-func TestTweetString(t *testing.T) {
+func TestNewTweet(t *testing.T) {
+	tests := []string{
+		"Some message or status update",
+	}
+
+	for _, test := range tests {
+		test := test
+
+		t.Run(test, func(t *testing.T) {
+			tweet := twtxt.NewTweet(test)
+
+			if have, want := tweet.Post, test; have != want {
+				t.Errorf("have %q, want %q", have, want)
+			}
+		})
+	}
+}
+
+func TestTweet(t *testing.T) {
 	tests := []struct {
-		tweet twtxt.Tweet
 		want  string
+		tweet twtxt.Tweet
 	}{
 		{
 			want: "2022-01-19T14:14:00+13:00\tThis post contains newlines\\n\\n\\n",
@@ -65,8 +83,12 @@ func TestTweetString(t *testing.T) {
 	for _, test := range tests {
 		test := test
 
-		if have, want := test.tweet.String(), test.want; have != want {
-			t.Errorf("%#v.String()\nhave: %q\nwant: %q", test.tweet, have, want)
-		}
+		t.Run(test.want, func(t *testing.T) {
+			t.Run("String()", func(t *testing.T) {
+				if have, want := test.tweet.String(), test.want; have != want {
+					t.Errorf("\nhave: %q\nwant: %q", have, want)
+				}
+			})
+		})
 	}
 }
