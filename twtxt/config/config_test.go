@@ -418,14 +418,14 @@ sorting                  = descending
 			}
 
 			t.Run("Reversibly", func(t *testing.T) {
-				want := &test.from
+				want := test.from
 				have, err := config.New(strings.NewReader(test.want))
 				if err != nil {
 					t.Fatalf("unexpected error: %q", err)
 				}
 
-				if !cmp.Equal(have, want) {
-					t.Errorf("diff:\n%s", cmp.Diff(have, want))
+				if !cmp.Equal(have, &want) {
+					t.Errorf("diff:\n%s", cmp.Diff(have, &want))
 				}
 			})
 		})

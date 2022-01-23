@@ -2,9 +2,13 @@ package twtxt
 
 import (
 	"fmt"
+	"io"
 	"sort"
+	"strings"
 	"testing"
 	"time"
+
+	"github.com/google/go-cmp/cmp"
 )
 
 func copyFeed(twts Tweets) Tweets {
@@ -13,6 +17,42 @@ func copyFeed(twts Tweets) Tweets {
 	copy(tmp, twts)
 
 	return Tweets(tmp)
+}
+
+func TestParseTweets(t *testing.T) {
+	tests := []struct {
+		name   string
+		source io.Reader
+		tweets Tweets
+		err    error
+	}{
+		{
+			name:   "Nil",
+			source: nil,
+			tweets: Tweets{},
+		},
+		{
+			name:   "Empty",
+			source: strings.NewReader(""),
+			tweets: Tweets{},
+		},
+	}
+
+	for _, test := range tests {
+		test := test
+
+		t.Run(test.name, func(t *testing.T) {
+			tweets, err := ParseTweets(test.source)
+
+			if err != test.err {
+				t.Fatalf("have %q, want %q", err, test.err)
+			}
+
+			if !cmp.Equal(tweets, test.tweets) {
+				t.Errorf("diff:\n%s", cmp.Diff(tweets, test.tweets))
+			}
+		})
+	}
 }
 
 func TestTweets(t *testing.T) {
