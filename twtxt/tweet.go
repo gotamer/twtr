@@ -23,7 +23,7 @@ func NewTweet(post string) Tweet {
 
 // String formats the Tweet as an entry into a twtxt.txt file, returns the
 // timestamp followed by a tab character and the post message. Any tabs or new
-// line characters are escaped to prevent invalid formating of the twtxt.txt
+// line characters are escaped to prevent invalid formatting of the twtxt.txt
 // file.
 //
 //     <yyyy>-<mm>-<dd>T<HH>:<MM>:<SS><+/-><XX>:<ZZ>\t<POST>
