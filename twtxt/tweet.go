@@ -14,10 +14,6 @@ type Tweet struct {
 
 // init is a helper method to preform any setup that hasn't been done yet.
 func (twt *Tweet) init() {
-	if twt == nil {
-		*twt = Tweet{}
-	}
-
 	if twt.time.IsZero() {
 		twt.time = time.Now()
 	}
