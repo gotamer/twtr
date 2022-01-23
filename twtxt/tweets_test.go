@@ -58,15 +58,15 @@ func TestParseTweets(t *testing.T) {
 func TestTweets(t *testing.T) {
 	tests := []struct {
 		name string
-		feed Tweets
+		twts Tweets
 	}{
 		{
 			name: "Nil",
-			feed: nil,
+			twts: nil,
 		},
 		{
 			name: "Empty",
-			feed: Tweets{
+			twts: Tweets{
 				&Tweet{
 					time: time.Date(2022, 1, 19, 14, 14, 0, 0, loc(+13)),
 					post: "This post contains newlines\n\n\n",
@@ -75,7 +75,7 @@ func TestTweets(t *testing.T) {
 		},
 		{
 			name: "SingleTweet",
-			feed: Tweets{
+			twts: Tweets{
 				&Tweet{
 					time: time.Date(2022, 1, 19, 14, 14, 0, 0, loc(+13)),
 					post: "This post contains newlines\n\n\n",
@@ -84,7 +84,7 @@ func TestTweets(t *testing.T) {
 		},
 		{
 			name: "MultipleTweets",
-			feed: Tweets{
+			twts: Tweets{
 				&Tweet{
 					time: time.Date(2022, 1, 19, 14, 11, 0, 0, loc(+13)),
 					post: "This post contains tabs\t\t\t",
@@ -118,17 +118,17 @@ func TestTweets(t *testing.T) {
 
 		t.Run(test.name, func(t *testing.T) {
 			t.Run("Len", func(t *testing.T) {
-				if have, want := test.feed.Len(), len(test.feed); have != want {
+				if have, want := test.twts.Len(), len(test.twts); have != want {
 					t.Errorf("have %d, want %d", have, want)
 				}
 			})
 
-			for i := range test.feed {
-				for j := range test.feed {
+			for i := range test.twts {
+				for j := range test.twts {
 					t.Run(fmt.Sprintf("Less(%d,%d)", i, j), func(t *testing.T) {
-						feed := copyFeed(test.feed)
-						have := feed.Less(i, j)
-						want := feed[i].Time().Before(feed[j].Time())
+						twts := copyFeed(test.twts)
+						have := twts.Less(i, j)
+						want := twts[i].Time().Before(twts[j].Time())
 
 						if have != want {
 							t.Errorf("have %t, want %t", have, want)
@@ -136,16 +136,16 @@ func TestTweets(t *testing.T) {
 					})
 
 					t.Run(fmt.Sprintf("Swap(%d,%d)", i, j), func(t *testing.T) {
-						feed := copyFeed(test.feed)
-						orig := copyFeed(test.feed)
+						twts := copyFeed(test.twts)
+						orig := copyFeed(test.twts)
 
-						feed.Swap(i, j)
+						twts.Swap(i, j)
 
-						if have, want := orig[j], feed[i]; have != want {
+						if have, want := orig[j], twts[i]; have != want {
 							t.Errorf("have %#v, want %#v", have, want)
 						}
 
-						if have, want := orig[i], feed[j]; have != want {
+						if have, want := orig[i], twts[j]; have != want {
 							t.Errorf("have %#v, want %#v", have, want)
 						}
 					})
@@ -153,20 +153,20 @@ func TestTweets(t *testing.T) {
 			}
 
 			t.Run("Sort", func(t *testing.T) {
-				feed := copyFeed(test.feed)
+				twts := copyFeed(test.twts)
 
-				sort.Sort(feed)
+				sort.Sort(twts)
 
-				if !sort.IsSorted(feed) {
+				if !sort.IsSorted(twts) {
 					t.Error("sort failed")
 				}
 
 				t.Run("Reverse", func(t *testing.T) {
-					feed := copyFeed(test.feed)
+					twts := copyFeed(test.twts)
 
-					sort.Sort(sort.Reverse(feed))
+					sort.Sort(sort.Reverse(twts))
 
-					if !sort.IsSorted(sort.Reverse(feed)) {
+					if !sort.IsSorted(sort.Reverse(twts)) {
 						t.Error("sort failed")
 					}
 				})
