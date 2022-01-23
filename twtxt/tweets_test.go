@@ -36,6 +36,53 @@ func TestParseTweets(t *testing.T) {
 			source: strings.NewReader(""),
 			tweets: Tweets{},
 		},
+		{
+			name:   "SingleTweet",
+			source: strings.NewReader("2022-01-19T14:14:00+13:00\tThis post contains newlines\\n\\n\\n"),
+			tweets: Tweets{
+				&Tweet{
+					time: time.Date(2022, 1, 19, 14, 14, 0, 0, loc(+13)),
+					post: "This post contains newlines\n\n\n",
+				},
+			},
+		},
+		{
+			name: "MultipleTweets",
+			source: strings.NewReader(strings.Join([]string{
+				"2022-01-19T14:11:00+13:00\tThis post contains tabs\\t\\t\\t",
+				"2016-02-03T23:05:00+01:00\t@<example http://example.org/twtxt.txt> welcome to twtxt!",
+				"2022-01-19T14:14:00+13:00\tThis post contains newlines\\n\\n\\n",
+				"2016-02-01T11:00:00+01:00\tThis is just another example.",
+				"2015-12-12T12:00:00+01:00\tFiat lux!",
+				"2016-02-04T13:30:00+01:00\tYou can really go crazy here! ┐(ﾟ∀ﾟ)┌",
+			}, "\n")),
+			tweets: Tweets{
+				&Tweet{
+					time: time.Date(2022, 1, 19, 14, 11, 0, 0, loc(+13)),
+					post: "This post contains tabs\t\t\t",
+				},
+				&Tweet{
+					time: time.Date(2016, 2, 3, 23, 5, 0, 0, loc(+1)),
+					post: "@<example http://example.org/twtxt.txt> welcome to twtxt!",
+				},
+				&Tweet{
+					time: time.Date(2022, 1, 19, 14, 14, 0, 0, loc(+13)),
+					post: "This post contains newlines\n\n\n",
+				},
+				&Tweet{
+					time: time.Date(2016, 2, 1, 11, 0, 0, 0, loc(+1)),
+					post: "This is just another example.",
+				},
+				&Tweet{
+					time: time.Date(2015, 12, 12, 12, 0, 0, 0, loc(+1)),
+					post: "Fiat lux!",
+				},
+				&Tweet{
+					time: time.Date(2016, 2, 4, 13, 30, 0, 0, loc(+1)),
+					post: "You can really go crazy here! ┐(ﾟ∀ﾟ)┌",
+				},
+			},
+		},
 	}
 
 	for _, test := range tests {
