@@ -8,17 +8,43 @@ import (
 // Tweet represents a single twtxt post, containing the timestamp and the main
 // body of the post.
 type Tweet struct {
-	Time time.Time
-	Post string
+	time time.Time
+	post string
+}
+
+// init is a helper method to preform any setup that hasn't been done yet.
+func (twt *Tweet) init() {
+	if twt == nil {
+		*twt = Tweet{}
+	}
+
+	if twt.time.IsZero() {
+		twt.time = time.Now()
+	}
 }
 
 // NewTweet creates a new Tweet instance with the given post message and the
 // current local time.
-func NewTweet(post string) Tweet {
-	return Tweet{
-		Time: time.Now(),
-		Post: post,
-	}
+func NewTweet(post string) *Tweet {
+	twt := &Tweet{post: post}
+
+	twt.init()
+
+	return twt
+}
+
+// Time returns the time that the Tweet was posted.
+func (twt *Tweet) Time() time.Time {
+	twt.init()
+
+	return twt.time
+}
+
+// Post returns the posted message of the Tweet.
+func (twt *Tweet) Post() string {
+	twt.init()
+
+	return twt.post
 }
 
 // String formats the Tweet as an entry into a twtxt.txt file, returns the
@@ -30,11 +56,13 @@ func NewTweet(post string) Tweet {
 //
 // See the format specification for more details on the file format:
 // https://twtxt.readthedocs.io/en/latest/user/twtxtfile.html
-func (twt Tweet) String() string {
+func (twt *Tweet) String() string {
 	r := strings.NewReplacer(
 		"\n", "\\n",
 		"\t", "\\t",
 	)
 
-	return twt.Time.Format(time.RFC3339 + "\t" + r.Replace(twt.Post))
+	twt.init()
+
+	return twt.time.Format(time.RFC3339 + "\t" + r.Replace(twt.post))
 }
