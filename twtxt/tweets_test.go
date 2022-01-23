@@ -1,75 +1,73 @@
-package twtxt_test
+package twtxt
 
 import (
 	"fmt"
 	"sort"
 	"testing"
 	"time"
-
-	"duriny.envs.sh/twtr/twtxt"
 )
 
-func copyFeed(feed twtxt.Feed) twtxt.Feed {
-	tmp := make([]twtxt.Tweet, len(feed))
+func copyFeed(twts Tweets) Tweets {
+	tmp := make([]*Tweet, len(twts))
 
-	copy(tmp, feed)
+	copy(tmp, twts)
 
-	return twtxt.Feed(tmp)
+	return Tweets(tmp)
 }
 
-func TestFeed(t *testing.T) {
+func TestTweets(t *testing.T) {
 	tests := []struct {
 		name string
-		feed twtxt.Feed
+		feed Tweets
 	}{
 		{
-			name: "NilFeed",
+			name: "Nil",
 			feed: nil,
 		},
 		{
-			name: "FeedWithNoTweets",
-			feed: twtxt.Feed{
-				twtxt.Tweet{
-					Time: time.Date(2022, 1, 19, 14, 14, 0, 0, loc(+13)),
-					Post: "This post contains newlines\n\n\n",
+			name: "Empty",
+			feed: Tweets{
+				&Tweet{
+					time: time.Date(2022, 1, 19, 14, 14, 0, 0, loc(+13)),
+					post: "This post contains newlines\n\n\n",
 				},
 			},
 		},
 		{
-			name: "FeedWithSingleTweet",
-			feed: twtxt.Feed{
-				twtxt.Tweet{
-					Time: time.Date(2022, 1, 19, 14, 14, 0, 0, loc(+13)),
-					Post: "This post contains newlines\n\n\n",
+			name: "SingleTweet",
+			feed: Tweets{
+				&Tweet{
+					time: time.Date(2022, 1, 19, 14, 14, 0, 0, loc(+13)),
+					post: "This post contains newlines\n\n\n",
 				},
 			},
 		},
 		{
-			name: "FeedWithMultipleTweets",
-			feed: twtxt.Feed{
-				twtxt.Tweet{
-					Time: time.Date(2022, 1, 19, 14, 11, 0, 0, loc(+13)),
-					Post: "This post contains tabs\t\t\t",
+			name: "MultipleTweets",
+			feed: Tweets{
+				&Tweet{
+					time: time.Date(2022, 1, 19, 14, 11, 0, 0, loc(+13)),
+					post: "This post contains tabs\t\t\t",
 				},
-				twtxt.Tweet{
-					Time: time.Date(2016, 2, 3, 23, 5, 0, 0, loc(+1)),
-					Post: "@<example http://example.org/twtxt.txt> welcome to twtxt!",
+				&Tweet{
+					time: time.Date(2016, 2, 3, 23, 5, 0, 0, loc(+1)),
+					post: "@<example http://example.org/twtxt.txt> welcome to twtxt!",
 				},
-				twtxt.Tweet{
-					Time: time.Date(2022, 1, 19, 14, 14, 0, 0, loc(+13)),
-					Post: "This post contains newlines\n\n\n",
+				&Tweet{
+					time: time.Date(2022, 1, 19, 14, 14, 0, 0, loc(+13)),
+					post: "This post contains newlines\n\n\n",
 				},
-				twtxt.Tweet{
-					Time: time.Date(2016, 2, 1, 11, 0, 0, 0, loc(+1)),
-					Post: "This is just another example.",
+				&Tweet{
+					time: time.Date(2016, 2, 1, 11, 0, 0, 0, loc(+1)),
+					post: "This is just another example.",
 				},
-				twtxt.Tweet{
-					Time: time.Date(2015, 12, 12, 12, 0, 0, 0, loc(+1)),
-					Post: "Fiat lux!",
+				&Tweet{
+					time: time.Date(2015, 12, 12, 12, 0, 0, 0, loc(+1)),
+					post: "Fiat lux!",
 				},
-				twtxt.Tweet{
-					Time: time.Date(2016, 2, 4, 13, 30, 0, 0, loc(+1)),
-					Post: "You can really go crazy here! ┐(ﾟ∀ﾟ)┌",
+				&Tweet{
+					time: time.Date(2016, 2, 4, 13, 30, 0, 0, loc(+1)),
+					post: "You can really go crazy here! ┐(ﾟ∀ﾟ)┌",
 				},
 			},
 		},
@@ -90,7 +88,7 @@ func TestFeed(t *testing.T) {
 					t.Run(fmt.Sprintf("Less(%d,%d)", i, j), func(t *testing.T) {
 						feed := copyFeed(test.feed)
 						have := feed.Less(i, j)
-						want := feed[i].Time.Before(feed[j].Time)
+						want := feed[i].Time().Before(feed[j].Time())
 
 						if have != want {
 							t.Errorf("have %t, want %t", have, want)

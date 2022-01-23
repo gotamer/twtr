@@ -33,18 +33,28 @@ func NewTweet(post string) *Tweet {
 	return twt
 }
 
-// Time returns the time that the Tweet was posted.
+// Time gets the time that the Tweet was posted.
 func (twt *Tweet) Time() time.Time {
 	twt.init()
 
 	return twt.time
 }
 
-// Post returns the posted message of the Tweet.
+// Post gets the posted message of the Tweet.
 func (twt *Tweet) Post() string {
 	twt.init()
 
 	return twt.post
+}
+
+// Before determines if one Tweet was posted before the other.
+func (twt *Tweet) Before(other *Tweet) bool {
+	return twt.time.Before(other.time)
+}
+
+// After determines if one Tweet was posted after the other.
+func (twt *Tweet) After(other *Tweet) bool {
+	return twt.time.After(other.time)
 }
 
 // String formats the Tweet as an entry into a twtxt.txt file, returns the
