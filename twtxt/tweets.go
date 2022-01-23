@@ -2,7 +2,10 @@ package twtxt
 
 import (
 	"bufio"
+	"fmt"
 	"io"
+	"strings"
+	"time"
 )
 
 // Tweets are a collection of Tweet instances, these are not necessarily from
@@ -26,7 +29,14 @@ func ParseTweets(source io.Reader) (Tweets, error) {
 	// read the lines from the reader
 	lines := []string{}
 	for scanner.Scan() {
-		lines = append(lines, scanner.Text())
+		line := scanner.Text()
+
+		// skip comment lines
+		if strings.HasPrefix(line, "#") {
+			continue
+		}
+
+		lines = append(lines, line)
 	}
 
 	// bail early if there is a reading error
@@ -34,8 +44,33 @@ func ParseTweets(source io.Reader) (Tweets, error) {
 		return nil, err
 	}
 
-	// make room for enough tweets
+	// parse each line into Tweet
 	tweets := make(Tweets, len(lines))
+	for i, line := range lines {
+		if !strings.Contains(line, "\t") {
+			return nil, fmt.Errorf("parse error on line %d: missing tab delimiter", i)
+		}
+
+		// split the line by the tab delimiter
+		parts := strings.SplitN(line, "\t", 2)
+
+		// there has to be at the very least a timestamp left of the tab
+		if parts[0] == "" {
+			return nil, fmt.Errorf("parse error on line %d: no timestamp", i)
+		}
+
+		// parse the timestamp
+		t, err := time.Parse(time.RFC3339, parts[0])
+		if err != nil {
+			return nil, fmt.Errorf("parse error on line %d: %w", i, err)
+		}
+
+		// add the parsed tweet
+		tweets[i] = &Tweet{
+			time: t,
+			post: parts[1],
+		}
+	}
 
 	return tweets, nil
 }

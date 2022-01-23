@@ -42,7 +42,7 @@ func TestParseTweets(t *testing.T) {
 			twts: Tweets{
 				&Tweet{
 					time: time.Date(2022, 1, 19, 14, 14, 0, 0, loc(+13)),
-					post: "This post contains newlines\n\n\n",
+					post: "This post contains newlines\\n\\n\\n",
 				},
 			},
 		},
@@ -59,7 +59,7 @@ func TestParseTweets(t *testing.T) {
 			twts: Tweets{
 				&Tweet{
 					time: time.Date(2022, 1, 19, 14, 11, 0, 0, loc(+13)),
-					post: "This post contains tabs\t\t\t",
+					post: "This post contains tabs\\t\\t\\t",
 				},
 				&Tweet{
 					time: time.Date(2016, 2, 3, 23, 5, 0, 0, loc(+1)),
@@ -67,7 +67,7 @@ func TestParseTweets(t *testing.T) {
 				},
 				&Tweet{
 					time: time.Date(2022, 1, 19, 14, 14, 0, 0, loc(+13)),
-					post: "This post contains newlines\n\n\n",
+					post: "This post contains newlines\\n\\n\\n",
 				},
 				&Tweet{
 					time: time.Date(2016, 2, 1, 11, 0, 0, 0, loc(+1)),
