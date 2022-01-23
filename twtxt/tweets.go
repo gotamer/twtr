@@ -12,7 +12,11 @@ type Tweets []*Tweet
 // See the twtxt file format specification for more information:
 // https://twtxt.readthedocs.io/en/latest/user/twtxtfile.html
 func ParseTweets(reader io.Reader) (Tweets, error) {
-	tweets := make([]*Tweet, 0 /* len(lines) */)
+	// TODO: read from reader
+	lines := []string{}
+
+	// make room for enough tweets
+	tweets := make(Tweets, len(lines))
 
 	return tweets, nil
 }
