@@ -1,6 +1,9 @@
 package twtxt
 
-import "io"
+import (
+	"bufio"
+	"io"
+)
 
 // Tweets are a collection of Tweet instances, these are not necessarily from
 // the same source, or in any particular order. However, a feed can be sorted by
@@ -11,9 +14,25 @@ type Tweets []*Tweet
 //
 // See the twtxt file format specification for more information:
 // https://twtxt.readthedocs.io/en/latest/user/twtxtfile.html
-func ParseTweets(reader io.Reader) (Tweets, error) {
-	// TODO: read from reader
+func ParseTweets(source io.Reader) (Tweets, error) {
+	// if the source is nil, then there aren't any Tweets
+	if source == nil {
+		return Tweets{}, nil
+	}
+
+	// create a scanner to read the source
+	scanner := bufio.NewScanner(source)
+
+	// read the lines from the reader
 	lines := []string{}
+	for scanner.Scan() {
+		lines = append(lines, scanner.Text())
+	}
+
+	// bail early if there is a reading error
+	if err := scanner.Err(); err != nil {
+		return nil, err
+	}
 
 	// make room for enough tweets
 	tweets := make(Tweets, len(lines))
