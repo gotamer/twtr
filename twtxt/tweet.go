@@ -12,45 +12,39 @@ type Tweet struct {
 	post string
 }
 
-// init is a helper method to preform any setup that hasn't been done yet.
-func (twt *Tweet) init() {
-	if twt.time.IsZero() {
-		twt.time = time.Now()
-	}
-}
-
 // NewTweet creates a new Tweet instance with the given post message and the
 // current local time.
 func NewTweet(post string) *Tweet {
 	twt := &Tweet{post: post}
 
-	twt.init()
+	// trigger time init
+	twt.Time()
 
 	return twt
 }
 
 // Time gets the time that the Tweet was posted.
 func (twt *Tweet) Time() time.Time {
-	twt.init()
+	if twt.time.IsZero() {
+		twt.time = time.Now()
+	}
 
 	return twt.time
 }
 
 // Post gets the posted message of the Tweet.
 func (twt *Tweet) Post() string {
-	twt.init()
-
 	return twt.post
 }
 
 // Before determines if one Tweet was posted before the other.
 func (twt *Tweet) Before(other *Tweet) bool {
-	return twt.time.Before(other.time)
+	return twt.Time().Before(other.Time())
 }
 
 // After determines if one Tweet was posted after the other.
 func (twt *Tweet) After(other *Tweet) bool {
-	return twt.time.After(other.time)
+	return twt.Time().After(other.Time())
 }
 
 // String formats the Tweet as an entry into a twtxt.txt file, returns the
@@ -68,7 +62,5 @@ func (twt *Tweet) String() string {
 		"\t", "\\t",
 	)
 
-	twt.init()
-
-	return twt.time.Format(time.RFC3339 + "\t" + r.Replace(twt.post))
+	return twt.Time().Format(time.RFC3339 + "\t" + r.Replace(twt.Post()))
 }
