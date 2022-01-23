@@ -289,8 +289,8 @@ alice = https://example.org/alice.txt
 				t.Fatal("an error was expected but none was received")
 			}
 
-			if cmp.Equal(have, want) {
-				t.Errorf("diff:\n%s", cmp.Diff(have, want))
+			if diff := cmp.Diff(have, &want); diff != "" {
+				t.Errorf("diff:\n%s", diff)
 			}
 		})
 	}
@@ -424,8 +424,8 @@ sorting                  = descending
 					t.Fatalf("unexpected error: %q", err)
 				}
 
-				if !cmp.Equal(have, &want) {
-					t.Errorf("diff:\n%s", cmp.Diff(have, &want))
+				if diff := cmp.Diff(have, &want); diff != "" {
+					t.Errorf("diff:\n%s", diff)
 				}
 			})
 		})

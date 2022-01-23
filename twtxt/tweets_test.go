@@ -23,23 +23,23 @@ func TestParseTweets(t *testing.T) {
 	tests := []struct {
 		name   string
 		source io.Reader
-		tweets Tweets
+		twts   Tweets
 		err    error
 	}{
 		{
 			name:   "Nil",
 			source: nil,
-			tweets: Tweets{},
+			twts:   Tweets{},
 		},
 		{
 			name:   "Empty",
 			source: strings.NewReader(""),
-			tweets: Tweets{},
+			twts:   Tweets{},
 		},
 		{
 			name:   "SingleTweet",
 			source: strings.NewReader("2022-01-19T14:14:00+13:00\tThis post contains newlines\\n\\n\\n"),
-			tweets: Tweets{
+			twts: Tweets{
 				&Tweet{
 					time: time.Date(2022, 1, 19, 14, 14, 0, 0, loc(+13)),
 					post: "This post contains newlines\n\n\n",
@@ -56,7 +56,7 @@ func TestParseTweets(t *testing.T) {
 				"2015-12-12T12:00:00+01:00\tFiat lux!",
 				"2016-02-04T13:30:00+01:00\tYou can really go crazy here! ┐(ﾟ∀ﾟ)┌",
 			}, "\n")),
-			tweets: Tweets{
+			twts: Tweets{
 				&Tweet{
 					time: time.Date(2022, 1, 19, 14, 11, 0, 0, loc(+13)),
 					post: "This post contains tabs\t\t\t",
@@ -89,14 +89,14 @@ func TestParseTweets(t *testing.T) {
 		test := test
 
 		t.Run(test.name, func(t *testing.T) {
-			tweets, err := ParseTweets(test.source)
+			twts, err := ParseTweets(test.source)
 
 			if err != test.err {
 				t.Fatalf("have %q, want %q", err, test.err)
 			}
 
-			if !cmp.Equal(tweets, test.tweets) {
-				t.Errorf("diff:\n%s", cmp.Diff(tweets, test.tweets))
+			if diff := cmp.Diff(twts, test.twts, cmp.AllowUnexported(Tweet{})); diff != "" {
+				t.Errorf("diff:\n%s", diff)
 			}
 		})
 	}
