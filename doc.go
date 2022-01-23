@@ -44,7 +44,7 @@
 //
 //     -c, --config PATH    Specify a custom configuration file location.
 //     -v, --verbose        Enable verbose output for debugging purposes.
-//     --version            Show the version and exit.
+//         --version        Show the version and exit.
 //     -h, --help           Show a help message and exit.
 //
 // Each subcommand also has its own options, see the SUBCOMMAND section for more
@@ -74,7 +74,7 @@
 //
 // Note that the -c, -h, and -v flags are universal.
 //
-// Quickstart Synopsis
+// QUICKSTART SYNOPSIS
 //
 // Quickstart wizard for setting up twtxt.
 //
@@ -94,7 +94,7 @@
 //     -v, --verbose            Enable verbose output for debugging.
 //         --version            Show the version and exit.
 //
-// Timeline Synopsis
+// TIMELINE SYNOPSIS
 //
 // Retrieve your personal timeline.
 //
@@ -111,7 +111,7 @@
 //     -v, --verbose         Enable verbose output for debugging.
 //         --version         Show the version and exit.
 //
-// Following Synopsis
+// FOLLOWING SYNOPSIS
 //
 // View the sources that you are following.
 //
@@ -126,7 +126,7 @@
 //     -v, --verbose      Enable verbose output for debugging.
 //         --version      Show the version and exit.
 //
-// Follow Synopsis
+// FOLLOW SYNOPSIS
 //
 // Add a new source to your following.
 //
@@ -148,7 +148,7 @@
 // you don't know the nickname of a SOURCE, you can make one up, or use the
 // domain part of the URL (this can be easily changed later).
 //
-// Unfollow Synopsis
+// UNFOLLOW SYNOPSIS
 //
 // Remove an existing source from your list.
 //
@@ -170,7 +170,7 @@
 // you don't know the nickname of a SOURCE, you can make one up, or use the
 // domain part of the URL (this can be easily changed later).
 //
-// Tweet Synopsis
+// TWEET SYNOPSIS
 //
 // Send out a message into the void.
 //
@@ -186,7 +186,7 @@
 //     -v, --verbose      Enable verbose output for debugging.
 //         --version      Show the version and exit.
 //
-// View Synopsis
+// VIEW SYNOPSIS
 //
 // View a source that you follow.
 //
@@ -207,7 +207,7 @@
 // you don't know the nickname of a SOURCE, you can make one up, or use the
 // domain part of the URL (this can be easily changed later).
 //
-// Config Synopsis
+// CONFIG SYNOPSIS
 //
 // Update your configuration.
 //
@@ -272,8 +272,8 @@
 //     timeout                  = 5.0
 //     sorting                  = descending
 //     use_abs_time             = false
-//     pre_tweet_hook           = "spc nickname@example.com/twtxt.txt {twtxt}"
-//     post_tweet_hook          = "spc {twtxt} nickname@example.com/twtxt.txt"
+//     pre_tweet_hook           = "scp nickname@example.com/twtxt.txt {twtxt}"
+//     post_tweet_hook          = "scp {twtxt} nickname@example.com/twtxt.txt"
 //
 //     [following]
 //     alice = https://example.com/user/alice/path/to/twtxt.txt
