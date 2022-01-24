@@ -47,45 +47,26 @@ func Parse(source io.Reader) (*File, error) {
 		// read next line
 		line := scanner.Text()
 
-		// skip comment lines
 		if strings.HasPrefix(line, "#") {
-			// TODO: try to parse fields here
-			continue
-		}
+			// line is a comment, look for any metadata fields
+			if field := parseField(line); field != nil {
+				file.Fields = append(file.Fields, field)
+			}
+		} else {
+			// any non-comment line must be a tweet
+			tweet, perr := parseTweet(line)
+			if tweet != nil {
+				file.Tweets = append(file.Tweets, tweet)
+			}
 
-		// split the line by the tab delimiter
-		parts := strings.SplitN(line, "\t", 2)
+			// catch any parse errors
+			if perr != nil {
+				perr.line = lineNumber
 
-		// there has to be a timestamp
-		if len(parts) < 1 || parts[0] == "" {
-			return nil, &ParseError{
-				line: lineNumber,
-				msg:  "missing timestamp",
+				return nil, perr
 			}
 		}
 
-		// there has to be a tab delimiter
-		if len(parts) < 2 || !strings.Contains(line, "\t") {
-			return nil, &ParseError{
-				line: lineNumber,
-				msg:  "missing tab delimiter",
-			}
-		}
-
-		// parse the timestamp
-		t, err := time.Parse(time.RFC3339, parts[0])
-		if err != nil {
-			return nil, &ParseError{
-				line:  lineNumber,
-				inner: err,
-			}
-		}
-
-		// add the parsed tweet
-		file.Tweets = append(file.Tweets, &Tweet{
-			time: t,
-			post: parts[1],
-		})
 	}
 
 	// bail early if there is a reading error
@@ -94,4 +75,40 @@ func Parse(source io.Reader) (*File, error) {
 	}
 
 	return file, nil
+}
+
+// parseField is a helper to parseLine(), it reads a single line and returns a
+// metadata Field if any is found, and nil otherwise.
+func parseField(line string) *Field {
+	return nil
+}
+
+// parseTweet is a helper to parseLine(), it reads a single line and returns a
+// Tweet if the line can be parsed as one, returns nil for both values if the
+// line is a comment of any kind, and returns a ParseError if the line is not a
+// comment and does not contain a valid Tweet.
+func parseTweet(line string) (*Tweet, *ParseError) {
+	// split the line by the tab delimiter
+	parts := strings.SplitN(line, "\t", 2)
+
+	// there has to be a timestamp
+	if len(parts) < 1 || parts[0] == "" {
+		return nil, &ParseError{msg: "missing timestamp"}
+	}
+
+	// there has to be a tab delimiter
+	if len(parts) < 2 || !strings.Contains(line, "\t") {
+		return nil, &ParseError{msg: "missing tab delimiter"}
+	}
+
+	// parse the timestamp
+	t, err := time.Parse(time.RFC3339, parts[0])
+	if err != nil {
+		return nil, &ParseError{inner: err}
+	}
+
+	return &Tweet{
+		time: t,
+		post: parts[1],
+	}, nil
 }
