@@ -7,15 +7,23 @@ import (
 	"time"
 )
 
+// File represents a twtxt.txt file, it doesn't need to be called that, but
+// twtxt.txt is traditional.
+//
+// File contains both Tweets that the twtxt.txt file contained, as well as any
+// metadata Fields that were defined.
 type File struct {
 	Fields
 	Tweets
 }
 
-// Parse reads Tweets from a file or other source.
+// Parse reads a twtxt file from a twtxt.txt file or other source.
 //
 // See the twtxt file format specification for more information:
 // https://twtxt.readthedocs.io/en/latest/user/twtxtfile.html
+//
+// Parse also supports community metadata fields, including the Yarn.Social
+// metadata extensions: https://dev.twtxt.net/doc/metadataextension.html
 func Parse(source io.Reader) (*File, error) {
 	file := &File{
 		make(Fields, 0),
