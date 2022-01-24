@@ -1,6 +1,7 @@
 package twtxt
 
 import (
+	"errors"
 	"fmt"
 	"io"
 	"sort"
@@ -83,6 +84,51 @@ func TestParseTweets(t *testing.T) {
 				},
 			},
 		},
+		{
+			name: "MissingTabDelimiter",
+			err: &ParseError{
+				line: 1,
+				msg:  "missing tab delimiter",
+			},
+			source: strings.NewReader(strings.Join([]string{
+				"2022-01-19T14:11:00+13:00 This post contains tabs\\t\\t\\t",
+				"2016-02-03T23:05:00+01:00 @<example http://example.org/twtxt.txt> welcome to twtxt!",
+				"2022-01-19T14:14:00+13:00 This post contains newlines\\n\\n\\n",
+				"2016-02-01T11:00:00+01:00 This is just another example.",
+				"2015-12-12T12:00:00+01:00 Fiat lux!",
+				"2016-02-04T13:30:00+01:00 You can really go crazy here! ┐(ﾟ∀ﾟ)┌",
+			}, "\n")),
+		},
+		{
+			name: "MissingTimestamp",
+			err: &ParseError{
+				line: 1,
+				msg:  "missing timestamp",
+			},
+			source: strings.NewReader(strings.Join([]string{
+				"\tThis post contains tabs\\t\\t\\t",
+				"\t@<example http://example.org/twtxt.txt> welcome to twtxt!",
+				"\tThis post contains newlines\\n\\n\\n",
+				"\tThis is just another example.",
+				"\tFiat lux!",
+				"\tYou can really go crazy here! ┐(ﾟ∀ﾟ)┌",
+			}, "\n")),
+		},
+		{
+			name: "InvalidTimestamp",
+			err: &ParseError{
+				line:  2,
+				inner: errors.New("parsing time \"2016-02-74T23:05:00+01:00\": day out of range"),
+			},
+			source: strings.NewReader(strings.Join([]string{
+				"2022-01-19T14:11:00+13:00\tThis post contains tabs\\t\\t\\t",
+				"2016-02-74T23:05:00+01:00\t@<example http://example.org/twtxt.txt> welcome to twtxt!",
+				"2022-01-19T14:14:00+13:00\tThis post contains newlines\\n\\n\\n",
+				"2016-13-01T11:00:60+01:00\tThis is just another example.",
+				"2015-12-12T12:00:00+99:00\tFiat lux!",
+				"2016-02-04T60:30:00+01:00\tYou can really go crazy here! ┐(ﾟ∀ﾟ)┌",
+			}, "\n")),
+		},
 	}
 
 	for _, test := range tests {
@@ -92,7 +138,19 @@ func TestParseTweets(t *testing.T) {
 			twts, err := ParseTweets(test.source)
 
 			if err != test.err {
-				t.Fatalf("have %q, want %q", err, test.err)
+				if test.err == nil {
+					t.Fatalf("unexpected error %q", err)
+				}
+
+				if _, ok := test.err.(*ParseError); ok {
+					if _, ok := err.(*ParseError); !ok {
+						t.Errorf("have %T, want %T", err, test.err)
+					}
+				}
+
+				if have, want := err, test.err; have.Error() != want.Error() {
+					t.Fatalf("have %q, want %q", have, want)
+				}
 			}
 
 			if diff := cmp.Diff(twts, test.twts, cmp.AllowUnexported(Tweet{})); diff != "" {

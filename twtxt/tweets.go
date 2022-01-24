@@ -2,7 +2,6 @@ package twtxt
 
 import (
 	"bufio"
-	"fmt"
 	"io"
 	"strings"
 	"time"
@@ -47,22 +46,32 @@ func ParseTweets(source io.Reader) (Tweets, error) {
 	// parse each line into Tweet
 	tweets := make(Tweets, len(lines))
 	for i, line := range lines {
-		if !strings.Contains(line, "\t") {
-			return nil, fmt.Errorf("parse error on line %d: missing tab delimiter", i)
-		}
-
 		// split the line by the tab delimiter
 		parts := strings.SplitN(line, "\t", 2)
 
-		// there has to be at the very least a timestamp left of the tab
-		if parts[0] == "" {
-			return nil, fmt.Errorf("parse error on line %d: no timestamp", i)
+		// there has to be a timestamp
+		if len(parts) < 1 || parts[0] == "" {
+			return nil, &ParseError{
+				line: uint64(i + 1),
+				msg:  "missing timestamp",
+			}
+		}
+
+		// there has to be a tab delimiter
+		if len(parts) < 2 || !strings.Contains(line, "\t") {
+			return nil, &ParseError{
+				line: uint64(i + 1),
+				msg:  "missing tab delimiter",
+			}
 		}
 
 		// parse the timestamp
 		t, err := time.Parse(time.RFC3339, parts[0])
 		if err != nil {
-			return nil, fmt.Errorf("parse error on line %d: %w", i, err)
+			return nil, &ParseError{
+				line:  uint64(i + 1),
+				inner: err,
+			}
 		}
 
 		// add the parsed tweet
