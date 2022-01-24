@@ -49,7 +49,7 @@ func New(source io.Reader) (*Config, error) {
 		Porcelain:              file.Section("twtxt").Key("porcelain").MustBool(false),
 		DiscloseIdentity:       file.Section("twtxt").Key("disclose_identity").MustBool(false),
 		CharacterLimit:         file.Section("twtxt").Key("character_limit").MustInt(0),
-		CharacterWarning:       file.Section("twtxt").Key("character_warn").MustInt(0),
+		CharacterWarning:       file.Section("twtxt").Key("character_warning").MustInt(0),
 		LimitTimeline:          file.Section("twtxt").Key("limit_timeline").MustInt(20),
 		TimelineUpdateInterval: file.Section("twtxt").Key("timeline_update_interval").MustInt(10),
 		Timeout:                file.Section("twtxt").Key("timeout").MustFloat64(5.0),
