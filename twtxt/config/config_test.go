@@ -261,12 +261,20 @@ bob = https://example.org/bob.txt
 alice = https://example.org/alice.txt
 `),
 			want: config.Config{
+				Nick:                   "buckket",
+				Twtfile:                "~/twtxt.txt",
+				Twturl:                 "http://example.org/twtxt.txt",
 				CheckFollowing:         true,
 				UseCache:               true,
 				LimitTimeline:          20,
 				TimelineUpdateInterval: 10,
 				Timeout:                5.0,
-				Following:              make(map[string]string),
+				PreTweetHook:           "scp buckket@example.org:~/public_html/twtxt.txt {twtfile}",
+				PostTweetHook:          "scp {twtfile} buckket@example.org:~/public_html/twtxt.txt",
+				Following: map[string]string{
+					"alice": "https://example.org/alice.txt",
+					"bob":   "https://example.org/bob.txt",
+				},
 			},
 		},
 	}
