@@ -20,7 +20,7 @@ func copyFeed(twts Tweets) Tweets {
 	return Tweets(tmp)
 }
 
-func TestParseTweets(t *testing.T) {
+func TestParse(t *testing.T) {
 	tests := []struct {
 		name   string
 		source io.Reader
@@ -135,7 +135,7 @@ func TestParseTweets(t *testing.T) {
 		test := test
 
 		t.Run(test.name, func(t *testing.T) {
-			twts, err := ParseTweets(test.source)
+			twts, err := Parse(test.source)
 
 			if err != test.err {
 				if test.err == nil {

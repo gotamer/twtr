@@ -12,11 +12,11 @@ import (
 // the timestamp (in a timezone aware manner).
 type Tweets []*Tweet
 
-// ParseTweets reads Tweets from a file or other source.
+// Parse reads Tweets from a file or other source.
 //
 // See the twtxt file format specification for more information:
 // https://twtxt.readthedocs.io/en/latest/user/twtxtfile.html
-func ParseTweets(source io.Reader) (Tweets, error) {
+func Parse(source io.Reader) (Tweets, error) {
 	// if the source is nil, then there aren't any Tweets
 	if source == nil {
 		return Tweets{}, nil
