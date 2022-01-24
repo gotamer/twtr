@@ -47,24 +47,24 @@ func Parse(source io.Reader) (*File, error) {
 		// read next line
 		line := scanner.Text()
 
-		if strings.HasPrefix(line, "#") {
-			// line is a comment, look for any metadata fields
-			if field := parseField(line); field != nil {
-				file.Fields = append(file.Fields, field)
-			}
-		} else {
-			// any non-comment line must be a tweet
-			tweet, perr := parseTweet(line)
-			if tweet != nil {
-				file.Tweets = append(file.Tweets, tweet)
-			}
+		// try to parse the line as a metadata field
+		if field := parseField(line); field != nil {
+			file.Fields = append(file.Fields, field)
+		}
 
-			// catch any parse errors
-			if perr != nil {
-				perr.line = lineNumber
+		// try to parse the line as a tweet
+		tweet, perr := parseTweet(line)
 
-				return nil, perr
-			}
+		// catch any parse errors
+		if perr != nil {
+			perr.line = lineNumber
+
+			return nil, perr
+		}
+
+		// otherwise store the parsed tweet
+		if tweet != nil {
+			file.Tweets = append(file.Tweets, tweet)
 		}
 
 	}
@@ -80,7 +80,38 @@ func Parse(source io.Reader) (*File, error) {
 // parseField is a helper to parseLine(), it reads a single line and returns a
 // metadata Field if any is found, and nil otherwise.
 func parseField(line string) *Field {
-	return nil
+	// ignore non-comments
+	if !strings.HasPrefix(line, "#") {
+		return nil
+	}
+
+	// ignore comments without an equal sign
+	if !strings.Contains(line, "=") {
+		return nil
+	}
+
+	// split the line by the tab delimiter
+	parts := strings.SplitN(line[1:], "=", 2)
+
+	// trim whitespace padding from the parts
+	for i, part := range parts {
+		parts[i] = strings.TrimSpace(part)
+	}
+
+	// there has to be a key
+	if len(parts) < 1 || parts[0] == "" {
+		return nil
+	}
+
+	// there has to be an equal sign delimiter and a value
+	if len(parts) < 2 || parts[1] == "" {
+		return nil
+	}
+
+	return &Field{
+		key: parts[0],
+		val: parts[1],
+	}
 }
 
 // parseTweet is a helper to parseLine(), it reads a single line and returns a
@@ -88,17 +119,22 @@ func parseField(line string) *Field {
 // line is a comment of any kind, and returns a ParseError if the line is not a
 // comment and does not contain a valid Tweet.
 func parseTweet(line string) (*Tweet, *ParseError) {
+	// ignore comments
+	if strings.HasPrefix(line, "#") {
+		return nil, nil
+	}
+
+	// there has to be a tab delimiter
+	if !strings.Contains(line, "\t") {
+		return nil, &ParseError{msg: "missing tab delimiter"}
+	}
+
 	// split the line by the tab delimiter
 	parts := strings.SplitN(line, "\t", 2)
 
 	// there has to be a timestamp
 	if len(parts) < 1 || parts[0] == "" {
 		return nil, &ParseError{msg: "missing timestamp"}
-	}
-
-	// there has to be a tab delimiter
-	if len(parts) < 2 || !strings.Contains(line, "\t") {
-		return nil, &ParseError{msg: "missing tab delimiter"}
 	}
 
 	// parse the timestamp
