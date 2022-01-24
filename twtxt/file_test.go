@@ -5,6 +5,7 @@ import (
 	"io"
 	"strings"
 	"testing"
+	"testing/iotest"
 	"time"
 
 	"github.com/google/go-cmp/cmp"
@@ -113,7 +114,7 @@ func TestParse(t *testing.T) {
 			source: strings.NewReader(strings.Join([]string{
 				"# this = is a field",
 				"# this = is also a field",
-				"# huh = no tweets yet, just another field",
+				"# huh  = no tweets yet, just another field",
 			}, "\n")),
 			fields: Fields{
 				&Field{
@@ -139,7 +140,9 @@ func TestParse(t *testing.T) {
 				"# huh, no tweets yet, just another comment",
 				"# this = is a field",
 				"# this = is also a field",
-				"# huh = no tweets yet, just another field",
+				"# huh  = no tweets yet, just another field",
+				"# this is not actually a field, just a comment = ",
+				"# = this is not actually a field either, just a comment",
 				"2022-01-19T14:11:00+13:00\tThis post contains tabs\\t\\t\\t",
 				"2016-02-03T23:05:00+01:00\t@<example http://example.org/twtxt.txt> welcome to twtxt!",
 				"2022-01-19T14:14:00+13:00\tThis post contains newlines\\n\\n\\n",
@@ -238,6 +241,11 @@ func TestParse(t *testing.T) {
 				"2015-12-12T12:00:00+99:00\tFiat lux!",
 				"2016-02-04T60:30:00+01:00\tYou can really go crazy here! ┐(ﾟ∀ﾟ)┌",
 			}, "\n")),
+		},
+		{
+			name:   "BadReader",
+			err:    errors.New("bad reader"),
+			source: iotest.ErrReader(errors.New("bad reader")),
 		},
 	}
 
